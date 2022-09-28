@@ -16,12 +16,23 @@ Create a database on pgAdmin (app for postgres) called "oopdatabase"
 
 How to test API endpoints:
 
-Currently there are 3
+Currently there are 8
+<h1> Users </h1>
+Read Users (GET REQUEST): http://localhost:8080/api/v1/users
 
-Create Users: http://localhost:8080/api/v1/users
+Create Users (POST REQUEST): http://localhost:8080/api/v1/users
 
-Update Users: http://localhost:8080/api/v1/users/1?name=Maria&email=mariam.jamalllllll@gmail.com
+Update Users (PUT REQUEST): http://localhost:8080/api/v1/users/1?name=Maria&email=mariam.jamalllllll@gmail.com
 
-Delete Users: http://localhost:8080/api/v1/users/1
+Delete Users (DELETE REQUEST): http://localhost:8080/api/v1/users/1
+
+<h1> Loanpass </h1>
+Read Loanpass (GET REQUEST): http://localhost:8080/api/v1/loanpass
+
+Create Loanpass (POST REQUEST): http://localhost:8080/api/v1/loanpass
+
+Update Loanpass (PUT REQUEST): http://localhost:8080/api/v1/loanpass/<passId>
+
+Delete Loanpass (DELETE REQUEST): http://localhost:8080/api/v1/loanpass/<passId>
 
 Download JavaSpringBootIntro.postman_collection and import into Postman to test
