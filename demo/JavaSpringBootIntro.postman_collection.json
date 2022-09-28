@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "ab0bc546-a3a5-432a-93fc-3cbe9faa3fbf",
+		"_postman_id": "44b88529-f707-4b4d-80b1-438f8dd37ecc",
 		"name": "JavaSpringBootIntro",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17184895"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -31,6 +30,36 @@
 						"api",
 						"v1",
 						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Loanpass",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"passId\":4,\r\n    \"attractionId\":1,\r\n    \"passNumber\":123,\r\n    \"previousLoanBy\":1,\r\n    \"description\":\"description\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/loanpass",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"loanpass"
 					]
 				}
 			},
@@ -73,6 +102,50 @@
 			"response": []
 		},
 		{
+			"name": "Update Loanpass",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/loanpass/1?attractionId=2&passNumber=123456&previousLoanBy=1&description=changed description",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"loanpass",
+						"1"
+					],
+					"query": [
+						{
+							"key": "attractionId",
+							"value": "2"
+						},
+						{
+							"key": "passNumber",
+							"value": "123456"
+						},
+						{
+							"key": "previousLoanBy",
+							"value": "1"
+						},
+						{
+							"key": "description",
+							"value": "changed description"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Users",
 			"request": {
 				"method": "DELETE",
@@ -88,6 +161,28 @@
 						"api",
 						"v1",
 						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Loanpass",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/loanpass/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"loanpass",
 						"1"
 					]
 				}
