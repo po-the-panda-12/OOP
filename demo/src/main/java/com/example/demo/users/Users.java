@@ -1,104 +1,96 @@
 package com.example.demo.users;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
+
+@Getter
+@Setter
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
-@Table
-public class Users {
+public class Users implements UserDetails {
+    // ========================attributes========================
     @Id
     @SequenceGenerator(
-            name="users_sequence",
-            sequenceName ="users_sequence",
-            allocationSize =  1
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "users_sequence"
+            generator = "user_sequence"
     )
-
-    private Long userId;
+    private Long id;
     private String name;
     private String email;
-    private Integer phone;
-    private String role;
     private String password;
-
-    public Users() {
-    }
-
-    public Users(Long userId, String name, String email, Integer phone, String role, String password) {
-        this.userId = userId;
+    public String phone;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+    private Boolean locked;
+    private Boolean enabled;
+    // ========================methods========================
+    // =================constructors=================
+    public Users(String name,
+                 String email,
+                 String password,
+                 String phone,
+                 UserRole userRole,
+                 Boolean locked,
+                 Boolean enabled) {
         this.name = name;
         this.email = email;
-        this.phone = phone;
-        this.role = role;
         this.password = password;
-    }
-
-    public Users(String name, String email, Integer phone, String role, String password) {
-        this.name = name;
-        this.email = email;
         this.phone = phone;
-        this.role = role;
-        this.password = password;
+        this.userRole = userRole;
+        this.locked = locked;
+        this.enabled = enabled;
     }
 
-    public Long getUserId() {
-        return userId;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority =
+                new SimpleGrantedAuthority(userRole.name());
+        return Collections.singletonList(authority);
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getPhone() {
-        return phone;
-    }
-
-    public void setPhone(Integer phone) {
-        this.phone = phone;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return null;
+    }
+    public String getName() {
+        return name;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
 
     @Override
-    public String toString() {
-        return "Users{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone=" + phone +
-                ", role='" + role + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
