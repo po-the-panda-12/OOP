@@ -32,7 +32,7 @@ public class Users implements UserDetails {
     private String name;
     private String email;
     private String password;
-    public String phone;
+    public String phoneNumber;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     private Boolean locked;
@@ -42,14 +42,14 @@ public class Users implements UserDetails {
     public Users(String name,
                  String email,
                  String password,
-                 String phone,
+                 String phoneNumber,
                  UserRole userRole,
                  Boolean locked,
                  Boolean enabled) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
         this.userRole = userRole;
         this.locked = locked;
         this.enabled = enabled;

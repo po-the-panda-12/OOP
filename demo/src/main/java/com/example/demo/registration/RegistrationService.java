@@ -18,8 +18,8 @@ public class RegistrationService {
                 new Users(
                         request.getName(),
                         request.getEmail(),
-                        request.getPhoneNumber(),
                         request.getPassword(),
+                        request.getPhoneNumber(),
                         UserRole.user,
                         false,
                         true

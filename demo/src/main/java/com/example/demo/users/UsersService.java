@@ -34,6 +34,7 @@ public class UsersService implements UserDetailsService {
         if (userExists){
             throw new IllegalStateException("Email already exists");
         }
+
         String encodedPassword = bCryptPasswordEncoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
         usersRepository.save(newUser);
