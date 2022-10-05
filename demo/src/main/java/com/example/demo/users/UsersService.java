@@ -52,4 +52,7 @@ public class UsersService implements UserDetailsService {
 //        send email
         return token;
     }
+    public int enableUser(String email) {
+        return usersRepository.enableUser(email);
+    }
 }
