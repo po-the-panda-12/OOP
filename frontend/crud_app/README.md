@@ -1,3 +1,9 @@
+# TO RUN REACT APP, ENSURE YOU HAVE NODE.JS INSTALLED AND go to this project directory in cmd,<br>
+type "npm install"<br>
+type "npm start"<br>
+
+
+# default react create app readme instructions ~
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
