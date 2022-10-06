@@ -26,9 +26,12 @@ public class WebSecurityConfig {
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
+                .cors().and()
                 .formLogin();
         return http.build();
     }
+
+
 
 
 

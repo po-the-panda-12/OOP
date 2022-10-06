@@ -17,7 +17,7 @@ public class DemoApplication {
 	// THIS ALLOWS CORS (so that front-end can call back-end)
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
+		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedOrigins("*");
