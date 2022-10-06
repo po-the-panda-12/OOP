@@ -1,3 +1,6 @@
+FRONTEND
+https://github.com/IS442-202223T1/group-project-g1t7/tree/main/frontend/crud_app
+
 HOW TO RUN BACKEND (which is in demo folder) (using intelliJ, student have free premium version) 
 
 Video reference (@33:50): https://www.youtube.com/watch?v=9SGDpanrc8U
