@@ -1,0 +1,15 @@
+import './App.css';
+import Create from './components/create';
+
+function App() {
+  return (
+    <div className="main">
+      <h2 className="main-header">Create User for Corporate Pass Application</h2>
+      <div>
+        <Create/>
+      </div>
+    </div>
+  );
+}
+
+export default App;
