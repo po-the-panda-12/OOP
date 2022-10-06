@@ -1,9 +1,13 @@
 # TO RUN REACT APP, ENSURE YOU HAVE NODE.JS INSTALLED AND go to this project directory in cmd,<br>
 type "npm install"<br>
 type "npm start"<br>
+go to [http://localhost:3000](http://localhost:3000)<br>
+
+what it current is:
+![image](https://user-images.githubusercontent.com/82926705/194248507-7d067c95-ef65-4f6a-950c-37f15a66d11e.png)
 
 
-# default react create app readme instructions ~
+# default react create app readme instructions below this ~
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
