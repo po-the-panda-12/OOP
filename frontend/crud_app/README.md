@@ -1,3 +1,21 @@
+# TO RUN REACT APP, ENSURE YOU HAVE NODE.JS INSTALLED AND go to this project directory in cmd,<br>
+type "npm install"<br>
+type "npm start"<br>
+go to [http://localhost:3000](http://localhost:3000)<br>
+
+what it currently is:
+![image](https://user-images.githubusercontent.com/82926705/194248507-7d067c95-ef65-4f6a-950c-37f15a66d11e.png)
+
+# DEVELOPING:
+This tutorial is followed:<br>
+[https://www.freecodecamp.org/news/how-to-perform-crud-operations-using-react/](https://www.freecodecamp.org/news/how-to-perform-crud-operations-using-react/)<br>
+
+Edit the app main functions in:<br>
+src/App.js<br>
+src/components/<br>
+<br><br>
+# default react create app readme instructions below this ~
+<br><br>
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
