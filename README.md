@@ -1,3 +1,6 @@
+# hi, this is a branch without spring web security (endpoints are open for easy testing.)
+# react CRUD of loanpass is working.
+
 FRONTEND
 https://github.com/IS442-202223T1/group-project-g1t7/tree/main/frontend/crud_app
 
