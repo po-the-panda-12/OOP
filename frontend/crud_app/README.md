@@ -4,7 +4,10 @@ type "npm start"<br>
 go to [http://localhost:3000](http://localhost:3000)<br>
 
 what it currently is:
-![image](https://user-images.githubusercontent.com/82926705/194248507-7d067c95-ef65-4f6a-950c-37f15a66d11e.png)
+# CRUD OF LOANPASS
+
+![image](https://user-images.githubusercontent.com/82926705/194504781-ade47dd6-8638-449f-9c69-e304f5acd7f7.png)
+
 
 # DEVELOPING:
 This tutorial is followed:<br>
