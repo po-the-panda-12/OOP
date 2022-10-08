@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 export default function CreateLoanPass() {
+    const backendDomain = process.env.REACT_APP_backendDomain;
     const navigate = useNavigate();
     const [attractionId, setAttractionId] = useState('');
     const [passNumber, setPassNumber] = useState('');
@@ -12,15 +13,15 @@ export default function CreateLoanPass() {
     const [checkbox, setCheckbox] = useState(false);
     const postData = () => {
         const postRequest = "{attractioId: " + attractionId + ",\n passNumber: " + passNumber + ",\n description: " + description + "}";
-        alert("sent a post request:\n" + postRequest + "\nto http://localhost:8080/api/v1/loanpass");
+        alert("sent a post request:\n" + postRequest + `\nto ${backendDomain}/api/v1/loanpass`);
         
-        axios.post(`http://localhost:8080/api/v1/loanpass`, {
+        axios.post(`${backendDomain}/api/v1/loanpass`, {
             attractionId,
             passNumber,
             description,
         }).then(() => {
             alert("success! going to read page");
-            navigate('/read');
+            navigate('/react/read');
         }).catch((err) => {
             alert("error in creation! staying on this page." + err);
         });

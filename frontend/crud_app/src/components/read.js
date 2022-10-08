@@ -4,10 +4,11 @@ import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 export default function Read() {
+    const backendDomain = process.env.REACT_APP_backendDomain;
     const [APIData, setAPIData] = useState([]);
     useEffect(() => {
         console.log("hello");
-        axios.get(`http://localhost:8080/api/v1/loanpass`)
+        axios.get(`${backendDomain}/api/v1/loanpass`)
             .then((response) => {
                 console.log(response.data);
                 setAPIData(response.data);
@@ -39,14 +40,14 @@ export default function Read() {
     }
 
     const getData = () => {
-        axios.get(`http://localhost:8080/api/v1/loanpass`)
+        axios.get(`${backendDomain}/api/v1/loanpass`)
             .then((getData) => {
                 setAPIData(getData.data);
             })
     }
 
     const onDelete = (id) => {
-        axios.delete(`http://localhost:8080/api/v1/loanpass/${id}`)
+        axios.delete(`${backendDomain}/api/v1/loanpass/${id}`)
         .then(() => {
             getData();
         })
@@ -74,7 +75,7 @@ export default function Read() {
                                 <Table.Cell>{data.passNumber}</Table.Cell>
                                 <Table.Cell>{data.previousLoanBy}</Table.Cell>
                                 <Table.Cell>{data.description}</Table.Cell>
-                                <Link to='/update'>
+                                <Link to='/react/update'>
                                     <Table.Cell> 
                                         <Button onClick={() => setData(data)}>Update</Button>
                                     </Table.Cell>

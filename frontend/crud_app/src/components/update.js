@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 
 export default function Update() {
+    const backendDomain = process.env.REACT_APP_backendDomain;
     const navigate = useNavigate();
     const [passId, setPassId] = useState('');
     const [attractionId, setAttractionId] = useState('');
@@ -21,10 +22,10 @@ export default function Update() {
     }, []);
 
     const updateAPIData = () => {
-        axios.put(`http://localhost:8080/api/v1/loanpass/${passId}?attractionId=${attractionId}&passNumber=${passNumber}&previousLoanBy=${previousLoanBy}&description=${description})`, 
+        axios.put(`${backendDomain}/api/v1/loanpass/${passId}?attractionId=${attractionId}&passNumber=${passNumber}&previousLoanBy=${previousLoanBy}&description=${description})`, 
             null,   
         ).then(() => {
-            navigate('/read');
+            navigate('/react/read');
         }).catch((err) => {
             alert("error in update! staying on this page." + err);
         });
