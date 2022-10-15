@@ -1,13 +1,17 @@
 package com.example.demo.users;
 
+import com.example.demo.loanpass.Loanpass;
+import com.example.demo.loanpass.LoanpassRepository;
 import com.example.demo.registration.token.ConfirmationToken;
 import com.example.demo.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,6 +22,10 @@ public class UsersService implements UserDetailsService {
     private final UsersRepository usersRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+
+    public List<Users> getUsers(){
+        return usersRepository.findAll();
+    }
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
