@@ -59,15 +59,60 @@ export default function LoanApplication() {
     const day = value.getDate();
     const month = value.getMonth() + 1;
     const year = value.getFullYear();
+    const attractionId = 1;
+    const date = `${attractionId},${day},${month},${year}`;
+
+    const userId = "1";
 
     alert("Sent request to: " + `${backendDomain}/api/v1/loanpass/\n` + "Attraction: " + attraction.value + " Passes: " + passes.value + " Date: " + day + "/" + month + "/" + year);
-    axios.put(`${backendDomain}/api/v1/loanpass/`, 
-        null,   
+    axios.post(`${backendDomain}/api/v1/bookingdate`, 
+        {
+          "date" : date,
+          "waitingList" : userId
+        }   
     ).then(() => {
         alert("Successfully created loan application!");
     }).catch((err) => {
-        alert("error in update! staying on this page." + err);
-    });
+        console.log(err);
+        if (err.response.status === 500) {
+
+          axios.get(`${backendDomain}/api/v1/bookingdate/${date}`)
+                .then((res) => {
+                  
+                    const waitingList = res.data.waitingList;
+                    alert(`already booked! waiting list: ${waitingList}`);
+
+                    const waitingListsplitted = waitingList.split(",");
+                    // if userid in waitinglistsplitted
+                    if (waitingListsplitted.includes(userId)) {
+                        alert("You are already in the waiting list!");
+                        return;
+                    } else {
+                      const yesWaiting = window.confirm("Would you like to be added to the waiting list?");
+                      if (yesWaiting) {
+                        axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + userId}`,
+                                  null,
+                              ).then(() => {
+                                  alert("Successfully added to waiting list!");
+                                  alert(waitingList + "," + userId);
+                              }).catch((err) => {
+                                  alert("error in update! staying on this page." + err);
+                                  console.log(err);
+                              });
+                      }
+                    }
+
+                    
+                  }).catch((err) => {
+                    console.log(err);
+                  });
+                
+            
+    }
+     else {
+        alert("error:" + err);
+    }
+  });
 
 }
 

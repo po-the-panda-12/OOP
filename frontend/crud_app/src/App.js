@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import DatePicker from 'react-date-picker'
+import ViewBooking from './components/viewbooking';
 
 import LoanApplication from './components/loan';
 
@@ -25,7 +26,7 @@ class App extends React.Component {
         <div className="App">
           
             <div className="main">
-            <h2 className="main-header">React Crud Operations</h2>
+            <h2 className="main-header">Corporate Pass Application</h2>
 
 
 
@@ -33,6 +34,8 @@ class App extends React.Component {
               <li><Link to="/react/createloanpass">Create Loan Pass</Link></li>
               <li><Link to="/react/read">Read Loanpasses</Link></li>
               <li><Link to="/react/loan">Loan Application</Link></li>
+              <li><Link to="/react/viewbooking">View Booking</Link></li>
+            
 
             </ul>
             
@@ -44,6 +47,7 @@ class App extends React.Component {
                 <Route exact path='/react/read' element={<Read />} />
                 <Route exact path='/react/update' element={<Update />} />
                 <Route exact path='/react/loan' element={<LoanApplication />} />
+                <Route exact path='/react/viewbooking' element={<ViewBooking />} />
             </Routes>
           
           </div>
