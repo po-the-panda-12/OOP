@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Select from 'react-select'
 import DatePicker from 'react-date-picker';
 import { addDays } from 'date-fns';
@@ -6,13 +6,28 @@ import axios from 'axios';
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
-const options = [
-    { value: 'Zoo', label: 'Zoo' },
-    { value: 'Gardens by the Bay', label: 'Gardens by the Bay' },
-    { value: 'Duck Tours', label: 'Duck Tours' }
-]
+let options = [];
+
+// get options from backend axios call
+axios.get(`${backendDomain}/api/v1/attractions`)
+    .then(res => {
+        options = [];
+
+        console.log(res.data);
+        res.data.forEach(attraction => {
+            options.push({ value: attraction.attractionID, label: attraction.name });
+        }
+        )
+
+        console.log(options);
+    });
 
 const options1 = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+]
+
+const userOptions = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },
 ]
@@ -38,37 +53,72 @@ const customStyles = {
   
 
 export default function LoanApplication() {
+
+    // state for user
+    const [user, setUser] = useState();
+
     // state for datepicker
     const [value, onChange] = useState(addDays(new Date(), 1));
 
     // state for attraction
-    const [attraction, setAttraction] = useState(options[0]);
+    const [attraction, setAttraction] = useState();
     // state for number of passes
 
-    const [passes, setPasses] = useState(options1[0]);
+    const [passes, setPasses] = useState();
+
+    const onAttractionChange = (e) => {
+      setAttraction(e);
+  }
+
+  const onPassesChange = (e) => {
+    setPasses(e);
+}
+
+    const SelectUserComponent = () => (
+        <Select styles={customStyles} options={userOptions} defaultValue={[userOptions[0]]} value={user} onChange={(d) => setUser(d)} />
+      )
 
     const SelectAttractionComponent = () => (
-    <Select styles={customStyles} options={options} defaultValue={options[0]} value={attraction} onChange={setAttraction} />
+    <Select placeholder="" styles={customStyles} options={options} defaultValue={[]} value={attraction} onChange={(d) => onAttractionChange(d)} />
   )
 
   const SelectNoPassesComponent = () => (
-    <Select styles={customStyles} options={options1} defaultValue={options1[0]} value={passes} onChange={setPasses} />
+    <Select styles={customStyles} options={options1} defaultValue={[]} value={passes} onChange={(d) => onPassesChange(d)} />
   )
 
   const createLoanApplication = () => {
     const day = value.getDate();
     const month = value.getMonth() + 1;
     const year = value.getFullYear();
-    const attractionId = 1;
+    let attractionId = 1;
+    
+
+    let userId = "1";
+    try {
+        userId = user.value;
+    } catch (error) {
+        console.log(error);
+    }
+
+    try {
+        attractionId = attraction.value;
+    } catch (error) {
+        console.log(error);
+    }
+
     const date = `${attractionId},${day},${month},${year}`;
 
-    const userId = "1";
+    let newwaitingList = `${userId}`
 
-    alert("Sent request to: " + `${backendDomain}/api/v1/loanpass/\n` + "Attraction: " + attraction.value + " Passes: " + passes.value + " Date: " + day + "/" + month + "/" + year);
+    if (passes.value == 2) {
+        newwaitingList += `,${userId}`
+    }
+
+    alert("User "+ userId + " sent request to: " + `${backendDomain}/api/v1/loanpass/\n` + "Attraction: " + attraction.value + " Passes: " + passes.value + " Date: " + day + "/" + month + "/" + year);
     axios.post(`${backendDomain}/api/v1/bookingdate`, 
         {
           "date" : date,
-          "waitingList" : userId
+          "waitingList" : newwaitingList
         }   
     ).then(() => {
         alert("Successfully created loan application!");
@@ -83,24 +133,50 @@ export default function LoanApplication() {
                     alert(`already booked! waiting list: ${waitingList}`);
 
                     const waitingListsplitted = waitingList.split(",");
-                    // if userid in waitinglistsplitted
+
                     if (waitingListsplitted.includes(userId)) {
-                        alert("You are already in the waiting list!");
-                        return;
-                    } else {
-                      const yesWaiting = window.confirm("Would you like to be added to the waiting list?");
-                      if (yesWaiting) {
-                        axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + userId}`,
-                                  null,
-                              ).then(() => {
-                                  alert("Successfully added to waiting list!");
-                                  alert(waitingList + "," + userId);
-                              }).catch((err) => {
-                                  alert("error in update! staying on this page." + err);
-                                  console.log(err);
-                              });
-                      }
-                    }
+                      alert("You are already in the waiting list!");
+                      return;
+                  }
+
+                    // get all loanpasses
+                    axios.get(`${backendDomain}/api/v1/loanpass/getbyattraction/${attractionId}`)
+                        .then((res) => {
+                            var loanPasses = 0;
+                            res.data.forEach(loanPass => {
+                              loanPasses++;
+                            });
+                            console.log(loanPasses);
+
+                            if (waitingListsplitted.length + passes.value > loanPasses) {
+                              let confirmMessage = "You are not in the waiting list, but there are not enough loan passes available. Do you want to be added to the waiting list?";
+                              console.log("too little passes!")
+                              if (passes.value == 2 && waitingListsplitted.length == loanPasses - 1) {
+                                confirmMessage = "There is only 1 loan pass to be booked, do you want to book it and be put on the waiting list for the next one?";
+                              }
+
+                              const yesWaiting = window.confirm(confirmMessage);
+                              if (yesWaiting) {
+                                axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + userId}`,
+                                          null,
+                                      ).then(() => {
+                                          alert("Successfully added to waiting list!");
+                                          alert(waitingList + "," + newwaitingList);
+                                      }).catch((err) => {
+                                          alert("error in update! staying on this page." + err);
+                                          console.log(err);
+                                      });
+                              }
+
+                            }
+
+                        })
+                            
+
+                    
+                    
+                      
+                    
 
                     
                   }).catch((err) => {
@@ -114,16 +190,27 @@ export default function LoanApplication() {
     }
   });
 
-}
+  }
+
+  useEffect(() => {
+    // Update the document title using the browser API
+    console.log("useEffect only once!");
+    
+  }, [""]);
 
   return (
     <div>
-        <h1>Place:</h1>
-        <SelectAttractionComponent />
-        {attraction.value}
+      <h1>Loan Application</h1>
+
+        <h1>UserId:</h1>
+        <SelectUserComponent />
+
         <h1>No. of Passes:</h1>
         <SelectNoPassesComponent />
-        {passes.value}
+
+        <h1>Place:</h1>
+        <SelectAttractionComponent />
+
         <h1>Date:</h1>
         
         {/* datepicker */}

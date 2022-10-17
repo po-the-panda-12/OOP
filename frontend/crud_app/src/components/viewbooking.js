@@ -43,12 +43,11 @@ const customStyles = {
 export default function ViewBooking() {
 
 
-
     // state for attraction
     const [attraction, setAttraction] = useState();
 
     const SelectAttractionComponent = () => (
-        <Select styles={customStyles} options={options} defaultValue={[options[0]]} value={attraction} onChange={(d) => onAttractionChange(d)} />
+        <Select placeholder="Loading options from backend.. please wait" styles={customStyles} options={options} defaultValue={[options[0]]} value={attraction} onChange={(d) => onAttractionChange(d)} />
       )
 
 
@@ -56,6 +55,8 @@ export default function ViewBooking() {
     const [value, setValue] = useState(addDays(new Date(), 1));
 
     const [waitList, setWaitList] = useState("click on a date to view waitlist");
+
+    const [waitListArray, setWaitListArray] = useState([]);
 
     const onAttractionChange = (e) => {
         setAttraction(e);
@@ -88,10 +89,14 @@ export default function ViewBooking() {
         .then((response) => {
             console.log(response.data);
             setWaitList(response.data.waitingList);
+
+            let tempwaitingList = response.data.waitingList;
+            setWaitListArray(tempwaitingList.split(","));
         }
         )
         .catch((error) => {
             setWaitList("no bookings");
+            setWaitListArray([]);
         })
     }
     
@@ -109,8 +114,19 @@ export default function ViewBooking() {
         <br/>
         <Calendar value={value} onChange={(d) => onDateChange(d, attraction)} />
         <h1>Waiting list:</h1>
-        {waitList}
+        <p>{waitList}</p>
+
+        {waitListArray.map((item, index) => (
+            <div key={index}>
+                <button onClick={() => {
+                    alert("Userid "+ item + " details\nname:\ncontact:\nemail:\n");
+                    // send axios get to get user details
+
+                    }}>{item}</button>
+            </div>
+        ))}
         </div>
+        
     )
   
     

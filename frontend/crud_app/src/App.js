@@ -1,8 +1,7 @@
 import './App.css';
-import Create from './components/create';
-import Read from './components/read';
-import Update from './components/update';
-import CreateLoanPass from './components/create copy';
+import Read from './components/read loanpass';
+import Update from './components/update loanpass';
+import CreateLoanPass from './components/create loanpass';
 import {BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import { Table, Button } from 'semantic-ui-react';
 import { useNavigate } from 'react-router';
