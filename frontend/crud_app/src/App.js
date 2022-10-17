@@ -13,6 +13,13 @@ import ViewBooking from './components/viewbooking';
 
 import LoanApplication from './components/loan';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import HomePage from './components/home';
+
 
 class App extends React.Component {
   
@@ -24,25 +31,54 @@ class App extends React.Component {
       
       <BrowserRouter>
         <div className="App">
+          {/* NAV BAR */}
+
+          <Navbar bg="light" expand="lg" fixed="top" >
+            <Container>
+              <Navbar.Brand href="#home">Corporate Pass Application</Navbar.Brand>
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <Navbar.Collapse id="basic-navbar-nav">
+                <Nav className="me-auto" defaultActiveKey="/react" as="ul">
+                  <Nav.Item as="li">
+                    <Nav.Link href="">
+                      <Link to="/react">Home</Link>
+                    </Nav.Link>
+                  </Nav.Item>
+                  
+                  <Nav.Item as="li">
+                    <Nav.Link href="">
+                      <Link to="/react/loan">Loan Application</Link>
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Link href="">
+                    <Link to="/react/viewbooking">View Booking</Link>
+                  </Nav.Link>
+                  <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="">
+                      <Link to="/react/createloanpass">Create Loan Pass</Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="">
+                    <Link to="/react/read">Read Loanpasses</Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="">Something</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="">
+                      Separated link
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                </Nav>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+
+          {/* END OF NAVBAR */}
           
             <div className="main">
             <h2 className="main-header">Corporate Pass Application</h2>
 
-
-
-            <ul>
-              <li><Link to="/react/createloanpass">Create Loan Pass</Link></li>
-              <li><Link to="/react/read">Read Loanpasses</Link></li>
-              <li><Link to="/react/loan">Loan Application</Link></li>
-              <li><Link to="/react/viewbooking">View Booking</Link></li>
-            
-
-            </ul>
-            
-          
-
             
             <Routes>
+              <Route exact path='/react' element={<HomePage />} />
                 <Route exact path='/react/createloanpass' element={<CreateLoanPass />} />
                 <Route exact path='/react/read' element={<Read />} />
                 <Route exact path='/react/update' element={<Update />} />
