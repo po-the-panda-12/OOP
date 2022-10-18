@@ -19,20 +19,18 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/v1/registration/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated().and()
-                .cors().and()
-                .formLogin();
+//        http
+//                .csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/api/v1/registration/**")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated().and()
+//                .cors().and()
+//                .formLogin();
+        http.httpBasic().disable();
         return http.build();
     }
-
-
-
 
 
 }
