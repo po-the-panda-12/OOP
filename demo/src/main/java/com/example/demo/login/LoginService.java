@@ -38,11 +38,14 @@ public class LoginService {
             Boolean passwordCorrect = this.bCryptPasswordEncoder.matches(loginRequest.getPassword(),currentUser.getPassword());
             if(passwordCorrect){
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(currentUser.getEmail(), currentUser.getPassword()));
+                System.out.println("OK");
                 return "OK";
             }
+            System.out.println("INCORRECT PASSWORD");
             return "INCORRECT PASSWORD";
 
         }
+        System.out.println("NOT FOUND");
         return "Not found";
     }
 }
