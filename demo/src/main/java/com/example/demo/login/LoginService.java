@@ -1,5 +1,6 @@
 package com.example.demo.login;
 
+import com.example.demo.users.UserRole;
 import com.example.demo.users.Users;
 import com.example.demo.users.UsersRepository;
 import org.springframework.context.annotation.Role;
@@ -7,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.apache.catalina.User;
@@ -21,26 +23,29 @@ import java.util.Set;
 @Service
 public class LoginService {
     private final UsersRepository usersRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public LoginService(UsersRepository usersRepository) {
+    public LoginService(UsersRepository usersRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.usersRepository = usersRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     public String login(LoginRequest loginRequest){
         Optional<Users> getUser = usersRepository.findByEmail(loginRequest.getEmail());
         Users currentUser = getUser.get();
         if( currentUser != null){
-            System.out.println(currentUser.getName());
-            System.out.println(currentUser.getEmail());
-            System.out.println(currentUser.getPhoneNumber());
+            UserRole currentRole = currentUser.getUserRole();
+            Boolean passwordCorrect = this.bCryptPasswordEncoder.matches(loginRequest.getPassword(),currentUser.getPassword());
+            if(passwordCorrect){
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(currentUser.getEmail(), currentUser.getPassword()));
+                System.out.println("OK");
+                return "OK";
+            }
+            System.out.println("INCORRECT PASSWORD");
+            return "INCORRECT PASSWORD";
 
-            Collection<GrantedAuthority> authorities = new HashSet<>();
-//            Set<Role> roles = currentUser.getRoles();
-//            for (Role role : roles)
-//                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getAuth()));
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(currentUser.getEmail(), currentUser.getPassword()));
-            return "OK";
         }
+        System.out.println("NOT FOUND");
         return "Not found";
     }
 }
