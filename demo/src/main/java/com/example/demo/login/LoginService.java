@@ -1,5 +1,6 @@
 package com.example.demo.login;
 
+import com.example.demo.general.LoginResponse;
 import com.example.demo.users.UserRole;
 import com.example.demo.users.Users;
 import com.example.demo.users.UsersRepository;
@@ -19,7 +20,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 @Service
 public class LoginService {
     private final UsersRepository usersRepository;
@@ -30,7 +30,7 @@ public class LoginService {
         this.usersRepository = usersRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    public String login(LoginRequest loginRequest){
+    public LoginResponse login(LoginRequest loginRequest){
         Optional<Users> getUser = usersRepository.findByEmail(loginRequest.getEmail());
         Users currentUser = getUser.get();
         if( currentUser != null){
@@ -38,14 +38,17 @@ public class LoginService {
             Boolean passwordCorrect = this.bCryptPasswordEncoder.matches(loginRequest.getPassword(),currentUser.getPassword());
             if(passwordCorrect){
                 SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(currentUser.getEmail(), currentUser.getPassword()));
-                System.out.println("OK");
-                return "OK";
+                return new LoginResponse(true,"OK");
             }
-            System.out.println("INCORRECT PASSWORD");
-            return "INCORRECT PASSWORD";
-
+            return new LoginResponse(false,"INCORRECT PASSWORD");
         }
-        System.out.println("NOT FOUND");
-        return "Not found";
+        return new LoginResponse(false,"Not found");
+    }
+
+    public Users getLoggedUser(){
+        Object test = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(test);
+
+        return null;
     }
 }
