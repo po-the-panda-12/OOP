@@ -7,6 +7,8 @@ function App() {
     return (
         <Router>
             <div className="main">
+                <Link to="/">Home</Link>
+                <Link to="/auth">Authenticate</Link>
                 <div>
                     <Routes>
                         <Route
