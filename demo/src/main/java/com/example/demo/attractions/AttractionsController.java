@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/attractions")
 public class AttractionsController {
     private final AttractionsService attractionsService;

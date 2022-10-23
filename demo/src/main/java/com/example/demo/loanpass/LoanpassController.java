@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/loanpass")
 public class LoanpassController {
     private final LoanpassService loanPassService;
@@ -18,6 +19,11 @@ public class LoanpassController {
     @GetMapping
     public List<Loanpass> getLoanPass() {
         return loanPassService.getLoanPass();
+    }
+
+    @GetMapping(path = "/getbyattraction/{attractionID}")
+    public List<Loanpass> getLoanPassByAttractionID(@PathVariable("attractionID") Integer attractionID) {
+        return loanPassService.getLoanPassByAttractionId(attractionID);
     }
 
     @PostMapping

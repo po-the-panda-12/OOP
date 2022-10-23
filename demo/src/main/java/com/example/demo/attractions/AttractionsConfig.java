@@ -9,7 +9,7 @@ import java.util.List;
 @Configuration
 public class AttractionsConfig {
     @Bean
-    CommandLineRunner commandLineRunner(AttractionsRepository repository){
+    CommandLineRunner commandLineRunnerAttraction(AttractionsRepository repository){
     return args -> {
             Attractions zoo = new Attractions(
                    1L,
