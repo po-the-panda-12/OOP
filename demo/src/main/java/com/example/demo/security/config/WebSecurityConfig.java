@@ -27,6 +27,8 @@ public class WebSecurityConfig {
                 .permitAll()
                 .antMatchers("/api/v1/login/**")
                 .permitAll()
+                .antMatchers("/api/v1/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .cors().and()
