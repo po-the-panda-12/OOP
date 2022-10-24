@@ -29,7 +29,7 @@ public class BookingdateController {
         return bookingdateService.getSpecificBookingDate(date);
     }
 
-    @PostMapping
+    @PostMapping(path ="/save")
     public void registerNewBookingdate(@RequestBody Bookingdate bookingdate) {
         bookingdateService.addNewBookingDate(bookingdate);
     }
