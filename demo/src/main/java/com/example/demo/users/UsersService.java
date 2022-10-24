@@ -63,4 +63,8 @@ public class UsersService implements UserDetailsService {
     public int enableUser(String email) {
         return usersRepository.enableUser(email);
     }
+
+    public Users getUserById(Long id) {
+        return usersRepository.findById(id).orElseThrow(() -> new IllegalStateException("User with id " + id + " does not exist"));
+    }
 }

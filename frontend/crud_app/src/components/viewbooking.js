@@ -119,18 +119,49 @@ export default function ViewBooking() {
         {waitListArray.map((item, index) => (
             <div key={index}>
                 <button onClick={() => {
-                    alert("Userid "+ item + " details\nname:\ncontact:\nemail:\n");
                     // send axios get to get user details
+
+                    axios.get(`${backendDomain}/api/v1/users/${item}`)
+                    .then((response) => {
+                        console.log(response.data);
+                        var output = '';
+                        for (var entry in response.data) {
+                        output += entry + ' | ' + response.data[entry] + '\n';
+                        }
+                        alert(output);
+                    })
+                    .catch((error) => {
+                        alert("Cannot find user details");
+                    });
+
+
+                    // alert("Userid "+ item + " details\nname:\ncontact:\nemail:\n");
+                    
 
                     }}>{item}</button>
                 <button onClick={() => {
+                    const day = value.getDate();
+                    const month = value.getMonth() + 1;
+                    const year = value.getFullYear();
+
+                    //get current date
+                    const today = new Date();
+
+                    // get difference between current date and selected date
+                    const diffTime = (value - today)/60/60/24/1000;
+                    console.log(diffTime);
+
+                    if (diffTime <= 0) {
+                        alert("Cannot cancel booking for today or past days");
+                        return;
+                    }
+
+                    
                     let removeUser = window.confirm("Are you sure you want to remove user " + item + " from the waiting list?");
                     // send axios to remove user from waiting list
                     if (removeUser) {
                         
-                        const day = value.getDate();
-                        const month = value.getMonth() + 1;
-                        const year = value.getFullYear();
+
                         let attractionId = 1;
                         try {
                             attractionId = attraction.value;
