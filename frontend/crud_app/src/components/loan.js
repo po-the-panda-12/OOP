@@ -130,7 +130,7 @@ export default function LoanApplication() {
                 .then((res) => {
                   
                     const waitingList = res.data.waitingList;
-                    alert(`already booked! waiting list: ${waitingList}`);
+                    // alert(`already booked! waiting list: ${waitingList}`);
 
                     const waitingListsplitted = waitingList.split(",");
 
@@ -147,8 +147,9 @@ export default function LoanApplication() {
                               loanPasses++;
                             });
                             console.log(loanPasses);
+                            
 
-                            if (waitingListsplitted.length + passes.value > loanPasses) {
+                            if (waitingListsplitted.length + parseInt(passes.value) > loanPasses) {
                               let confirmMessage = "You are not in the waiting list, but there are not enough loan passes available. Do you want to be added to the waiting list?";
                               console.log("too little passes!")
                               if (passes.value == 2 && waitingListsplitted.length == loanPasses - 1) {
@@ -168,6 +169,16 @@ export default function LoanApplication() {
                                       });
                               }
 
+                            } else {
+                              axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + newwaitingList}`,
+                                          null,
+                                      ).then(() => {
+                                          alert("Successfully added to waiting list!");
+                                          alert(waitingList + "," + newwaitingList);
+                                      }).catch((err) => {
+                                          alert("error in update! staying on this page." + err);
+                                          console.log(err);
+                                      });
                             }
 
                         })
