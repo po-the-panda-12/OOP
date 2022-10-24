@@ -55,26 +55,49 @@ export default function Read() {
 
     return (
         <div>
-            <Table singleLine>
+            <Table singleLine className='mainreadtable'>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>passId</Table.HeaderCell>
                         <Table.HeaderCell>attractionId</Table.HeaderCell>
                         <Table.HeaderCell>passNumber</Table.HeaderCell>
                         <Table.HeaderCell>previousLoanBy</Table.HeaderCell>
-                        <Table.HeaderCell>description</Table.HeaderCell>
+                        <Table.HeaderCell>Status</Table.HeaderCell>
+                        <Table.HeaderCell>Type</Table.HeaderCell>
+                        <Table.HeaderCell>Replacement Fee</Table.HeaderCell>
+                        <Table.HeaderCell>Email Template</Table.HeaderCell>
+                        <Table.HeaderCell>Attachment Link</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
                     {APIData.map((data) => {
+                        const descriptionSplitted = data.description.split(",./");
+                        const status = descriptionSplitted[0];
+                        const type = descriptionSplitted[1];
+                        const replacementFee = descriptionSplitted[2];
+                        let emailTemplate = descriptionSplitted[3];
+                        let attachmentLink = descriptionSplitted[4];
+
+                        try {
+                            emailTemplate = emailTemplate.slice(0, 10) + "...";
+                            attachmentLink = attachmentLink.slice(0, 10) + "...";
+                        } catch (error) {
+                            console.log(error);
+                        }
+
                         return (
                             <Table.Row>
                                 <Table.Cell>{data.passId}</Table.Cell>
                                 <Table.Cell>{data.attractionId}</Table.Cell>
                                 <Table.Cell>{data.passNumber}</Table.Cell>
                                 <Table.Cell>{data.previousLoanBy}</Table.Cell>
-                                <Table.Cell>{data.description}</Table.Cell>
+                                <Table.Cell>{status}</Table.Cell>
+                                <Table.Cell>{type}</Table.Cell>
+                                <Table.Cell>{replacementFee}</Table.Cell>
+                                <Table.Cell>{emailTemplate}</Table.Cell>
+                                <Table.Cell>{attachmentLink}</Table.Cell>
+
                                 <Link to='/react/update'>
                                     <Table.Cell> 
                                         <Button onClick={() => setData(data)}>Update</Button>

@@ -42,10 +42,6 @@ export default function CreateLoanPass() {
                     <input placeholder='PassNumber' onChange={(e) => setPassNumber(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
-                    <label>description</label>
-                    <input placeholder='description' onChange={(e) => setDescription(e.target.value)}/>
-                </Form.Field>
-                <Form.Field>
                     <Checkbox label='I agree to the Terms and Conditions' onChange={(e) => setCheckbox(!checkbox)}/>
                 </Form.Field>
                 <Button onClick={postData} type='submit'>Submit</Button>
