@@ -123,6 +123,47 @@ export default function ViewBooking() {
                     // send axios get to get user details
 
                     }}>{item}</button>
+                <button onClick={() => {
+                    let removeUser = window.confirm("Are you sure you want to remove user " + item + " from the waiting list?");
+                    // send axios to remove user from waiting list
+                    if (removeUser) {
+                        
+                        const day = value.getDate();
+                        const month = value.getMonth() + 1;
+                        const year = value.getFullYear();
+                        let attractionId = 1;
+                        try {
+                            attractionId = attraction.value;
+                        } catch (error) {
+                        }
+                        const myDate = `${attractionId},${day},${month},${year}`;
+
+                        console.log(myDate);
+                        console.log(waitList);
+                        let newWaitingList = waitList.replaceAll("," + item  , "");
+                        newWaitingList = newWaitingList.replaceAll(item + "," , "");
+                        newWaitingList = newWaitingList.replaceAll(item , "");
+
+                        console.log(newWaitingList);
+                        if (newWaitingList === "") {
+                            axios.delete(`${backendDomain}/api/v1/bookingdate/${myDate}`)
+                            .then((response) => {
+                                console.log(response.data);
+                                setWaitList("no bookings");
+                                setWaitListArray([]);
+                            });
+                        } else {
+                            axios.put(`${backendDomain}/api/v1/bookingdate/${myDate}?waitingList=${newWaitingList}`,
+                            null,
+                        ).then((response) => {
+                              setWaitList(newWaitingList);
+                              setWaitListArray(newWaitingList.split(","));
+                              alert("User " + item + " removed from waiting list");
+                          });
+      }
+                        }
+                        
+                    }}>Remove</button>
             </div>
         ))}
         </div>

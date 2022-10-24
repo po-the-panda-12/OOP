@@ -157,7 +157,7 @@ export default function LoanApplication() {
 
                               const yesWaiting = window.confirm(confirmMessage);
                               if (yesWaiting) {
-                                axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + userId}`,
+                                axios.put(`${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + newwaitingList}`,
                                           null,
                                       ).then(() => {
                                           alert("Successfully added to waiting list!");

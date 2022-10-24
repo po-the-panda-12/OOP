@@ -44,6 +44,11 @@ public class BookingdateController {
 
     }
 
+    @DeleteMapping(path = "{date}")
+    public void deleteBookingdate(@PathVariable("date") String date) {
+        bookingdateService.deleteBookingDate(bookingdateService.getSpecificBookingDate(date).get());
+    }
+
 
 
 }
