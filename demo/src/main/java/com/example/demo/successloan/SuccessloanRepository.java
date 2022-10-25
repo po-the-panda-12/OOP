@@ -1,0 +1,20 @@
+package com.example.demo.successloan;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface SuccessloanRepository extends JpaRepository<Successloan, Integer> {
+    @Query("SELECT s FROM Successloan s WHERE s.successLoanId = ?1")
+    Optional<Successloan> findSuccessloanBySuccessLoanId(Integer successLoanId);
+
+    @Query("SELECT s FROM Successloan s WHERE s.attractionId = ?1")
+    List<Successloan> findSuccessloanByAttractionId(Integer attractionId);
+
+    @Query("SELECT s FROM Successloan s WHERE s.attractionId = ?1 AND s.month = ?2 AND s.year = ?3")
+    List<Successloan> findSuccessloanByAttractionIdAndMonthAndYear(Integer attractionId, String month, String year);
+}
