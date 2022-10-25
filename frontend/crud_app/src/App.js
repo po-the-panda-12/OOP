@@ -12,6 +12,7 @@ import ViewBooking from './components/viewbooking';
 
 import LoanApplication from './components/loan';
 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
@@ -34,7 +35,7 @@ class App extends React.Component {
       <BrowserRouter>
         <div className="App">
           {/* NAV BAR */}
-
+          
           <Navbar bg="light" expand="lg" fixed="top" >
             <Container>
               <Navbar.Brand href="#home">Corporate Pass Application</Navbar.Brand>
@@ -75,7 +76,7 @@ class App extends React.Component {
           </Navbar>
 
           {/* END OF NAVBAR */}
-          
+          {/* will delete the corporate pass application below and manually fit in each page */}
             <div className="main">
             <h2 className="main-header">Corporate Pass Application</h2>
 
