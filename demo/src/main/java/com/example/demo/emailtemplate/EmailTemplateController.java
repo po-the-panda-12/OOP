@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin
-@RequestMapping(path = "api/v1/emailTemplates")
+@RequestMapping(path = "api/v1/emailtemplates")
 
 public class EmailTemplateController {
     private final EmailTemplateService emailTemplateService;

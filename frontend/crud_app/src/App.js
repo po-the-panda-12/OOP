@@ -18,7 +18,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import HomePage from './components/home';
-
+import EmailTemplatePage from "./pages/emailTemplatePage"
 import Authenticate from './pages/authenticate';
 import Home from './pages/home';
 
@@ -89,6 +89,7 @@ class App extends React.Component {
                 <Route exact path='/react/update' element={<Update />} />
                 <Route exact path='/react/loan' element={<LoanApplication />} />
                 <Route exact path='/react/viewbooking' element={<ViewBooking />} />
+                <Route exact path='/react/emailtemplates' element={<EmailTemplatePage />} />
             </Routes>
           
           </div>
