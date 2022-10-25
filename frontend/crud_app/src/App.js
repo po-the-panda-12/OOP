@@ -9,6 +9,8 @@ import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 import DatePicker from 'react-date-picker'
 import ViewBooking from './components/viewbooking';
+import CreateAttraction from './components/create attraction';
+import CreateUser from './components/create user';
 
 import LoanApplication from './components/loan';
 
@@ -69,6 +71,12 @@ class App extends React.Component {
                       Separated link
                     </NavDropdown.Item>
                   </NavDropdown>
+                  <Nav.Link href="">
+                    <Link to="/react/createattraction">Create attraction</Link>
+                  </Nav.Link>
+                  <Nav.Link href="">
+                    <Link to="/react/createuser">Create user</Link>
+                  </Nav.Link>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -89,6 +97,9 @@ class App extends React.Component {
                 <Route exact path='/react/update' element={<Update />} />
                 <Route exact path='/react/loan' element={<LoanApplication />} />
                 <Route exact path='/react/viewbooking' element={<ViewBooking />} />
+
+                <Route exact path='/react/createattraction' element={<CreateAttraction />} />
+                <Route exact path='/react/createuser' element={<CreateUser />} />
             </Routes>
           
           </div>
