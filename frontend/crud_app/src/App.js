@@ -19,20 +19,20 @@ import Container from "react-bootstrap/Container";
 // ========================= pages/entities =========================
 // ======== homepage ========
 import Home from "./pages/home";
-import HomePage from "./components/home";
+import HomePage from "./components/general/home";
 
 // ======== authentication ========
 import Authenticate from "./pages/authenticate";
 
 
 // ======== loanpass ========
-import Read from "./components/read loanpass";
-import Update from "./components/update loanpass";
-import CreateLoanPass from "./components/create loanpass";
-import LoanApplication from "./components/loan";
+import Read from "./components/loanpass/read loanpass";
+import Update from "./components/loanpass/update loanpass"
+import CreateLoanPass from "./components/loanpass/create loanpass";
+import LoanApplication from "./components/loanpass/loan";
 
 // ======== booking ========
-import ViewBooking from "./components/viewbooking";
+import ViewBooking from "./components/booking/viewbooking";
 
 // ======== email template ========
 import EmailTemplatePage from "./pages/emailtemplates/emailTemplatePage";
