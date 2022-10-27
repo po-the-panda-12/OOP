@@ -9,17 +9,17 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
 // ======== etc ========
-import { Table, Button } from "semantic-ui-react";
-import { useNavigate } from "react-router";
-import React, { useState } from "react";
-import { render } from "@testing-library/react";
-import DatePicker from "react-date-picker";
+// import { Table, Button } from "semantic-ui-react";
+// import { useNavigate } from "react-router";
+import React from "react";
+// import { render } from "@testing-library/react";
+// import DatePicker from "react-date-picker";
 import Container from "react-bootstrap/Container";
 
 // ========================= pages/entities =========================
 // ======== homepage ========
 import Home from "./pages/home";
-import HomePage from "./components/general/home";
+// import HomePage from "./components/general/home";
 
 // ======== authentication ========
 import Authenticate from "./pages/authentication/authenticate";
@@ -37,7 +37,7 @@ import ViewBooking from "./components/booking/viewbooking";
 // ======== email template ========
 import EmailTemplatePage from "./pages/emailtemplates/emailTemplatePage";
 import "bootstrap/dist/css/bootstrap.min.css";
-import EditEmailTemplate from "./pages/emailtemplates/emailTemplatePage";
+import EditEmailTemplate from "./pages/emailtemplates/editEmailTemplate";
 import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 
 class App extends React.Component {
@@ -169,7 +169,7 @@ class App extends React.Component {
                             ></Route>
                             <Route
                                 exact
-                                path="/react/emailtemplates/edit"
+                                path="/react/emailtemplates/edit/:emailTemplateId"
                                 element={<EditEmailTemplate />}
                             ></Route>
                         </Routes>

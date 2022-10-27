@@ -40,9 +40,11 @@ public class EmailTemplateController {
     @PutMapping(path="{emailTemplateId}")
     public void updateEmailTemplate(
             @PathVariable("emailTemplateId") Integer emailTemplateId,
-            @RequestParam(required = true) String emailTemplateName,
-            @RequestParam(required = true) String emailTemplateBody
+            @RequestBody EmailTemplate emailTemplate
     ){
+        System.out.println(emailTemplateId);
+        String emailTemplateName = emailTemplate.getEmailTemplateName();
+        String emailTemplateBody = emailTemplate.getEmailTemplateBody();
         emailTemplateService.updateEmailRepository(emailTemplateId,emailTemplateName,emailTemplateBody);
     }
 
