@@ -3,12 +3,14 @@ import React from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
 function EmailTemplateForm(props) {
     const [emailTemplateBody, setEmailTemplateBody] = useState("");
     const [emailTemplateName, setEmailTemplateName] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log("template", props);
@@ -37,22 +39,34 @@ function EmailTemplateForm(props) {
                 emailTemplateBody,
             })
             .then(() => {
-                alert("success! going to read page");
-                // navigate('/react/read');
+                alert("Email template added");
+                navigate('/react/emailtemplates');
             })
             .catch((err) => {
                 alert("error in creation! staying on this page." + err);
             });
     };
 
-    const updateData = () => {};
+    const updateData = () => {
+        axios.put(`${backendDomain}/api/v1/emailtemplates/${props.template.emailTemplateId}`, {
+            emailTemplateName,
+            emailTemplateBody,
+        })
+        .then(() => {
+            alert("Email template edited!");
+            navigate('/react/emailtemplates');
+        })
+        .catch((err) => {
+            alert("error in updating! staying on this page." + err);
+        });
+    };
 
     return (
         <div>
-            <h3>Email Template Form</h3>
             <label>Email Template Name:</label>
             <input
                 onChange={(e) => setEmailTemplateName(e.target.value)}
+                value = {emailTemplateName}
                 class="form-control"
                 type="text"
                 placeholder="Enter template name"
