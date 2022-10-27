@@ -20,10 +20,8 @@ function EmailTemplatePage() {
     return (
         <div>
             <h1>Email templates</h1>
-            {/* <EmailTemplateRow template = {'template'}/> */}
             {emailTemplates.map(
                 template =>{
-                    console.log("template",template)
                     return <EmailTemplateRow template = {template} key = {template.emailTemplateId}/>
                 }
             )}
