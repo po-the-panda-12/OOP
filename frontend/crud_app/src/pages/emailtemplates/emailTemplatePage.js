@@ -9,6 +9,7 @@ function EmailTemplatePage() {
     useEffect(() => {
         getEmailTemplates();
     }, []);
+
     const [emailTemplates, setEmailTemplates] = useState([]);
     const getEmailTemplates = () => {
         axios.get(`${backendDomain}/api/v1/emailtemplates`).then((res) => {
@@ -16,13 +17,21 @@ function EmailTemplatePage() {
         });
     };
 
+    const deleteEmailTemplate = (emailTemplateId) => {
+        axios.delete(`${backendDomain}/api/v1/emailtemplates/${emailTemplateId}`).then((res)=>{
+            alert("Email template successfully deleted");
+            getEmailTemplates();
+        }) 
+
+    }
+
 
     return (
         <div>
             <h1>Email templates</h1>
             {emailTemplates.map(
                 template =>{
-                    return <EmailTemplateRow template = {template} key = {template.emailTemplateId}/>
+                    return <EmailTemplateRow template = {template} key = {template.emailTemplateId} deleteFunction={deleteEmailTemplate}/>
                 }
             )}
             <button className="btn btn-primary">

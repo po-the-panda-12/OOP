@@ -13,7 +13,6 @@ function EmailTemplateForm(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("template", props);
         if (props.template) {
             setEmailTemplateBody(props.template.emailTemplateBody);
             setEmailTemplateName(props.template.emailTemplateName);

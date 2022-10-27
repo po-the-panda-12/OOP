@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-function EmailTemplateRow(props) {
-    function deleteTemplate (templateId){
-        
-    }
+import axios from 'axios';
+function EmailTemplateRow({template,deleteFunction}) {
+
     return (
         <div>
-            {props.template.emailTemplateName}
-            <button className='btn btn-primary'><Link style={{color:"white"}} to = {"/react/emailtemplates/edit/"+props.template.emailTemplateId}>Edit</Link></button>
-            <button className='btn btn-danger' onClick={deleteTemplate(props.template.emailTemplateId)}>Delete</button>
+            {template.emailTemplateName}
+            <button className='btn btn-primary'><Link style={{color:"white"}} to = {"/react/emailtemplates/edit/"+template.emailTemplateId}>Edit</Link></button>
+            <button className='btn btn-danger' onClick={()=>{deleteFunction(template.emailTemplateId)}}>Delete</button>
         </div>
     );
 }

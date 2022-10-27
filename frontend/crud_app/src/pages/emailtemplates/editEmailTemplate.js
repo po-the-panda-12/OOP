@@ -12,7 +12,6 @@ function EditEmailTemplate() {
                 `${backendDomain}/api/v1/emailtemplates/get/${emailTemplateId}`
             )
             .then((res) => {
-                console.log(res.data);
                 setEmailTemplate(res.data);
             });
     };
