@@ -159,7 +159,7 @@ class App extends React.Component {
                             />
                             <Route
                                 exact
-                                path="/react/emailtemplates/edit"
+                                path="/react/emailtemplates/create"
                                 element={<CreateEmailTemplate />}
                             ></Route>
                             <Route
