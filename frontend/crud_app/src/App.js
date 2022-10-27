@@ -22,7 +22,7 @@ import Home from "./pages/home";
 import HomePage from "./components/general/home";
 
 // ======== authentication ========
-import Authenticate from "./pages/authenticate";
+import Authenticate from "./pages/authentication/authenticate";
 
 
 // ======== loanpass ========
@@ -118,6 +118,7 @@ class App extends React.Component {
                         <h2 className="main-header">
                             Corporate Pass Application
                         </h2>
+                        {/* authentication */}
 
                         <Routes>
                             <Route exact path="/react" element={<Home />} />
@@ -126,7 +127,7 @@ class App extends React.Component {
                                 path="/react/auth"
                                 element={<Authenticate />}
                             />
-
+                            {/* loanpass */}
                             <Route
                                 exact
                                 path="/react/createloanpass"
@@ -147,11 +148,15 @@ class App extends React.Component {
                                 path="/react/loan"
                                 element={<LoanApplication />}
                             />
+
+                            {/* booking */}
                             <Route
                                 exact
                                 path="/react/viewbooking"
                                 element={<ViewBooking />}
                             />
+
+                             {/* email templates */}
                             <Route
                                 exact
                                 path="/react/emailtemplates"
