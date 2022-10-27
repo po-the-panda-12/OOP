@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import EmailTemplateForm from "../../components/emailtemplates/emailTemplateForm";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import EmailTemplateRow from "./emailTemplateRow";
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 function EmailTemplatePage() {
@@ -11,15 +12,7 @@ function EmailTemplatePage() {
     const [emailTemplates, setEmailTemplates] = useState([]);
     const getEmailTemplates = () => {
         axios.get(`${backendDomain}/api/v1/emailtemplates`).then((res) => {
-            let templates = [];
-
-            console.log(res.data);
-            res.data.forEach((template) => {
-                templates.push(template.emailTemplateName);
-            });
-
-            console.log("templates",templates);
-            setEmailTemplates(templates);
+            setEmailTemplates(res.data);
         });
     };
 
@@ -27,9 +20,11 @@ function EmailTemplatePage() {
     return (
         <div>
             <h1>Email templates</h1>
+            {/* <EmailTemplateRow template = {'template'}/> */}
             {emailTemplates.map(
                 template =>{
-                    return <h1>{template}</h1>
+                    console.log("template",template)
+                    return <EmailTemplateRow template = {template} key = {template.emailTemplateId}/>
                 }
             )}
             <button className="btn btn-primary">
@@ -37,7 +32,6 @@ function EmailTemplatePage() {
                     Create new template
                 </Link>
             </button>
-            {/* {emailTemplates} */}
         </div>
     );
 }
