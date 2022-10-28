@@ -8,13 +8,14 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-// ======== etc ========
-// import { Table, Button } from "semantic-ui-react";
-// import { useNavigate } from "react-router";
-import React from "react";
-// import { render } from "@testing-library/react";
-// import DatePicker from "react-date-picker";
-import Container from "react-bootstrap/Container";
+
+import vid_background from './pages/assets/background.mp4';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import HomePage from './components/home';
 
 // ========================= pages/entities =========================
 // ======== homepage ========

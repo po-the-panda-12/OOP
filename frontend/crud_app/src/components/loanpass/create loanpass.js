@@ -31,7 +31,7 @@ export default function CreateLoanPass() {
 
     }
     return (
-        <div>
+        <div class="content">
             <Form className="create-form">
                 <Form.Field>
                     <label>attractionId</label>
