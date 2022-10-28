@@ -3,9 +3,20 @@ import Select from 'react-select'
 import DatePicker from 'react-date-picker';
 import { addDays } from 'date-fns';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import styled from 'styled-components';
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
+const Button = styled.button`
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  padding: 10px 60px;
+  border-radius: 10px;
+  margin: 10px 0px;
+  cursor: pointer;
+`;
 let options = [];
 
 // get options from backend axios call
@@ -36,6 +47,7 @@ const customStyles = {
     option: provided => ({
       ...provided,
       color: 'black'
+      
     }),
     control: provided => ({
       ...provided,
@@ -210,40 +222,41 @@ export default function LoanApplication() {
   }, [""]);
 
   return (
-    <div>
-      <h1>Loan Application</h1>
+    <div class="container rounded content">
+      <div class="card"style={{ width: '30rem', height: '50vh'}}>
+        <h1 className="main-header">Loan Application</h1>
 
-        <h1>UserId:</h1>
-        <SelectUserComponent />
+          <h2 className="main-header">UserId:</h2>
+          <SelectUserComponent />
 
-        <h1>No. of Passes:</h1>
-        <SelectNoPassesComponent />
+          <h2 className="main-header">No. of Passes:</h2>
+          <SelectNoPassesComponent />
 
-        <h1>Place:</h1>
-        <SelectAttractionComponent />
+          <h2 className="main-header">Place:</h2>
+          <SelectAttractionComponent />
 
-        <h1>Date:</h1>
-        
-        {/* datepicker */}
-        <div>
-            {value.getDate()}
-            {value.getMonth() + 1}
-            {value.getFullYear()}
-            <DatePicker 
-            onChange={onChange} 
-            value={value} 
-            minDate={addDays(new Date(), 1)} 
-            maxDate={addDays(new Date(), 8*7)}
-            clearIcon={null}
-            format="dd/MM/yyyy"
-            />
-            
-        </div>
-        {/* end of datepicker */}
+          <h2 className="main-header">Date:</h2>
+          
+          {/* datepicker */}
+          <div>
+              {value.getDate()}
+              {value.getMonth() + 1}
+              {value.getFullYear()}
+              <DatePicker 
+              onChange={onChange} 
+              value={value} 
+              minDate={addDays(new Date(), 1)} 
+              maxDate={addDays(new Date(), 8*7)}
+              clearIcon={null}
+              format="dd/MM/yyyy"
+              />
+              
+          </div>
+          {/* end of datepicker */}
 
-        <button id="submitbtn" onClick={createLoanApplication}>Submit</button>
-        
-
+          <Button id="submitbtn" style= {{}}onClick={createLoanApplication}>Submit</Button>
+      </div>
+    
     </div>
 
     
