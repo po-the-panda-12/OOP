@@ -2,7 +2,7 @@ import "./App.css";
 // ========================= general components =========================
 // ======== routing ========
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
-
+import React from "react";
 // ======== nav bar ========
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,10 +12,6 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import vid_background from './pages/assets/background.mp4';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import HomePage from './components/home';
 
 // ========================= pages/entities =========================
 // ======== homepage ========
@@ -116,9 +112,7 @@ class App extends React.Component {
                     {/* END OF NAVBAR */}
 
                     <div className="main">
-                        <h2 className="main-header">
-                            Corporate Pass Application
-                        </h2>
+
                         {/* authentication */}
 
                         <Routes>
