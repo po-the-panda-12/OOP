@@ -6,7 +6,7 @@ function CreateEmailTemplate() {
         <div>
             <h2>Create template</h2>
             <EmailTemplateForm template={null} />
-            <button class="btn btn-secondary">
+            <button className="btn btn-secondary">
                 <Link to="/react/emailtemplates" style={{ color: "white" }}>
                     Cancel
                 </Link>
