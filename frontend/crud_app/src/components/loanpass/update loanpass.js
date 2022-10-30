@@ -18,6 +18,8 @@ export default function Update() {
     const [emailTemplate, setEmailTemplate] = useState('');
     const [attachmentLink, setAttachmentLink] = useState('');
 
+    const [oldStatus, setOldStatus] = useState('');
+
     useEffect(() => {
         setPassId(localStorage.getItem('passId'));
         setAttractionId(localStorage.getItem('attractionId'));
@@ -30,6 +32,7 @@ export default function Update() {
         const emailTemplate = localStorage.getItem('description').split(",./")[3];
         const attachmentLink = localStorage.getItem('description').split(",./")[4];
         setStatus(status);
+        setOldStatus(status);
         setType(type);
         setReplacementFee(replacementFee);
         setEmailTemplate(emailTemplate);
@@ -42,6 +45,19 @@ export default function Update() {
         axios.put(`${backendDomain}/api/v1/loanpass/${passId}?attractionId=${attractionId}&passNumber=${passNumber}&previousLoanBy=${previousLoanBy}&description=${description1}`, 
             null,   
         ).then(() => {
+            // if status = Loaned out, add to successloan
+            if (status === "Loaned out" && oldStatus !== "Loaned out") {
+                axios.post(`${backendDomain}/api/v1/successloan`, {
+                    attractionId: attractionId,
+                    staffId: previousLoanBy,
+                    month: new Date().getMonth() + 1,
+                    year: new Date().getFullYear()
+                }).then(() => {
+                    alert("created success loan!")
+                });
+            }
+
+
             navigate('/react/read');
         }).catch((err) => {
             alert("error in update! staying on this page." + err);
