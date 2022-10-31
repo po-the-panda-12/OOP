@@ -6,8 +6,6 @@ import useAuth from "../../hooks/useAuth";
 import "bootstrap/dist/css/bootstrap.min.css";
 import jwt_decode from "jwt-decode";
 
-const LOGIN_URL = "/api/login";
-
 export default function Authenticate() {
   const [username, setName] = useState("");
   const [email, setEmail] = useState("");

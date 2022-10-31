@@ -34,35 +34,35 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserResource {
     private  final UserService userService;
 
 
-    @GetMapping("/v1/users")
+    @GetMapping("/users")
     public ResponseEntity<List<AppUser>>getUsers(){
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostMapping("/v1/user/save")
+    @PostMapping("/user/save")
     public ResponseEntity<AppUser>saveUser(@RequestBody AppUser user){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
-    @PostMapping("/v1/role/save")
+    @PostMapping("/role/save")
     public ResponseEntity<UserRole>saveRole(@RequestBody UserRole role){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
-    @PostMapping("/v1/role/addtouser")
+    @PostMapping("/role/addtouser")
     public ResponseEntity<?>saveRole(@RequestBody RoleToUserForm form){
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/v1/token/refresh")
+    @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
