@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
     "@semantic-ui-react/css-patch": "^1.1.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -13,6 +15,7 @@
     "date-fns": "^2.29.3",
     "draft-js": "^0.11.7",
     "formik": "^2.2.9",
+    "jwt-decode": "^3.1.2",
     "moedim": "^0.5.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
