@@ -1,7 +1,5 @@
 package com.example.demo.successloan;
 
-import com.example.demo.users.Users;
-import com.example.demo.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
