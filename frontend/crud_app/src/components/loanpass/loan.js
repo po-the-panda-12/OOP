@@ -223,19 +223,19 @@ export default function LoanApplication() {
 
   return (
     <div class="container rounded content">
-      <div class="card"style={{ width: '30rem', height: '50vh'}}>
-        <h1 className="main-header">Loan Application</h1>
+      <div class="card"style={{ width: '30rem', height: '70vh'}}>
+        <h2 className="main-header">Loan Application</h2>
 
-          <h2 className="main-header">UserId:</h2>
+          <h4 className="sub-header">UserId:</h4>
           <SelectUserComponent />
 
-          <h2 className="main-header">No. of Passes:</h2>
+          <h4 className="sub-header">No. of Passes:</h4>
           <SelectNoPassesComponent />
 
-          <h2 className="main-header">Place:</h2>
+          <h4 className="sub-header">Place:</h4>
           <SelectAttractionComponent />
 
-          <h2 className="main-header">Date:</h2>
+          <h4 className="sub-header">Date:</h4>
           
           {/* datepicker */}
           <div>

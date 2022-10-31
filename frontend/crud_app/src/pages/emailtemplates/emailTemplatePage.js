@@ -27,18 +27,25 @@ function EmailTemplatePage() {
 
 
     return (
-        <div>
-            <h1>Email templates</h1>
-            {emailTemplates.map(
-                template =>{
-                    return <EmailTemplateRow template = {template} key = {template.emailTemplateId} deleteFunction={deleteEmailTemplate}/>
-                }
-            )}
-            <button className="btn btn-primary">
-                <Link to = "/react/emailtemplates/create" style = {{color:"white"}}>
-                    Create new template
-                </Link>
-            </button>
+        <div class="container rounded content">
+            <div class ="card"style={{ width: '25rem', height: '50vh'}}>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <h1 class ="main-header">Email templates</h1>
+                {emailTemplates.map(
+                    template =>{
+                        return <EmailTemplateRow template = {template} key = {template.emailTemplateId} deleteFunction={deleteEmailTemplate}/>
+                    }
+                )}
+                <button className="btn btn-primary btn-sm">
+                    <Link to = "/react/emailtemplates/create" style = {{color:"white"}}>
+                        Create new template
+                    </Link>
+                </button>
+            </div>
+                
         </div>
     );
 }

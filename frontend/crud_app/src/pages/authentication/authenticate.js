@@ -117,7 +117,7 @@ export default function Authenticate() {
 
   return (
     <div class="container rounded content">
-      <div class="card" style={{ width: "30rem", height: "50vh" }}>
+      <div class="card d-flex justify-content-center" style={{ width: "30rem", height: "65vh" }}>
         {haveAccount ? (
           <h2 className="main-header">Login</h2>
         ) : (
