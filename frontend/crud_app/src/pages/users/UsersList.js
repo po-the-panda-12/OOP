@@ -128,11 +128,11 @@ const UsersList = () => {
   // };
 
   const deleteUser = (id) => {
-    axios.delete(`http://localhost:8080/api/v1/users/delete/${id}`, {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
+    axios
+      .delete(`http://localhost:8080/api/v1/users/delete/${id}`)
+      .then((response) => {
+        alert(`User ${id} deleted`);
+      });
   };
 
   console.log(users, "USERSS");
@@ -222,6 +222,7 @@ const UsersList = () => {
               <TableHead>
                 <TableRow>
                   <TableCell>User ID</TableCell>
+                  <TableCell>User Name</TableCell>
                   <TableCell align="left">User Email</TableCell>
                   <TableCell align="left">Phone Number</TableCell>
                   <TableCell align="left">Role/s</TableCell>
@@ -235,6 +236,7 @@ const UsersList = () => {
                     key={user.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
+                    <TableCell align="left">{user.id}</TableCell>
                     <TableCell align="left">{user.username}</TableCell>
                     <TableCell align="left">{user.email}</TableCell>
                     <TableCell align="left">{user.phoneNumber}</TableCell>

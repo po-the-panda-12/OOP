@@ -35,13 +35,13 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         if (request.getServletPath().equals("/api/v1/login") || request.getServletPath().equals("/api/token/refresh")
                 || request.getServletPath().equals("/api/v1/user/save")
-                || request.getServletPath().equals("/api/v1/attractions")
+//                || request.getServletPath().equals("/api/v1/attractions")
                 || request.getServletPath().equals("/api/v1/bookingdate")
                 || request.getServletPath().equals("/api/v1/loanpass")
                 || request.getServletPath().equals("/api/v1/emailtemplates")
                 || request.getServletPath().equals("/api/v1/bookingdate/**")
                 || request.getServletPath().equals("/api/v1/bookingdate")
-                || request.getServletPath().equals("/api/v1/users/delete")
+//                || request.getServletPath().equals("/api/v1/users/delete")
         )
 
         {

@@ -34,35 +34,36 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class UserResource {
-    private  final UserService userService;
-
+    private final UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<AppUser>>getUsers(){
+    public ResponseEntity<List<AppUser>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
     @DeleteMapping(path = "/users/delete/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
+    public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);
     }
 
     @PostMapping("/user/save")
-    public ResponseEntity<AppUser>saveUser(@RequestBody AppUser user){
+    public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveUser(user));
     }
 
     @PostMapping("/role/save")
-    public ResponseEntity<UserRole>saveRole(@RequestBody UserRole role){
+    public ResponseEntity<UserRole> saveRole(@RequestBody UserRole role) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/save").toUriString());
         return ResponseEntity.created(uri).body(userService.saveRole(role));
     }
+
     @PostMapping("/role/addtouser")
-    public ResponseEntity<?>saveRole(@RequestBody RoleToUserForm form){
+    public ResponseEntity<?> saveRole(@RequestBody RoleToUserForm form) {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
@@ -70,8 +71,8 @@ public class UserResource {
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            try{
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
@@ -82,18 +83,18 @@ public class UserResource {
                         .withSubject(user.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles", user.getUserRoles().stream().map(UserRole::getName).collect(Collectors.toList()))
+                        .withClaim("roles",
+                                user.getUserRoles().stream().map(UserRole::getName).collect(Collectors.toList()))
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
                 tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-            }
-            catch(Exception exception){
+            } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
-//                    response.sendError(FORBIDDEN.value());
+                // response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", exception.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);
@@ -107,8 +108,7 @@ public class UserResource {
 }
 
 @Data
-class RoleToUserForm{
+class RoleToUserForm {
     private String username;
     private String roleName;
 }
-
