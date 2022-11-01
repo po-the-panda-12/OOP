@@ -14,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -38,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/api/v1/login/**", "/api/v1/user/save", "/api/token/refresh/**",
-                "/api/v1/attractions/**", "/api/v1/registration", "/api/v1/loanpass/**", "/api/v1/emailtemplates/**", "/api/v1/bookingdate/**").permitAll();
+                "/api/v1/attractions/**", "/api/v1/registration", "/api/v1/loanpass/**", "/api/v1/emailtemplates/**", "/api/v1/bookingdate/**", "/api/v1/users/delete/**").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/v1/bookingdate").permitAll();
         http.authorizeRequests().antMatchers(POST, "/api/v1/bookingdate/save", "/api/v1/bookingdate/**", "/api/v1/bookingdate")
                 .hasAnyAuthority("ROLE_USER");

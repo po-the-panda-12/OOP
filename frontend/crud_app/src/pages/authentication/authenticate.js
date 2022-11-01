@@ -20,29 +20,55 @@ export default function Authenticate() {
 
   const [checkbox, setCheckbox] = useState(false);
   const register = () => {
-    axios.post(`http://localhost:8080/api/v1/registration`, {
-      username,
-      email,
-      password,
-      phoneNumber: phone,
-    });
+    axios
+      .post(`http://localhost:8080/api/v1/user/save`, {
+        username,
+        email,
+        password,
+        phoneNumber: phone,
+        userRoles: [
+          {
+            id: 1,
+            name: "ROLE_USER",
+          },
+        ],
+      })
+      .then((response) => {
+        console.log(response);
+        setHaveAccount(!haveAccount);
+        console.log("have accounttt", haveAccount);
 
-    const postRequest =
-      "{username: " +
-      username +
-      ",\n email: " +
-      email +
-      ",\n password: " +
-      password +
-      ",\n phoneNumber: " +
-      phone +
-      "}";
+        const postRequest =
+          "{username: " +
+          username +
+          ",\n email: " +
+          email +
+          ",\n password: " +
+          password +
+          ",\n phoneNumber: " +
+          phone +
+          ",\n userRoles: " +
+          JSON.stringify([
+            {
+              id: 1,
+              name: "ROLE_USER",
+            },
+          ]) +
+          "}";
 
-    alert(
-      "sent a post request:\n" +
-        postRequest +
-        "\nto http://localhost:8080/api/v1/registration"
-    );
+        alert(
+          "sent a post request:\n" +
+            postRequest +
+            "\nto http://localhost:8080/api/v1/user/save"
+        );
+      })
+      .catch((err) => {
+        if (password.length < 8) {
+          alert("Password too short \n" + err);
+        } else {
+          alert("Email is not valid \n" + err);
+        }
+      });
   };
   //   const login = () => {
   //     axios
@@ -76,11 +102,8 @@ export default function Authenticate() {
       console.log(decodedHeader?.roles, "DECODED ROLES");
       console.log(accessToken, "accessToken accessToken accessToken");
       const roles = decodedHeader?.roles;
-      console.log("NOT HERE");
       console.log(auth);
-
       setAuth({ username, phone, accessToken, roles });
-      console.log("PASSSS AUTHHHHHHH", auth);
       // localStorage.setItem("accessToken", auth);
 
       setEmail("");
@@ -94,7 +117,6 @@ export default function Authenticate() {
       // setPwd('');
       // navigate(from, { replace: true });
       alert("logged in as " + decodedHeader.sub + " with role of " + roles);
-      console.log("HERE");
     } catch (err) {}
   };
 
@@ -117,7 +139,10 @@ export default function Authenticate() {
 
   return (
     <div class="container rounded content">
-      <div class="card d-flex justify-content-center" style={{ width: "30rem", height: "65vh" }}>
+      <div
+        class="card d-flex justify-content-center"
+        style={{ width: "30rem", height: "65vh" }}
+      >
         {haveAccount ? (
           <h2 className="main-header">Login</h2>
         ) : (
@@ -125,6 +150,14 @@ export default function Authenticate() {
         )}
 
         <Form className="create-form" style={{ margin: "auto" }}>
+          <Form.Field>
+            <label>Name</label>
+            <input
+              placeholder="Name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Field>
+
           {haveAccount ? (
             <></>
           ) : (
@@ -137,14 +170,6 @@ export default function Authenticate() {
               />
             </Form.Field>
           )}
-
-          <Form.Field>
-            <label>Name</label>
-            <input
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Form.Field>
 
           <Form.Field>
             <label>Password</label>

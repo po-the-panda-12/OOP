@@ -19,32 +19,45 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService{
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
+    private final EmailValidator emailValidator;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userRepo.findByUsername(username);
-        if(user == null){
+        if (user == null) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
         } else {
-            log.error("User found in the database : {}" , username);
+            log.error("User found in the database : {}", username);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getUserRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                authorities);
     }
 
     @Override
-    public AppUser saveUser(AppUser user) {
+    public AppUser saveUser(AppUser user) throws IllegalStateException{
         log.info("saving new user {} to the database", user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+        boolean isValidEmail = emailValidator.test(user.getEmail());
+        if(!isValidEmail){
+            throw new IllegalStateException("Invalid email");
+        }
+        if (user.getPassword().length() >= 8) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            return userRepo.save(user);
+        } else {
+            log.error("Your password is too short " + user.getPassword().length());
+            throw new IllegalStateException("User not found in the database");
+        }
+
     }
 
     @Override
@@ -73,5 +86,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepo.findAll();
     }
 
+    @Override
+    public void deleteUser(Long id){
+//        boolean exists = userRepo.existsById(id);
+//        if (!exists){
+//            throw new IllegalStateException("User with id " + id + " does not exists");
+//
+//        }
+        userRepo.deleteById(id);
+    }
 
 }

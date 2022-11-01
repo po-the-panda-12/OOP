@@ -45,6 +45,11 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @DeleteMapping(path = "/users/delete/{id}")
+    public void deleteUser(@PathVariable("id") Long id){
+        userService.deleteUser(id);
+    }
+
     @PostMapping("/user/save")
     public ResponseEntity<AppUser>saveUser(@RequestBody AppUser user){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
