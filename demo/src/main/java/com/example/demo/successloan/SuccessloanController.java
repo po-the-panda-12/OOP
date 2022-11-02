@@ -33,6 +33,16 @@ public class SuccessloanController {
         return successloanService.getSuccessloanByAttractionIdAndMonthAndYear(id, month, year);
     }
 
+    @GetMapping(path = "/staff/{id}")
+    public List<Successloan> getSuccessloanByStaffId(@PathVariable("id") Integer id){
+        return successloanService.getSuccessloanByStaffId(id);
+    }
+
+    @GetMapping(path = "/staff/{id}/month/{month}/year/{year}")
+    public List<Successloan> getSuccessloanByStaffIdAndMonthAndYear(@PathVariable("id") Integer id, @PathVariable("month") String month, @PathVariable("year") String year){
+        return successloanService.getSuccessloanByStaffIdAndMonthAndYear(id, month, year);
+    }
+
     @PostMapping
     public void registerNewSuccessloan(@RequestBody Successloan successloan) {
         successloanService.addNewSuccessloan(successloan);

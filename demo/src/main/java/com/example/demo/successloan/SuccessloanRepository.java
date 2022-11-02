@@ -17,4 +17,10 @@ public interface SuccessloanRepository extends JpaRepository<Successloan, Intege
 
     @Query("SELECT s FROM Successloan s WHERE s.attractionId = ?1 AND s.month = ?2 AND s.year = ?3")
     List<Successloan> findSuccessloanByAttractionIdAndMonthAndYear(Integer attractionId, String month, String year);
+
+    @Query("SELECT s FROM Successloan s WHERE s.staffId = ?1")
+    List<Successloan> findSuccessloanByStaffId(Integer id);
+
+    @Query("SELECT s FROM Successloan s WHERE s.staffId = ?1 AND s.month = ?2 AND s.year = ?3")
+    List<Successloan> findSuccessloanByStaffIdAndMonthAndYear(Integer id, String month, String year);
 }
