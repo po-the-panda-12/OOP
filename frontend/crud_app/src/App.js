@@ -38,6 +38,10 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // ================= Users =======================
 import UsersList from "./pages/users/UsersList";
 
+// ================= Attractions =======================
+import AttractionList from "./pages/attractions/attractionList";
+import CreateAttractions from "./pages/attractions/createAttractions";
+
 class App extends React.Component {
   render() {
     return (
@@ -73,6 +77,9 @@ class App extends React.Component {
                   </Nav.Link>
                   <Nav.Link href="">
                     <Link to="/react/users">Users</Link>
+                  </Nav.Link>
+                  <Nav.Link href="">
+                    <Link to="/react/attractions">Attractions</Link>
                   </Nav.Link>
                   <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
                     <NavDropdown.Item href="">
@@ -136,6 +143,9 @@ class App extends React.Component {
                 element={<EditEmailTemplate />}
               ></Route>
               <Route exact path="/react/users" element={<UsersList />}></Route>
+              {/* attractions */}
+              <Route exact path="/react/attractions" element={<AttractionList/>}></Route>
+              <Route exact path="/react/attractions/create" element={<CreateAttractions/>}></Route>
             </Routes>
           </div>
         </div>

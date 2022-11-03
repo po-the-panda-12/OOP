@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function CreateEmailTemplate() {
     return (
         <div class="container rounded content">
-            <div class="card"style={{ width: '25rem', height: '50vh'}}>
+            <div class="card" style={{ width: "25rem", height: "50vh" }}>
                 <h2 class="main-header">Create template</h2>
                 <EmailTemplateForm template={null} />
                 <button class="btn btn-secondary btn-sm">
@@ -13,7 +13,6 @@ function CreateEmailTemplate() {
                     </Link>
                 </button>
             </div>
-            
         </div>
     );
 }
