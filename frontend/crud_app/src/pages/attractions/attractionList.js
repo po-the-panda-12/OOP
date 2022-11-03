@@ -2,6 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../api/axios";
 
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import EditIcon from "@mui/icons-material/Edit";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
 const backendDomain = process.env.REACT_APP_backendDomain;
 function AttractionList() {
     useEffect(() => {
@@ -22,32 +32,10 @@ function AttractionList() {
             });
     };
     return (
-        <div>
-            <div class="container rounded content">
-                <div class="card" style={{ width: "25rem", height: "50vh" }}>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
+        <div class="container rounded content">
+            <div class="card" style={{ width: "60rem", height: "70vh" }}>
+                <div>
                     <h1 class="main-header">Attraction List</h1>
-                    {attractions.map((attraction) => {
-                        return (
-                            <div>
-                                {attraction.name}
-    
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => {
-                                        deleteAttraction(
-                                            attraction.attractionID
-                                        );
-                                    }}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        );
-                    })}
                     <button className="btn btn-primary btn-sm">
                         <Link
                             to="/react/attractions/create"
@@ -56,6 +44,85 @@ function AttractionList() {
                             Create new attraction
                         </Link>
                     </button>
+                    <TableContainer component={Paper} elevation={3}>
+                        <Table
+                            sx={{ minWidth: 640, "& td": { border: 0 } }}
+                            aria-label="simple table"
+                        >
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Attraction ID</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Description</TableCell>
+                                    <TableCell>PassType</TableCell>
+                                    <TableCell>Replacement Fee</TableCell>
+                                    <TableCell>Email Template</TableCell>
+                                    <TableCell>Total Passes</TableCell>
+                                    <TableCell>Status</TableCell>
+                                    <TableCell align="center"></TableCell>
+                                    <TableCell align="center"></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {attractions.map((attraction) => {
+                                    return (
+                                        <TableRow
+                                            key={attraction.attractionID}
+                                            sx={{
+                                                "&:last-child td, &:last-child th":
+                                                    { border: 0 },
+                                            }}
+                                        >
+                                            <TableCell>
+                                                {attraction.attractionID}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.name}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.description}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.passType}{" "}
+                                            </TableCell>
+                                            <TableCell>
+                                                ${attraction.replacementFee}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.emailTemplate}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.totalPasses}
+                                            </TableCell>
+                                            <TableCell>
+                                                {attraction.status}
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                <IconButton
+                                                    aria-label="delete"
+                                                    style={{ color: "#5289B5" }}
+                                                    onClick={() =>
+                                                        deleteAttraction(attraction.attractionID)
+                                                    }
+                                                >
+                                                    <DeleteOutlinedIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell align="center">
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    style={{ color: "#5289B5" }}
+                                                    href={`/${attraction.attractionID}`}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </div>
             </div>
         </div>
