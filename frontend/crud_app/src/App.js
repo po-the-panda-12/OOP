@@ -37,6 +37,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import EditEmailTemplate from "./pages/emailtemplates/editEmailTemplate";
 import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 
+// ======== successful bookings ========
+import MonthlyStatistics from './components/successloan/monthlystatistic';
+import EmployeeStatistics from './components/successloan/employeestatistic';
+
+
 class App extends React.Component {
     render() {
         return (
@@ -82,6 +87,26 @@ class App extends React.Component {
                                             Email Templates
                                         </Link>
                                     </Nav.Link>
+                                    {/* <Nav.Link href="">
+                                        <Link to="/react/statistic">
+                                            Statistics
+                                        </Link>
+                                    </Nav.Link> */}
+                                    <NavDropdown
+                                        title="Statistics"
+                                        id="basic-nav-dropdown"
+                                    >
+                                        <NavDropdown.Item href="">
+                                            <Link to="/react/monthlystatistic">
+                                                Monthly bookings
+                                            </Link>
+                                        </NavDropdown.Item>
+                                        <NavDropdown.Item href="">
+                                            <Link to="/react/employeestatistic">
+                                                Employee bookings
+                                            </Link>
+                                        </NavDropdown.Item>
+                                    </NavDropdown>
                                     <NavDropdown
                                         title="Loan Pass"
                                         id="basic-nav-dropdown"
@@ -166,6 +191,16 @@ class App extends React.Component {
                                 exact
                                 path="/react/emailtemplates/edit/:emailTemplateId"
                                 element={<EditEmailTemplate />}
+                            ></Route>
+                            <Route
+                                exact
+                                path="/react/monthlystatistic"
+                                element={<MonthlyStatistics />}
+                            ></Route>
+                            <Route
+                                exact
+                                path="/react/employeestatistic"
+                                element={<EmployeeStatistics />}
                             ></Route>
                         </Routes>
                     </div>
