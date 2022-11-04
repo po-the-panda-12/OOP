@@ -19,27 +19,16 @@ const Button = styled.button`
 `;
 let options = [];
 
-// get options from backend axios call
-axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
-  options = [];
 
-  console.log(res.data);
-  res.data.forEach((attraction) => {
-    options.push({ value: attraction.attractionID, label: attraction.name });
-  });
-
-  console.log(options);
-});
 
 const options1 = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
 ];
 
-const userOptions = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-];
+
+// should be based on user
+let userOptions = [];
 
 const customStyles = {
   option: (provided) => ({
@@ -57,6 +46,33 @@ const customStyles = {
 };
 
 export default function LoanApplication() {
+
+  useEffect(() => {
+
+    // get options from backend axios call
+    axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
+      options = [];
+
+      console.log(res.data);
+      res.data.forEach((attraction) => {
+        options.push({ value: attraction.attractionID, label: attraction.name });
+      });
+
+      console.log(options);
+      setPasses(1);
+    });
+
+    // Update the document title using the browser API
+    console.log("useEffect only once!");
+    console.log(localStorage.getItem("auth"));
+
+    let user = JSON.parse(localStorage.getItem("auth"))["username"];
+    userOptions = [{ value: user, label: user }];
+    
+    console.log(userOptions);
+    setPasses(1);
+    onPassesChange();
+  }, [""]);
   // state for user
   const [user, setUser] = useState();
 
@@ -76,6 +92,8 @@ export default function LoanApplication() {
   const onPassesChange = (e) => {
     setPasses(e);
   };
+
+  
 
   const SelectUserComponent = () => (
     <Select
@@ -102,8 +120,8 @@ export default function LoanApplication() {
     <Select
       styles={customStyles}
       options={options1}
-      defaultValue={[]}
-      value={passes}
+      defaultValue={options1[0]}
+      value={options1[0]}
       onChange={(d) => onPassesChange(d)}
     />
   );
@@ -248,10 +266,7 @@ export default function LoanApplication() {
       });
   };
 
-  useEffect(() => {
-    // Update the document title using the browser API
-    console.log("useEffect only once!");
-  }, [""]);
+
 
   return (
     <div class="container rounded content">
