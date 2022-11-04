@@ -10,14 +10,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import zoomPlugin from 'chartjs-plugin-zoom';
-
-
-// monthly statistics (number of loans per month, number of borrowers per month)
-// number of loans per employee  (monthly, bi-annual, annual)
-
-// custom autorization
-// security config
 
 ChartJS.register(
   CategoryScale,
@@ -26,11 +18,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  zoomPlugin
 );
-
-// {emp1: {2022: []} }
-// 
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 const url = backendDomain + "/api/v1/successloan";
@@ -42,9 +30,16 @@ export default function EmployeeStatistics() {
 
     const [employeeId, setEmployeeId] = useState("1")
     const [chartMode, setChartMode] = useState("Monthly")
-    const [chartModeList, setChartModeList]= useState(["Monthly", "Bi-Annually", "Annually"])
-    const [labels,setLabels] = useState([]);
+    const [labels,setLabels] = useState(['Jan 22', 'Feb 22', 'Mar 22', 'Apr 22', 'May 22', 'Jun 22', 'Jul 22', 'Aug 22', 'Sep 22', 'Oct 22', 'Nov 22', 'Dec 22']);
     const [data, setData] = useState([])
+    const [year, setYear] = useState("2022");
+    const [yearlist, setYearList] = useState([])
+
+    function handleYearSubmit(event){
+        setYear(event.target.value)
+        setChartMode("Monthly")
+        setChartData(chartData)
+    }
 
     function handleCMSubmit(event) {
     setChartMode(event.target.value)
@@ -57,53 +52,82 @@ export default function EmployeeStatistics() {
     }
 
     useEffect (() => {
-    let loanlist = {};
-    let curlabel = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    let month = [];
-    let monthlabel = [];
-    let annual = [];
-    let annuallabel = [];
-    let biann = [];
-    let biannlabel = [];
+    let loanlist = {}; //this is for month
+    let yearlist = {};
+    let biannlist = {};
+    let halfmonths = ["1","2","3","4","5","6"];
     axios.get(url).then(response => {
         response.data.forEach(successfulloan => {
             if(successfulloan.staffId == employeeId){
+                // GETTING MONTHLIST 
                 if(successfulloan.year in loanlist){
                     loanlist[successfulloan.year][parseInt(successfulloan.month)-1] += 1;
                 }else{
                     loanlist[successfulloan.year] = [0,0,0,0,0,0,0,0,0,0,0,0];
                     loanlist[successfulloan.year][parseInt(successfulloan.month)-1] += 1;
                 }
+                // GETTING YEARLIST
+                if(successfulloan.year in yearlist){
+                    yearlist[successfulloan.year] += 1;
+                } else{
+                    yearlist[successfulloan.year] = 1;
+                }
+                // GETTING BIANNUAL
+                if(successfulloan.year in biannlist){
+                    if(halfmonths.includes(successfulloan.month)){
+                        biannlist[successfulloan.year][0] += 1
+                    }else{
+                        biannlist[successfulloan.year][1] += 1
+                    }
+                }else{
+                    biannlist[successfulloan.year] = [0,0]
+                    if(halfmonths.includes(successfulloan.month)){
+                        biannlist[successfulloan.year][0] += 1
+                    }else{
+                        biannlist[successfulloan.year][1] += 1
+                    }
+                }
+                
             }
         })
-        // ASSUME THAT LOANLIST OBJECT WILL BE SORTED FROM 2020 - 2022
-
-        for (var loan in loanlist){
-            annuallabel.push(loan);
-            annual.push(loanlist[loan].reduce((partialSum, a) => partialSum + a, 0));
-            biannlabel.push(loan + " 1st");
-            biannlabel.push(loan+ " 2nd");
-            biann.push(loanlist[loan].slice(0,6).reduce((partialSum, a) => partialSum + a, 0));
-            biann.push(loanlist[loan].slice(6,12).reduce((partialSum, a) => partialSum + a, 0));
-            for (let i = 0; i< 12;i++){
-                monthlabel.push(curlabel[i] + loan);
-            }
-            month = loanlist[loan];
-        }
-
-
+        let templist = Object.keys(yearlist)
+        templist.sort()
+        setYearList(templist)
         if(chartMode == "Monthly"){
-            setData(month)
-            setLabels(monthlabel)
+            setData(loanlist[year])
+            let i = year.slice(2,4)
+            setLabels(['Jan ' + i, 'Feb ' + i, 'Mar ' + i, 'Apr ' + i, 'May ' + i, 'Jun ' + i, 'Jul ' + i, 'Aug ' + i, 'Sep ' + i, 'Oct ' + i, 'Nov ' + i, 'Dec ' + i])
         } else if(chartMode == "Bi-Annually"){
-            setData(biann)
-            setLabels(biannlabel)
+            let i = Object.keys(biannlist);
+            i.sort()
+            let j = []
+            let k = []
+            for(var keys of i){
+                j.push(keys + " 1st")
+                j.push(keys + " 2nd")
+                k.push(biannlist[keys][0])
+                k.push(biannlist[keys][1])
+            }
+            setData(k)
+            setLabels(j)
         } else if(chartMode == "Annually"){
-            setData(annuallabel)
-            setLabels(Object.keys(loanlist))
-
+            let i = Object.keys(yearlist);
+            i.sort()
+            let j = []
+            let k = []
+            for(var keys of i){
+                j.push(keys)
+                k.push(yearlist[keys])
+            }
+            setData(k)
+            setLabels(j)
         }
+    })
+},[employeeId, chartMode, year])
+        
 
+useEffect (() => {
+        console.log("BYEBYE")
         setChartData({
         labels: labels,
         datasets:[
@@ -133,26 +157,26 @@ export default function EmployeeStatistics() {
         }
         })
         setLoading(true)
-    })
-    },[employeeId, chartMode])
+    },[data,labels])
+    // },[employeeId, chartMode,labels])
 
     if (loading)
     return (
-    <div style={{"height": "700px", "width":"700px"}}>
+    <div style={{"height": "750px", "width":"850px"}}>
         Employee ID: <input name="EmployeeID" value = {employeeId} onChange={handleEmpSubmit}/>
-        Select Chart Type:
-        <select onChange={handleCMSubmit}>
-        {chartModeList.map(res => (
-          <option value={res}>
+        <br /><br />
+        <button value = "Monthly" onClick={handleCMSubmit}>Monthly</button>{' :'}
+        <select >
+        {yearlist.map(res => (
+          <option value={res} onChange = {handleYearSubmit}>
             {res}
           </option>
         ))}
-      </select>
+        </select>{' '}
+        <button value = "Bi-Annually" onClick={handleCMSubmit}>Bi-Annually</button>{' '}
+        <button value = "Annually" onClick={handleCMSubmit}>Annually</button>
         <Bar data={chartData} options = {options}/>
     </div>
-
-
-
     )
 
 
