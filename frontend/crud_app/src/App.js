@@ -38,8 +38,9 @@ import EditEmailTemplate from "./pages/emailtemplates/editEmailTemplate";
 import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 
 // ======== Users ========
-import UserList from "./pages/users/UsersList";
+// import UserList from "./pages/users/UsersList";
 
+// ======== statistics ========
 import MonthlyStatistics from './components/successloan/monthlystatistic';
 import EmployeeStatistics from './components/successloan/employeestatistic';
 
@@ -89,9 +90,9 @@ class App extends React.Component {
                                             Email Templates
                                         </Link>
                                     </Nav.Link>
-                                    <Nav.Link href = "">
+                                    {/* <Nav.Link href = "">
                                         <Link to ="/react/users">Users</Link>
-                                    </Nav.Link>
+                                    </Nav.Link> */}
                                     <NavDropdown
                                         title="Statistics"
                                         id="basic-nav-dropdown"
@@ -135,11 +136,11 @@ class App extends React.Component {
                     </Navbar>
 
                     {/* END OF NAVBAR */}
-                    <div>
+                    {/* <div>
                         <video autoPlay loop muted>
                         <source src={vid_background} type = "video/mp4"></source>
                         </video>
-                    </div>
+                    </div> */}
                     <div className="main">
 
                         {/* authentication */}
@@ -206,7 +207,7 @@ class App extends React.Component {
                                 path="/react/employeestatistic"
                                 element={<EmployeeStatistics />}
                             ></Route>
-                            <Route exact path="/react/users" element={<UsersList />}></Route>
+                            {/* <Route exact path="/react/users" element={<UsersList />}></Route> */}
                         </Routes>
                     </div>
                 </div>
