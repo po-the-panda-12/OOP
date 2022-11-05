@@ -38,6 +38,9 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // ================= Users =======================
 import UsersList from "./pages/users/UsersList";
 
+import MonthlyStatistics from './components/successloan/monthlystatistic';
+import EmployeeStatistics from './components/successloan/employeestatistic';
+
 class App extends React.Component {
   render() {
     return (
@@ -74,6 +77,18 @@ class App extends React.Component {
                   <Nav.Link href="">
                     <Link to="/react/users">Users</Link>
                   </Nav.Link>
+                  <NavDropdown title="Statistics" id="basic-nav-dropdown">
+                        <NavDropdown.Item href="">
+                            <Link to="/react/monthlystatistic">
+                                Monthly bookings
+                            </Link>
+                        </NavDropdown.Item>
+                        <NavDropdown.Item href="">
+                            <Link to="/react/employeestatistic">
+                                Employee bookings
+                            </Link>
+                        </NavDropdown.Item>
+                    </NavDropdown>
                   <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
                     <NavDropdown.Item href="">
                       <Link to="/react/createloanpass">Create Loan Pass</Link>
@@ -135,6 +150,16 @@ class App extends React.Component {
                 path="/react/emailtemplates/edit/:emailTemplateId"
                 element={<EditEmailTemplate />}
               ></Route>
+              <Route
+                    exact
+                    path="/react/monthlystatistic"
+                    element={<MonthlyStatistics />}
+                ></Route>
+                <Route
+                    exact
+                    path="/react/employeestatistic"
+                    element={<EmployeeStatistics />}
+                ></Route>
               <Route exact path="/react/users" element={<UsersList />}></Route>
             </Routes>
           </div>
