@@ -127,7 +127,6 @@ export default function EmployeeStatistics() {
         
 
 useEffect (() => {
-        console.log("BYEBYE")
         setChartData({
         labels: labels,
         datasets:[
@@ -158,7 +157,6 @@ useEffect (() => {
         })
         setLoading(true)
     },[data,labels])
-    // },[employeeId, chartMode,labels])
 
     if (loading)
     return (
@@ -166,9 +164,9 @@ useEffect (() => {
         Employee ID: <input name="EmployeeID" value = {employeeId} onChange={handleEmpSubmit}/>
         <br /><br />
         <button value = "Monthly" onClick={handleCMSubmit}>Monthly</button>{' :'}
-        <select >
+        <select onChange={handleYearSubmit}>
         {yearlist.map(res => (
-          <option value={res} onChange = {handleYearSubmit}>
+          <option value={res}>
             {res}
           </option>
         ))}

@@ -38,8 +38,64 @@ public class SuccessloanConfig {
                     "2022"
             );
 
+            Successloan successloan4 = new Successloan(
+                    4,
+                    1,
+                    3,
+                    "7",
+                    "2022"
+            );
+
+            Successloan successloan5 = new Successloan(
+                    5,
+                    2,
+                    3,
+                    "3",
+                    "2021"
+            );
+
+            Successloan successloan6 = new Successloan(
+                6,
+                1,
+                3,
+                "6",
+                "2021"
+            );
+
+            Successloan successloan7 = new Successloan(
+                7,
+                5,
+                3,
+                "6",
+                "2021"
+            );
+
+            Successloan successloan8 = new Successloan(
+                8,
+                4,
+                2,
+                "12",
+                "2022"
+            );
+
+            Successloan successloan9 = new Successloan(
+                    9,
+                    4,
+                    2,
+                    "12",
+                    "2022"
+            );
+
+            Successloan successloan10 = new Successloan(
+                    10,
+                    4,
+                    3,
+                    "12",
+                    "2022"
+            );
+
             repository.saveAll(
-                    List.of(successloan1, successloan2, successloan3)
+                    List.of(successloan1, successloan2, successloan3,successloan4,successloan5,successloan6,successloan7,successloan8,successloan9,successloan10)
             );
         };
     }
