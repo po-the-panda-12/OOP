@@ -118,6 +118,7 @@ function EmailTemplateForm(props) {
                 placeholder="Enter template name"
             />
             <br></br>
+
             {tags.map((tag) => {
                 return (
                     <button
