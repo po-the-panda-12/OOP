@@ -27,18 +27,31 @@ function EmailTemplateForm(props) {
         },
     ];
 
-    const modules = {
-        toolbar: {
-            handlers: {
-                insertSymbol: insertSymbol,
-            },
-        },
-    };
-
     function insertSymbol(tags) {
-        const cursorPosition = this.quill.getSelection().index;
-        this.quill.insertText(cursorPosition, tags.tagValue);
-        this.quill.setSelection(cursorPosition + tags.tagValue.length);
+        const currSelection = window.getSelection();
+        const parentNode =
+            currSelection.getRangeAt(0).startContainer.parentNode;
+        console.log(parentNode);
+        if (
+            parentNode.className.includes("ql-editor") ||
+            parentNode.tagName == "P"
+        ) {
+            const offSetPos = currSelection.getRangeAt(0).startOffset;
+            var currPara = currSelection.getRangeAt(0).startContainer;
+            const currentContent = currPara.innerText;
+            if (currentContent) {
+                const currContentStart = currentContent.slice(0, offSetPos);
+                const currContentEnd = currentContent.slice(offSetPos);
+                currPara.textContent =
+                    currContentStart + tags.tagValue + currContentEnd;
+            } else {
+                // currPara.innerHTML = "<p></p>"
+                const currContentStart = currPara.data.slice(0, offSetPos);
+                const currContentEnd = currPara.data.slice(offSetPos);
+                currPara.textContent =
+                    currContentStart + tags.tagValue + currContentEnd;
+            }
+        }
     }
     const navigate = useNavigate();
 
@@ -100,14 +113,22 @@ function EmailTemplateForm(props) {
             <input
                 onChange={(e) => setEmailTemplateName(e.target.value)}
                 value={emailTemplateName}
-                class="form-control"
+                className="form-control"
                 type="text"
                 placeholder="Enter template name"
             />
             <br></br>
             {tags.map((tag) => {
                 return (
-                    <button onClick={insertSymbol(tag)}>{tag.tagName}</button>
+                    <button
+                        onClick={() => {
+                            insertSymbol(tag);
+                        }}
+                        className="btn btn-primary"
+                        style={{ padding: "5px", margin: "10px" }}
+                    >
+                        {tag.tagName}
+                    </button>
                 );
             })}
 
@@ -115,7 +136,7 @@ function EmailTemplateForm(props) {
                 theme="snow"
                 value={emailTemplateBody}
                 onChange={setEmailTemplateBody}
-                modules={modules}
+                // modules={modules}
             />
             {/* <CustTeplateForm/> */}
             {props.template ? (
