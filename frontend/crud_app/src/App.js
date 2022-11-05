@@ -40,7 +40,6 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // ======== Users ========
 import UserList from "./pages/users/UsersList";
 
-// ======== successful bookings ========
 import MonthlyStatistics from './components/successloan/monthlystatistic';
 import EmployeeStatistics from './components/successloan/employeestatistic';
 
