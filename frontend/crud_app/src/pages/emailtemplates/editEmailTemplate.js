@@ -12,6 +12,7 @@ function EditEmailTemplate() {
                 `${backendDomain}/api/v1/emailtemplates/get/${emailTemplateId}`
             )
             .then((res) => {
+                console.log(res.data);
                 setEmailTemplate(res.data);
             });
     };
@@ -22,25 +23,27 @@ function EditEmailTemplate() {
         callAsyncFunctions().catch(console.error);
     }, []);
     return (
-        <div>
-            <h2>Edit template</h2>
-            {emailTemplate ? (
-                <>
-                    <EmailTemplateForm template={emailTemplate} />
-                    <button className="btn btn-secondary">
-                        <Link
-                            to="/react/emailtemplates"
-                            style={{ color: "white" }}
-                        >
-                            Cancel
-                        </Link>
-                    </button>
-                </>
-            ) : (
-                <>
-                    <h4>Loading template</h4>
-                </>
-            )}
+        <div class="container rounded content">
+            <div class="card" style={{ width: "60rem" }}>
+                <h2 class="main-header">Edit template</h2>
+                {emailTemplate ? (
+                    <>
+                        <EmailTemplateForm template={emailTemplate} />
+                        <button className="btn btn-secondary">
+                            <Link
+                                to="/react/emailtemplates"
+                                style={{ color: "white" }}
+                            >
+                                Cancel
+                            </Link>
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <h4>Loading template</h4>
+                    </>
+                )}
+            </div>
         </div>
     );
 }
