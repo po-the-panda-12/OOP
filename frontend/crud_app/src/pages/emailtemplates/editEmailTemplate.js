@@ -25,7 +25,7 @@ function EditEmailTemplate() {
     return (
         <div class="container rounded content">
             <div class="card" style={{ width: "60rem" }}>
-                <h2>Edit template</h2>
+                <h2 class="main-header">Edit template</h2>
                 {emailTemplate ? (
                     <>
                         <EmailTemplateForm template={emailTemplate} />
