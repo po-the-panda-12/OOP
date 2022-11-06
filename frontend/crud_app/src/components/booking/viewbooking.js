@@ -126,11 +126,11 @@ export default function ViewBooking() {
 
 
     return (
-        <div class="container rounded content" style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
+        <div class="container rounded content" style={{ width: "85%", height: "100%", maxWidth:"1000px", minWidth:"300px"}}>
             <h1 class ="main-header">View Booking</h1>
             <div class="row">
                 <div class="col-sm">
-                    <div class="card" style={{ width: "17rem", height: "45vh" }}>
+                    <div class="card" style={{ width: "17rem", height: "45vh"}}>
                         <h1 class = "sub-header">Place:</h1>
                         <SelectAttractionComponent />
                         <br/>
@@ -138,7 +138,7 @@ export default function ViewBooking() {
                     </div>
                 </div>
                 <div class = "col-sm">
-                    <div class="card" style={{ width: "17rem", height: "45vh" }}>
+                    <div class="card" style={{ width: "17rem", height: "45vh"}}>
                         <h1 class = "sub-header">Waiting list:</h1>
                         <p>{waitList}</p>
                         {waitListArray.map((item, index) => (

@@ -160,7 +160,7 @@ useEffect (() => {
 
     if (loading)
     return (
-    <div style={{"height": "80%", "width":"80%"}}>
+    <div style={{"height": "500px", "width":"80%"}}>
         Employee ID: <input name="EmployeeID" value = {employeeId} onChange={handleEmpSubmit}/>
         <br /><br />
         <button value = "Monthly" onClick={handleCMSubmit}>Monthly</button>{' :'}

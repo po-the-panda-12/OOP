@@ -83,23 +83,25 @@ export default function Read() {
     }
 
     return (
-        <div style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
+        <div style={{"height": "50%"}}>
             {/* button to create loanpass */}
             <Link to="/react/createloanpass">
                 <Button primary>Create Loan Pass</Button>
             </Link>
-            <Table singleLine className='mainreadtable'>
+            <Table>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>passId</Table.HeaderCell>
-                        <Table.HeaderCell>attractionId</Table.HeaderCell>
-                        <Table.HeaderCell>passNumber</Table.HeaderCell>
-                        <Table.HeaderCell>previousLoanBy</Table.HeaderCell>
-                        <Table.HeaderCell>Status</Table.HeaderCell>
-                        <Table.HeaderCell>Type</Table.HeaderCell>
-                        <Table.HeaderCell>Replacement Fee</Table.HeaderCell>
-                        <Table.HeaderCell>Email Template</Table.HeaderCell>
-                        <Table.HeaderCell>Attachment Link</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>pass<br/>Id</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>att<br/>rac<br/>tion<br/>Id</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>pass<br/>Num<br/>ber</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>previous<br/>Loan<br/>By</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Status</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Type</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Replace<br/>ment Fee</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Email Template</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Attachment Link</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Update</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>Delete</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 

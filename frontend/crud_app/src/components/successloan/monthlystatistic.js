@@ -109,7 +109,7 @@ export default function MonthlyStatistics() {
   
   if (loading)
   return (
-    <div style={{"height": "80%", "width":"80%"}}>
+    <div style={{"height": "500px", "width":"80%"}}>
       {/* Select Year: <input name="yearinput" value = {year} onChange={handleSubmit}/> */}
       Select Year:
       <select value={year} onChange={handleSubmit}>
