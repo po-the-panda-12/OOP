@@ -1,7 +1,5 @@
 package com.example.demo.successloan;
 
-import com.example.demo.users.Users;
-import com.example.demo.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +31,16 @@ public class SuccessloanController {
     @GetMapping(path = "/attraction/{id}/month/{month}/year/{year}")
     public List<Successloan> getSuccessloanByAttractionIdAndMonthAndYear(@PathVariable("id") Integer id, @PathVariable("month") String month, @PathVariable("year") String year){
         return successloanService.getSuccessloanByAttractionIdAndMonthAndYear(id, month, year);
+    }
+
+    @GetMapping(path = "/staff/{id}")
+    public List<Successloan> getSuccessloanByStaffId(@PathVariable("id") Integer id){
+        return successloanService.getSuccessloanByStaffId(id);
+    }
+
+    @GetMapping(path = "/staff/{id}/month/{month}/year/{year}")
+    public List<Successloan> getSuccessloanByStaffIdAndMonthAndYear(@PathVariable("id") Integer id, @PathVariable("month") String month, @PathVariable("year") String year){
+        return successloanService.getSuccessloanByStaffIdAndMonthAndYear(id, month, year);
     }
 
     @PostMapping

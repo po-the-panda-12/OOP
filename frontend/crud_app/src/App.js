@@ -8,10 +8,9 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-
-import vid_background from './pages/assets/background.mp4';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container';
+import vid_background from "./pages/assets/background.mp4";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Container from "react-bootstrap/Container";
 
 // ========================= pages/entities =========================
 // ======== homepage ========
@@ -21,10 +20,9 @@ import Home from "./pages/home";
 // ======== authentication ========
 import Authenticate from "./pages/authentication/authenticate";
 
-
 // ======== loanpass ========
 import Read from "./components/loanpass/read loanpass";
-import Update from "./components/loanpass/update loanpass"
+import Update from "./components/loanpass/update loanpass";
 import CreateLoanPass from "./components/loanpass/create loanpass";
 import LoanApplication from "./components/loanpass/loan";
 
@@ -41,9 +39,8 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // import UserList from "./pages/users/UsersList";
 
 // ======== statistics ========
-import MonthlyStatistics from './components/successloan/monthlystatistic';
-import EmployeeStatistics from './components/successloan/employeestatistic';
-
+import MonthlyStatistics from "./components/successloan/monthlystatistic";
+import EmployeeStatistics from "./components/successloan/employeestatistic";
 
 class App extends React.Component {
     render() {
@@ -142,8 +139,12 @@ class App extends React.Component {
                         </video>
                     </div> */}
                     <div className="main">
-
-                        {/* authentication */}
+                        {/* booking */}
+                        <Route
+                            exact
+                            path="/react/viewbooking"
+                            element={<ViewBooking />}
+                        />
 
                         <Routes>
                             <Route exact path="/react" element={<Home />} />
@@ -181,7 +182,7 @@ class App extends React.Component {
                                 element={<ViewBooking />}
                             />
 
-                             {/* email templates */}
+                            {/* email templates */}
                             <Route
                                 exact
                                 path="/react/emailtemplates"
@@ -218,7 +219,6 @@ class App extends React.Component {
 
 export default App;
 
-
 // import "./App.css";
 // // ========================= general components =========================
 // // ======== routing ========
@@ -228,7 +228,6 @@ export default App;
 // import Nav from "react-bootstrap/Nav";
 // import Navbar from "react-bootstrap/Navbar";
 // import NavDropdown from "react-bootstrap/NavDropdown";
-
 
 // import vid_background from './pages/assets/background.mp4';
 // import 'bootstrap/dist/css/bootstrap.min.css';
@@ -241,7 +240,6 @@ export default App;
 
 // // ======== authentication ========
 // import Authenticate from "./pages/authentication/authenticate";
-
 
 // // ======== loanpass ========
 // import Read from "./components/loanpass/read loanpass";
@@ -263,7 +261,6 @@ export default App;
 
 // import MonthlyStatistics from './components/successloan/monthlystatistic';
 // import EmployeeStatistics from './components/successloan/employeestatistic';
-
 
 // class App extends React.Component {
 //     render() {
@@ -437,5 +434,3 @@ export default App;
 // }
 
 // export default App;
-
-

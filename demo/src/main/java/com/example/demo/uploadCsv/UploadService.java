@@ -1,7 +1,7 @@
 package com.example.demo.uploadCsv;
 
-import com.example.demo.users.Users;
-import com.example.demo.users.UsersService;
+import com.example.demo.users.AppUser;
+import com.example.demo.users.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UploadService {
 
-    private final UsersService usersService;
+    private final UserService userService;
 
-    public Boolean addUser(Users user){
+    public Boolean addUser(AppUser user){
         try{
-            usersService.signUpUser(user);
+            userService.saveUser(user);
         }catch(IllegalStateException msg){
             return false;
         }

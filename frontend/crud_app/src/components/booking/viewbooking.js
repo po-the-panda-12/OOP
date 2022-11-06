@@ -4,14 +4,23 @@ import DatePicker from 'react-date-picker';
 import { addDays } from 'date-fns';
 import axios from 'axios';
 import Calendar from 'moedim';
+import Swal from 'sweetalert2';
 const backendDomain = process.env.REACT_APP_backendDomain;
 
 
 var options = [];
 
+Swal.fire({
+    title: 'Loading information from database...',
+    allowOutsideClick: false,
+    didOpen: () => {
+        Swal.showLoading()
+    },
+})
 // get options from backend axios call
 axios.get(`${backendDomain}/api/v1/attractions`)
     .then(res => {
+        Swal.close();
         options = [];
 
         console.log(res.data);
@@ -85,8 +94,17 @@ export default function ViewBooking() {
         const myDate = `${attractionId},${day},${month},${year}`;
         
 
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+
         axios.get(`${backendDomain}/api/v1/bookingdate/${myDate}`)
         .then((response) => {
+            Swal.close();
             console.log(response.data);
             setWaitList(response.data.waitingList);
 
@@ -108,95 +126,139 @@ export default function ViewBooking() {
 
 
     return (
-        <div>
-        <h1>Place:</h1>
-        <SelectAttractionComponent />
-        <br/>
-        <Calendar value={value} onChange={(d) => onDateChange(d, attraction)} />
-        <h1>Waiting list:</h1>
-        <p>{waitList}</p>
+        <div class="container rounded content">
+            <h1 class ="main-header">View Booking</h1>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card" style={{ width: "17rem", height: "45vh" }}>
+                        <h1 class = "sub-header">Place:</h1>
+                        <SelectAttractionComponent />
+                        <br/>
+                        <Calendar value={value} onChange={(d) => onDateChange(d, attraction)} />
+                    </div>
+                </div>
+                <div class = "col-sm">
+                    <div class="card" style={{ width: "17rem", height: "45vh" }}>
+                        <h1 class = "sub-header">Waiting list:</h1>
+                        <p>{waitList}</p>
+                        {waitListArray.map((item, index) => (
+                            <div key={index}>
+                                <button onClick={() => {
+                                    // send axios get to get user details
 
-        {waitListArray.map((item, index) => (
-            <div key={index}>
-                <button onClick={() => {
-                    // send axios get to get user details
+                                    Swal.fire({
+                                        title: 'Loading information from database...',
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        },
+                                    })
 
-                    axios.get(`${backendDomain}/api/v1/users/${item}`)
-                    .then((response) => {
-                        console.log(response.data);
-                        var output = '';
-                        for (var entry in response.data) {
-                        output += entry + ' | ' + response.data[entry] + '\n';
-                        }
-                        alert(output);
-                    })
-                    .catch((error) => {
-                        alert("Cannot find user details");
-                    });
+                                    axios.get(`${backendDomain}/api/v1/users/${item}`)
+                                    .then((response) => {
+                                        Swal.close();
+                                        console.log(response.data);
+                                        var output = '';
+                                        for (var entry in response.data) {
+                                        output += entry + ' | ' + response.data[entry] + '\n';
+                                        }
+                                        alert(output);
+                                    })
+                                    .catch((error) => {
+                                        Swal.close();
+                                        alert("Cannot find user details");
+                                    });
 
 
-                    // alert("Userid "+ item + " details\nname:\ncontact:\nemail:\n");
-                    
+                                    // alert("Userid "+ item + " details\nname:\ncontact:\nemail:\n");
+                                    
 
-                    }}>{item}</button>
-                <button onClick={() => {
-                    const day = value.getDate();
-                    const month = value.getMonth() + 1;
-                    const year = value.getFullYear();
+                                    }}>{item}</button>
+                                <button onClick={() => {
+                                    const day = value.getDate();
+                                    const month = value.getMonth() + 1;
+                                    const year = value.getFullYear();
 
-                    //get current date
-                    const today = new Date();
+                                    //get current date
+                                    const today = new Date();
 
-                    // get difference between current date and selected date
-                    const diffTime = (value - today)/60/60/24/1000;
-                    console.log(diffTime);
+                                    // get difference between current date and selected date
+                                    const diffTime = (value - today)/60/60/24/1000;
+                                    console.log(diffTime);
 
-                    if (diffTime <= 0) {
-                        alert("Cannot cancel booking for today or past days");
-                        return;
-                    }
+                                    if (diffTime <= 0) {
+                                        alert("Cannot cancel booking for today or past days");
+                                        return;
+                                    }
 
-                    
-                    let removeUser = window.confirm("Are you sure you want to remove user " + item + " from the waiting list?");
-                    // send axios to remove user from waiting list
-                    if (removeUser) {
-                        
+                                    
+                                    let removeUser = window.confirm("Are you sure you want to remove user " + item + " from the waiting list?");
+                                    // send axios to remove user from waiting list
+                                    if (removeUser) {
+                                        
 
-                        let attractionId = 1;
-                        try {
-                            attractionId = attraction.value;
-                        } catch (error) {
-                        }
-                        const myDate = `${attractionId},${day},${month},${year}`;
+                                        let attractionId = 1;
+                                        try {
+                                            attractionId = attraction.value;
+                                        } catch (error) {
+                                        }
+                                        const myDate = `${attractionId},${day},${month},${year}`;
 
-                        console.log(myDate);
-                        console.log(waitList);
-                        let newWaitingList = waitList.replaceAll("," + item  , "");
-                        newWaitingList = newWaitingList.replaceAll(item + "," , "");
-                        newWaitingList = newWaitingList.replaceAll(item , "");
+                                        console.log(myDate);
+                                        console.log(waitList);
+                                        let newWaitingList = waitList.replaceAll("," + item  , "");
+                                        newWaitingList = newWaitingList.replaceAll(item + "," , "");
+                                        newWaitingList = newWaitingList.replaceAll(item , "");
 
-                        console.log(newWaitingList);
-                        if (newWaitingList === "") {
-                            axios.delete(`${backendDomain}/api/v1/bookingdate/${myDate}`)
-                            .then((response) => {
-                                console.log(response.data);
-                                setWaitList("no bookings");
-                                setWaitListArray([]);
-                            });
-                        } else {
-                            axios.put(`${backendDomain}/api/v1/bookingdate/${myDate}?waitingList=${newWaitingList}`,
-                            null,
-                        ).then((response) => {
-                              setWaitList(newWaitingList);
-                              setWaitListArray(newWaitingList.split(","));
-                              alert("User " + item + " removed from waiting list");
-                          });
-      }
-                        }
-                        
-                    }}>Remove</button>
+                                        console.log(newWaitingList);
+
+                                        Swal.fire({
+                                            title: 'Loading information from database...',
+                                            allowOutsideClick: false,
+                                            didOpen: () => {
+                                                Swal.showLoading()
+                                            },
+                                        })
+
+                                        if (newWaitingList === "") {
+                                            axios.delete(`${backendDomain}/api/v1/bookingdate/${myDate}`)
+                                            .then((response) => {
+                                                Swal.close();
+                                                console.log(response.data);
+                                                setWaitList("no bookings");
+                                                setWaitListArray([]);
+                                            });
+                                        } else {
+
+                                            Swal.fire({
+                                                title: 'Loading information from database...',
+                                                allowOutsideClick: false,
+                                                didOpen: () => {
+                                                    Swal.showLoading()
+                                                },
+                                            })
+
+                                            axios.put(`${backendDomain}/api/v1/bookingdate/${myDate}?waitingList=${newWaitingList}`,
+                                            null,
+                                        ).then((response) => {
+                                            Swal.close();
+                                            setWaitList(newWaitingList);
+                                            setWaitListArray(newWaitingList.split(","));
+                                            alert("User " + item + " removed from waiting list");
+                                        });
+                                        }
+                                        }
+                                        
+                                    }}>Remove</button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
-        ))}
+        
+        
+
+                        
         </div>
         
     )

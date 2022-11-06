@@ -27,6 +27,15 @@ public class SuccessloanService {
         return successloanRepository.findSuccessloanByAttractionIdAndMonthAndYear(id, month, year);
     }
 
+    public List<Successloan> getSuccessloanByStaffId(Integer id) {
+        return successloanRepository.findSuccessloanByStaffId(id);
+    }
+
+    public List<Successloan> getSuccessloanByStaffIdAndMonthAndYear(Integer id, String month, String year) {
+        return successloanRepository.findSuccessloanByStaffIdAndMonthAndYear(id, month, year);
+    }
+
+
     public void addNewSuccessloan(Successloan successloan) {
         Optional<Successloan> successloanOptional = successloanRepository.findSuccessloanBySuccessLoanId(successloan.getSuccessLoanId());
         if (successloanOptional.isPresent()) {
