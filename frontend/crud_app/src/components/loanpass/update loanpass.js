@@ -86,7 +86,7 @@ export default function Update() {
     }
 
     return (
-        <div>
+        <div style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
             <Form className="create-form">
                 <Form.Field>
                     <label>attractionId</label>

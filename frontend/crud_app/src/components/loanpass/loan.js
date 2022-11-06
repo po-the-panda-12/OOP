@@ -376,8 +376,8 @@ export default function LoanApplication() {
 
 
   return (
-    <div class="container rounded content">
-      <div class="card" style={{ width: "30rem", height: "70vh" }}>
+    <div class="container rounded content" style={{"height": "100%", "width":"80%"}}>
+      <div class="card" style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
         <h2 className="main-header">Loan Application</h2>
 
         <h4 className="sub-header">UserId:</h4>

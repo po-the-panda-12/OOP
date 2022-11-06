@@ -83,7 +83,7 @@ export default function Read() {
     }
 
     return (
-        <div>
+        <div style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
             {/* button to create loanpass */}
             <Link to="/react/createloanpass">
                 <Button primary>Create Loan Pass</Button>

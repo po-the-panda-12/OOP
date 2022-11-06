@@ -126,7 +126,7 @@ export default function ViewBooking() {
 
 
     return (
-        <div class="container rounded content">
+        <div class="container rounded content" style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
             <h1 class ="main-header">View Booking</h1>
             <div class="row">
                 <div class="col-sm">

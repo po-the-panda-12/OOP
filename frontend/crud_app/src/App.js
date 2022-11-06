@@ -38,6 +38,10 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // ================= Users =======================
 import UsersList from "./pages/users/UsersList";
 
+// =============== Singapore Statistics ==============
+import EmployeeStatistics from "./components/successloan/employeestatistic";
+import MonthlyStatistics from "./components/successloan/monthlystatistic";
+
 class App extends React.Component {
   render() {
     return (
@@ -77,17 +81,17 @@ class App extends React.Component {
                   <Nav.Link href="">
                     <Link to="/react/read">Loanpass</Link>
                   </Nav.Link>
-                  {/* <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
+                  <NavDropdown title="Statistics" id="basic-nav-dropdown">
                     <NavDropdown.Item href="">
-                      <Link to="/react/createloanpass">Create Loan Pass</Link>
+                      <Link to="/react/employeestatistic">Employee Statistics</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item href="">
-                      <Link to="/react/read">Read Loanpasses</Link>
+                      <Link to="/react/monthlystatistic">Monthly Statistics</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item href="">Something</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="">Separated link</NavDropdown.Item>
-                  </NavDropdown> */}
+                  </NavDropdown>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -139,6 +143,8 @@ class App extends React.Component {
                 element={<EditEmailTemplate />}
               ></Route>
               <Route exact path="/react/users" element={<UsersList />}></Route>
+              <Route exact path="/react/employeestatistic" element={<EmployeeStatistics />}></Route>
+              <Route exact path="/react/monthlystatistic" element={<MonthlyStatistics />}></Route>
             </Routes>
           </div>
         </div>
