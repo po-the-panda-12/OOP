@@ -84,6 +84,10 @@ export default function Read() {
 
     return (
         <div>
+            {/* button to create loanpass */}
+            <Link to="/react/createloanpass">
+                <Button primary>Create Loan Pass</Button>
+            </Link>
             <Table singleLine className='mainreadtable'>
                 <Table.Header>
                     <Table.Row>

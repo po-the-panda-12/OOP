@@ -26,6 +26,12 @@ public class SuccessloanService {
     public List<Successloan> getSuccessloanByAttractionIdAndMonthAndYear(Integer id, String month, String year) {
         return successloanRepository.findSuccessloanByAttractionIdAndMonthAndYear(id, month, year);
     }
+    public List<Successloan> getSuccessloanByAttractionIdAndMonthAndYearAndDay(Integer id, String month, String year, String day) {
+        return successloanRepository.findSuccessloanByAttractionIdAndMonthAndYearAndDay(id, month, year, day);
+    }
+    public List<Successloan> getSuccessloanByStaffIdandAttractionIdAndMonthAndYearAndDay(Integer id, Integer attractionId, String month, String year, String day) {
+        return successloanRepository.findSuccessloanByStaffIdAndAttractionIdAndMonthAndYearAndDay(id, attractionId, month, year, day);
+    }
 
     public List<Successloan> getSuccessloanByStaffId(Integer id) {
         return successloanRepository.findSuccessloanByStaffId(id);

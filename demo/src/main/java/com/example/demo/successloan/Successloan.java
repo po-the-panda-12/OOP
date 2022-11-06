@@ -22,17 +22,19 @@ public class Successloan {
     private Integer attractionId;
     private String month;
     private String year;
+    private String day;
 
 
     public Successloan() {
     }
 
-    public Successloan(Integer successLoanId, Integer staffId, Integer attractionId, String month, String year) {
+    public Successloan(Integer successLoanId, Integer staffId, Integer attractionId, String month, String year, String day) {
         this.successLoanId = successLoanId;
         this.staffId = staffId;
         this.attractionId = attractionId;
         this.month = month;
         this.year = year;
+        this.day = day;
     }
 
     public Integer getSuccessLoanId() {
@@ -54,6 +56,9 @@ public class Successloan {
     public String getYear() {
         return year;
     }
+    public String getDay() {
+        return day;
+    }
 
     public void setSuccessLoanId(Integer successLoanId) {
         this.successLoanId = successLoanId;
@@ -74,6 +79,9 @@ public class Successloan {
     public void setYear(String year) {
         this.year = year;
     }
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     @Override
     public String toString() {
@@ -83,6 +91,7 @@ public class Successloan {
                 ", attractionId=" + attractionId +
                 ", month='" + month + '\'' +
                 ", year='" + year + '\'' +
+                ", day='" + day + '\'' +
                 '}';
     }
 }

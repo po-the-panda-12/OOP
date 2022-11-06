@@ -19,7 +19,8 @@ public class SuccessloanConfig {
                     1,
                     1,
                     "10",
-                    "2022"
+                    "2022",
+                    "10"
             );
 
             Successloan successloan2 = new Successloan(
@@ -27,7 +28,8 @@ public class SuccessloanConfig {
                     2,
                     2,
                     "10",
-                    "2022"
+                    "2022",
+                    "10"
             );
 
             Successloan successloan3 = new Successloan(
@@ -35,7 +37,8 @@ public class SuccessloanConfig {
                     3,
                     3,
                     "10",
-                    "2022"
+                    "2022",
+                    "10"
             );
 
             repository.saveAll(

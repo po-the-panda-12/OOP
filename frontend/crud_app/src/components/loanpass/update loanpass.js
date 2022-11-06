@@ -55,15 +55,25 @@ export default function Update() {
         ).then(() => {
             // if status = Loaned out, add to successloan
             if (status === "Loaned out" && oldStatus !== "Loaned out") {
-                axios.post(`${backendDomain}/api/v1/successloan`, {
-                    attractionId: attractionId,
-                    staffId: previousLoanBy,
-                    month: new Date().getMonth() + 1,
-                    year: new Date().getFullYear()
-                }).then(() => {
-                    Swal.close();
-                    alert("created success loan!")
-                });
+                // get successloan by attraction, staff and date
+                axios.get(`${backendDomain}/api/v1/successloan/staff/${previousLoanBy}/attraction/${attractionId}/month/${new Date().getMonth() + 1}/year/${new Date().getFullYear()}/day/${new Date().getDay()}`)
+                    .then((response) => {
+                        if (response.data.length === 0) {
+                            axios.post(`${backendDomain}/api/v1/successloan`, {
+                                attractionId: attractionId,
+                                staffId: previousLoanBy,
+                                month: new Date().getMonth() + 1,
+                                year: new Date().getFullYear(),
+                                day: new Date().getDay(),
+                            }).then(() => {
+                                Swal.close();
+                                alert("created success loan!")
+                            });
+                        } else {
+                            Swal.close();
+                        }
+                    });
+                
             }
 
             Swal.close();
@@ -92,11 +102,19 @@ export default function Update() {
                 </Form.Field>
                 <Form.Field>
                     <label>status</label>
-                    <input placeholder='status' value={status} onChange={(e) => setStatus(e.target.value)}/>
+                    <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                        <option value="Uncollected">Uncollected</option>
+                        <option value="Loaned out">Loaned out</option>
+                        <option value="Lost">Lost</option>
+                    </select>
+
                 </Form.Field>
                 <Form.Field>
                     <label>type</label>
-                    <input placeholder='type' value={type} onChange={(e) => setType(e.target.value)}/>
+                    <select value={type} onChange={(e) => setType(e.target.value)}>
+                        <option value="Physical">Physical</option>
+                        <option value="Digital">Digital</option>
+                    </select>
                 </Form.Field>
                 <Form.Field>
                     <label>replacementFee</label>

@@ -227,6 +227,17 @@ export default function ViewBooking() {
                                                 console.log(response.data);
                                                 setWaitList("no bookings");
                                                 setWaitListArray([]);
+                                                // get all successloan on the date
+                                                axios.get(`${backendDomain}/api/v1/successloan/staff/${item}/attraction/${attractionId}/month/${month}/year/${year}/day/${day}`)
+                                                .then((response) => {
+                                                    console.log(response.data);
+                                                    for (let i = 0; i < response.data.length; i++) {
+                                                        const successLoan = response.data[i];
+                                                        // delete successloan
+                                                        axios.delete(`${backendDomain}/api/v1/successloan/${successLoan.successLoanId}`);
+                                                        alert("deleted successloan");
+                                                    }
+                                                });
                                             });
                                         } else {
 
@@ -245,6 +256,18 @@ export default function ViewBooking() {
                                             setWaitList(newWaitingList);
                                             setWaitListArray(newWaitingList.split(","));
                                             alert("User " + item + " removed from waiting list");
+
+                                            // get all successloan on the date
+                                            axios.get(`${backendDomain}/api/v1/successloan/staff/${item}/attraction/${attractionId}/month/${month}/year/${year}/day/${day}`)
+                                            .then((response) => {
+                                                for (let i = 0; i < response.data.length; i++) {
+                                                    const successLoan = response.data[i];
+                                                    // delete successloan
+                                                    axios.delete(`${backendDomain}/api/v1/successloan/${successLoan.id}`);
+                                                    alert("deleted successloan");
+                                                }
+                                            });
+
                                         });
                                         }
                                         }

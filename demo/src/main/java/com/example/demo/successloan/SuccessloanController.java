@@ -33,6 +33,16 @@ public class SuccessloanController {
         return successloanService.getSuccessloanByAttractionIdAndMonthAndYear(id, month, year);
     }
 
+    @GetMapping(path = "/attraction/{id}/month/{month}/year/{year}/day/{day}")
+    public List<Successloan> getSuccessloanByAttractionIdAndMonthAndYearAndDay(@PathVariable("id") Integer id, @PathVariable("month") String month, @PathVariable("year") String year, @PathVariable("day") String day){
+        return successloanService.getSuccessloanByAttractionIdAndMonthAndYearAndDay(id, month, year, day);
+    }
+
+    @GetMapping(path = "/staff/{id}/attraction/{attractionId}/month/{month}/year/{year}/day/{day}")
+    public List<Successloan> getSuccessloanByStaffIdAndAttractionIdAndMonthAndYearAndDay(@PathVariable("id") Integer id, @PathVariable("attractionId") Integer attractionId, @PathVariable("month") String month, @PathVariable("year") String year, @PathVariable("day") String day){
+        return successloanService.getSuccessloanByStaffIdandAttractionIdAndMonthAndYearAndDay(id, attractionId, month, year, day);
+    }
+
     @GetMapping(path = "/staff/{id}")
     public List<Successloan> getSuccessloanByStaffId(@PathVariable("id") Integer id){
         return successloanService.getSuccessloanByStaffId(id);

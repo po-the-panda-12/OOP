@@ -74,7 +74,10 @@ class App extends React.Component {
                   <Nav.Link href="">
                     <Link to="/react/users">Users</Link>
                   </Nav.Link>
-                  <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
+                  <Nav.Link href="">
+                    <Link to="/react/read">Loanpass</Link>
+                  </Nav.Link>
+                  {/* <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
                     <NavDropdown.Item href="">
                       <Link to="/react/createloanpass">Create Loan Pass</Link>
                     </NavDropdown.Item>
@@ -84,18 +87,18 @@ class App extends React.Component {
                     <NavDropdown.Item href="">Something</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="">Separated link</NavDropdown.Item>
-                  </NavDropdown>
+                  </NavDropdown> */}
                 </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
 
           {/* END OF NAVBAR */}
-          <div>
+          {/* <div>
               <video autoPlay loop muted>
               <source src={vid_background} type = "video/mp4"></source>
               </video>
-            </div>
+            </div> */}
           <div className="main">
             {/* authentication */}
 
