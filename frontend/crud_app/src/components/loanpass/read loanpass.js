@@ -2,16 +2,29 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 export default function Read() {
+// popup loading please wait
+
     const backendDomain = process.env.REACT_APP_backendDomain;
     const [APIData, setAPIData] = useState([]);
     useEffect(() => {
         console.log("hello");
+
+        // popup loading information from database
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
         axios.get(`${backendDomain}/api/v1/loanpass`)
             .then((response) => {
                 console.log(response.data);
                 setAPIData(response.data);
+                Swal.close();
             })
 
 
@@ -40,16 +53,32 @@ export default function Read() {
     }
 
     const getData = () => {
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
         axios.get(`${backendDomain}/api/v1/loanpass`)
             .then((getData) => {
                 setAPIData(getData.data);
+                Swal.close();
             })
     }
 
     const onDelete = (id) => {
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
         axios.delete(`${backendDomain}/api/v1/loanpass/${id}`)
         .then(() => {
             getData();
+            Swal.close();
         })
     }
 

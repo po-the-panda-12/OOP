@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Form } from 'semantic-ui-react'
 import { useNavigate } from 'react-router';
+import Swal from 'sweetalert2';
 
 import axios from 'axios';
 
@@ -42,6 +43,13 @@ export default function Update() {
     const updateAPIData = () => {
         const description1 = status + ",./" + type + ",./" + replacementFee + ",./" + emailTemplate + ",./" + attachmentLink;
         console.log(description);
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
         axios.put(`${backendDomain}/api/v1/loanpass/${passId}?attractionId=${attractionId}&passNumber=${passNumber}&previousLoanBy=${previousLoanBy}&description=${description1}`, 
             null,   
         ).then(() => {
@@ -53,13 +61,15 @@ export default function Update() {
                     month: new Date().getMonth() + 1,
                     year: new Date().getFullYear()
                 }).then(() => {
+                    Swal.close();
                     alert("created success loan!")
                 });
             }
 
-
+            Swal.close();
             navigate('/react/read');
         }).catch((err) => {
+            Swal.close();
             alert("error in update! staying on this page." + err);
         });
 

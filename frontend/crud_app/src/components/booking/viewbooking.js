@@ -4,14 +4,23 @@ import DatePicker from 'react-date-picker';
 import { addDays } from 'date-fns';
 import axios from 'axios';
 import Calendar from 'moedim';
+import Swal from 'sweetalert2';
 const backendDomain = process.env.REACT_APP_backendDomain;
 
 
 var options = [];
 
+Swal.fire({
+    title: 'Loading information from database...',
+    allowOutsideClick: false,
+    didOpen: () => {
+        Swal.showLoading()
+    },
+})
 // get options from backend axios call
 axios.get(`${backendDomain}/api/v1/attractions`)
     .then(res => {
+        Swal.close();
         options = [];
 
         console.log(res.data);
@@ -85,8 +94,17 @@ export default function ViewBooking() {
         const myDate = `${attractionId},${day},${month},${year}`;
         
 
+        Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+
         axios.get(`${backendDomain}/api/v1/bookingdate/${myDate}`)
         .then((response) => {
+            Swal.close();
             console.log(response.data);
             setWaitList(response.data.waitingList);
 
@@ -128,8 +146,17 @@ export default function ViewBooking() {
                                 <button onClick={() => {
                                     // send axios get to get user details
 
+                                    Swal.fire({
+                                        title: 'Loading information from database...',
+                                        allowOutsideClick: false,
+                                        didOpen: () => {
+                                            Swal.showLoading()
+                                        },
+                                    })
+
                                     axios.get(`${backendDomain}/api/v1/users/${item}`)
                                     .then((response) => {
+                                        Swal.close();
                                         console.log(response.data);
                                         var output = '';
                                         for (var entry in response.data) {
@@ -138,6 +165,7 @@ export default function ViewBooking() {
                                         alert(output);
                                     })
                                     .catch((error) => {
+                                        Swal.close();
                                         alert("Cannot find user details");
                                     });
 
@@ -183,17 +211,37 @@ export default function ViewBooking() {
                                         newWaitingList = newWaitingList.replaceAll(item , "");
 
                                         console.log(newWaitingList);
+
+                                        Swal.fire({
+                                            title: 'Loading information from database...',
+                                            allowOutsideClick: false,
+                                            didOpen: () => {
+                                                Swal.showLoading()
+                                            },
+                                        })
+
                                         if (newWaitingList === "") {
                                             axios.delete(`${backendDomain}/api/v1/bookingdate/${myDate}`)
                                             .then((response) => {
+                                                Swal.close();
                                                 console.log(response.data);
                                                 setWaitList("no bookings");
                                                 setWaitListArray([]);
                                             });
                                         } else {
+
+                                            Swal.fire({
+                                                title: 'Loading information from database...',
+                                                allowOutsideClick: false,
+                                                didOpen: () => {
+                                                    Swal.showLoading()
+                                                },
+                                            })
+
                                             axios.put(`${backendDomain}/api/v1/bookingdate/${myDate}?waitingList=${newWaitingList}`,
                                             null,
                                         ).then((response) => {
+                                            Swal.close();
                                             setWaitList(newWaitingList);
                                             setWaitListArray(newWaitingList.split(","));
                                             alert("User " + item + " removed from waiting list");

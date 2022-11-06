@@ -5,6 +5,7 @@ import { addDays } from "date-fns";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
@@ -49,6 +50,14 @@ export default function LoanApplication() {
 
   useEffect(() => {
 
+    Swal.fire({
+      title: 'Loading information from database...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading()
+      },
+  })
+
     // get options from backend axios call
     axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
       options = [];
@@ -60,6 +69,7 @@ export default function LoanApplication() {
 
       console.log(options);
       setPasses(1);
+      Swal.close();
     });
 
     // Update the document title using the browser API
@@ -169,20 +179,39 @@ export default function LoanApplication() {
         "/" +
         year
     );
+    
+    Swal.fire({
+      title: 'Loading information from database...',
+      allowOutsideClick: false,
+      didOpen: () => {
+          Swal.showLoading()
+      },
+  })
+
     axios
       .post(`${backendDomain}/api/v1/bookingdate/save`, {
         date: date,
         waitingList: newwaitingList,
       })
       .then(() => {
+        Swal.close();
         alert("Successfully created loan application!");
       })
       .catch((err) => {
+        Swal.close();
         console.log(err);
         if (err.response.status === 500) {
+          Swal.fire({
+            title: 'Loading information from database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
           axios
             .get(`${backendDomain}/api/v1/bookingdate/${date}`)
             .then((res) => {
+              Swal.close();
               const waitingList = res.data.waitingList;
               // alert(`already booked! waiting list: ${waitingList}`);
 
@@ -193,12 +222,21 @@ export default function LoanApplication() {
                 return;
               }
 
+              Swal.fire({
+                title: 'Loading information from database...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+            })
+
               // get all loanpasses
               axios
                 .get(
                   `${backendDomain}/api/v1/loanpass/getbyattraction/${attractionId}`
                 )
                 .then((res) => {
+                  Swal.close();
                   var loanPasses = 0;
                   res.data.forEach((loanPass) => {
                     loanPasses++;
@@ -222,6 +260,15 @@ export default function LoanApplication() {
 
                     const yesWaiting = window.confirm(confirmMessage);
                     if (yesWaiting) {
+
+                      Swal.fire({
+                        title: 'Loading information from database...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    })
+
                       axios
                         .put(
                           `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
@@ -230,15 +277,25 @@ export default function LoanApplication() {
                           null
                         )
                         .then(() => {
+                          Swal.close();
                           alert("Successfully added to waiting list!");
                           alert(waitingList + "," + newwaitingList);
                         })
                         .catch((err) => {
+                          Swal.close();
                           alert("error in update! staying on this page." + err);
                           console.log(err);
                         });
                     }
                   } else {
+                    Swal.fire({
+                      title: 'Loading information from database...',
+                      allowOutsideClick: false,
+                      didOpen: () => {
+                          Swal.showLoading()
+                      },
+                  })
+
                     axios
                       .put(
                         `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
@@ -247,10 +304,12 @@ export default function LoanApplication() {
                         null
                       )
                       .then(() => {
+                        Swal.close();
                         alert("Successfully added to waiting list!");
                         alert(waitingList + "," + newwaitingList);
                       })
                       .catch((err) => {
+                        Swal.close();
                         alert("error in update! staying on this page." + err);
                         console.log(err);
                       });
