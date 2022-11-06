@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useNavigate } from "react-router";
 
 import IconButton from "@mui/material/IconButton";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
@@ -21,6 +22,8 @@ function EmailTemplatePage() {
     useEffect(() => {
         getEmailTemplates();
     }, []);
+    
+    const navigate = useNavigate();
 
     const [emailTemplates, setEmailTemplates] = useState([]);
     const getEmailTemplates = () => {
@@ -84,10 +87,10 @@ function EmailTemplatePage() {
                                                 <IconButton
                                                     aria-label="edit"
                                                     style={{ color: "#5289B5" }}
-                                                    href={
-                                                        "/react/emailtemplates/edit/" +
-                                                        template.emailTemplateId
-                                                    }
+                                                    onClick={() => {
+                                                        navigate("/react/emailtemplates/edit/" +
+                                                        template.emailTemplateId)
+                                                    }}
                                                 >
                                                     <EditIcon />
                                                 </IconButton>
