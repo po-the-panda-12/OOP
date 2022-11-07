@@ -27,6 +27,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Form } from "semantic-ui-react";
 
 const UsersList = () => {
+  const backendDomain = process.env.REACT_APP_backendDomain;
   const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { setAuth, auth } = useAuth();
@@ -65,7 +66,7 @@ const UsersList = () => {
 
   const register = () => {
     axios
-      .post(`http://localhost:8080/api/v1/user/save`, {
+      .post(`${backendDomain}/api/v1/user/save`, {
         username,
         email,
         password,
@@ -101,7 +102,7 @@ const UsersList = () => {
         alert(
           "sent a post request:\n" +
             postRequest +
-            "\nto http://localhost:8080/api/v1/user/save"
+            `\nto ${backendDomain}/api/v1/user/save`
         );
       })
       .catch((err) => {
@@ -129,7 +130,7 @@ const UsersList = () => {
 
   const deleteUser = (id) => {
     axios
-      .delete(`http://localhost:8080/api/v1/users/delete/${id}`)
+      .delete(`${backendDomain}/api/v1/users/delete/${id}`)
       .then((response) => {
         alert(`User ${id} deleted`);
       });

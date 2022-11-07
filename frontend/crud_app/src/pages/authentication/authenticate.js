@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import jwt_decode from "jwt-decode";
 
 export default function Authenticate() {
+  const backendDomain = process.env.REACT_APP_backendDomain;
   const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export default function Authenticate() {
   const [checkbox, setCheckbox] = useState(false);
   const register = () => {
     axios
-      .post(`http://localhost:8080/api/v1/user/save`, {
+      .post(`${backendDomain}/api/v1/user/save`, {
         username,
         email,
         password,
@@ -59,7 +60,7 @@ export default function Authenticate() {
         alert(
           "sent a post request:\n" +
             postRequest +
-            "\nto http://localhost:8080/api/v1/user/save"
+            `\nto ${backendDomain}/api/v1/user/save`
         );
       })
       .catch((err) => {
@@ -90,7 +91,7 @@ export default function Authenticate() {
       params.append("password", password);
       console.log(params);
       const response = await axios.post(
-        "http://localhost:8080/api/v1/login",
+        `${backendDomain}/api/v1/login`,
         params
       );
       console.log(JSON.stringify(response?.data));

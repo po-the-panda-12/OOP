@@ -4,10 +4,11 @@ import axios from "axios";
 
 
 export default function Home() {
+    const backendDomain = process.env.REACT_APP_backendDomain;
     const [user, setUser] = useState(null);
     const getCurrentUser = () => {
         axios
-            .get(`http://localhost:8080/api/v1/login/logged`)
+            .get(`${backendDomain}/api/v1/login/logged`)
             .then((response) => console.log(response));
     };
     useEffect(()=>{
