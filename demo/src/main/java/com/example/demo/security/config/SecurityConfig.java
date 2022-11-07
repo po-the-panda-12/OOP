@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/v1/login/**", "/api/v1/user/save", "/api/token/refresh/**",
                 "/api/v1/attractions/**", "/api/v1/registration", "/api/v1/loanpass/**", "/api/v1/emailtemplates/**", "/api/v1/bookingdate/**", "/api/v1/users/delete/**", "/api/v1/successloan/**", "/api/v1/successloan").permitAll();
         http.authorizeRequests().antMatchers(GET, "/api/v1/bookingdate").permitAll();
+        http.authorizeRequests().antMatchers(POST, "/api/v1/upload").permitAll();
         http.authorizeRequests().antMatchers(POST,  "/api/v1/bookingdate/**", "/api/v1/bookingdate")
                 .hasAnyAuthority("ROLE_USER");
         http.authorizeRequests().antMatchers(GET, "/api/v1/users", "/api/v1/attractions/save")

@@ -147,10 +147,56 @@ const UsersList = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  var state = {
+    file: null
+  }
+  const handleFile = (e)=>{
+    let file = e.target.files[0];
+    //console.log(e.target.files, "$$$")
+    state = {
+      file : file
+    };
+    
+  };
+  const helpUpload = (e)=>{
+    console.log(state, "The state ****");
+    let file = state.file
+    var formdata = new FormData();
+    formdata.append('file', file); 
+    axios({
+      method: "post",
+      url: "http://localhost:8080/api/v1/upload",
+      data: formdata,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        //handle success
+        console.log(response);
+        alert("Users added successfully!")
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
+  };
 
   return (
     <div class="container rounded content">
-      <div class="card" style={{ width: "60rem", height: "70vh" }}>
+      
+      <div class="card" style={{ width: "60rem", height: "70vh" }}>          
+      {auth?.roles?.includes("ROLE_ADMIN") && (
+
+
+
+      <form>
+        <div>
+          <h2>Import Employees From CSV</h2>
+          <input type="file" name="file" onChange={(e)=> handleFile(e)}></input>
+          <Button  variant="contained" type="button" onClick={(e) => helpUpload(e)}>Upload</Button>
+          <hr></hr>
+        </div>
+      </form>
+      )}
         <div>
           {auth?.roles?.includes("ROLE_ADMIN") && (
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -275,6 +321,7 @@ const UsersList = () => {
         )}
       </div>
     </div>
+    
   );
 };
 
