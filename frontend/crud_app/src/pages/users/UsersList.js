@@ -37,7 +37,7 @@ const UsersList = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
 
-  console.log(auth, "AUTHHH");
+  console.log(auth, "AUTHHH userpage");
 
   useEffect(() => {
     let isMounted = true;
@@ -106,11 +106,7 @@ const UsersList = () => {
         );
       })
       .catch((err) => {
-        if (password.length < 8) {
-          alert("Password too short \n" + err);
-        } else {
-          alert("Email is not valid \n" + err);
-        }
+        alert(err.response.data.message);
       });
   };
 
@@ -148,21 +144,20 @@ const UsersList = () => {
     setOpen(false);
   };
   var state = {
-    file: null
-  }
-  const handleFile = (e)=>{
+    file: null,
+  };
+  const handleFile = (e) => {
     let file = e.target.files[0];
     //console.log(e.target.files, "$$$")
     state = {
-      file : file
+      file: file,
     };
-    
   };
-  const helpUpload = (e)=>{
+  const helpUpload = (e) => {
     console.log(state, "The state ****");
-    let file = state.file
+    let file = state.file;
     var formdata = new FormData();
-    formdata.append('file', file); 
+    formdata.append("file", file);
     axios({
       method: "post",
       url: "http://localhost:8080/api/v1/upload",
@@ -172,7 +167,7 @@ const UsersList = () => {
       .then(function (response) {
         //handle success
         console.log(response);
-        alert("Users added successfully!")
+        alert("Users added successfully!");
       })
       .catch(function (response) {
         //handle error
@@ -182,21 +177,27 @@ const UsersList = () => {
 
   return (
     <div class="container rounded content">
-      
-      <div class="card" style={{ width: "60rem", height: "70vh" }}>          
-      {auth?.roles?.includes("ROLE_ADMIN") && (
-
-
-
-      <form>
-        <div>
-          <h2>Import Employees From CSV</h2>
-          <input type="file" name="file" onChange={(e)=> handleFile(e)}></input>
-          <Button  variant="contained" type="button" onClick={(e) => helpUpload(e)}>Upload</Button>
-          <hr></hr>
-        </div>
-      </form>
-      )}
+      <div class="card" style={{ width: "60rem", height: "70vh" }}>
+        {auth?.roles?.includes("ROLE_ADMIN") && (
+          <form>
+            <div>
+              <h2>Import Employees From CSV</h2>
+              <input
+                type="file"
+                name="file"
+                onChange={(e) => handleFile(e)}
+              ></input>
+              <Button
+                variant="contained"
+                type="button"
+                onClick={(e) => helpUpload(e)}
+              >
+                Upload
+              </Button>
+              <hr></hr>
+            </div>
+          </form>
+        )}
         <div>
           {auth?.roles?.includes("ROLE_ADMIN") && (
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -321,7 +322,6 @@ const UsersList = () => {
         )}
       </div>
     </div>
-    
   );
 };
 

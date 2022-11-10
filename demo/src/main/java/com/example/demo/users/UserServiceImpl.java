@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,15 +48,38 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     public AppUser saveUser(AppUser user) throws IllegalStateException{
         log.info("saving new user {} to the database", user.getUsername());
         boolean isValidEmail = emailValidator.test(user.getEmail());
+
+//        try {
+//            Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
+//            log.info("saving new user {} to the database hahaha", userCheck.isPresent());
+//            if (userCheck.isPresent()){
+//                throw new IllegalStateException("email is already taken");
+//            }
+//        }
+//        catch (IllegalStateException e) {
+//            throw new IllegalStateException("email is already taken");
+//        }
+
+        if (user.getUsername() == ""){
+            throw new IllegalStateException("username cannot be empty");
+        }
+
         if(!isValidEmail){
             throw new IllegalStateException("Invalid email");
         }
+
+        Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
+        log.info("saving new user {} to the database hahaha", userCheck.isPresent());
+        if (userCheck.isPresent()){
+            throw new IllegalStateException("email is already taken");
+        }
+
         if (user.getPassword().length() >= 8) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepo.save(user);
         } else {
             log.error("Your password is too short " + user.getPassword().length());
-            throw new IllegalStateException("User not found in the database");
+            throw new IllegalStateException("Your password is too short");
         }
 
     }

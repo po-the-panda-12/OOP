@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import styled from "styled-components";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-
+import useAuth from "../../hooks/useAuth";
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
@@ -22,13 +22,10 @@ const Button = styled.button`
 `;
 let options = [];
 
-
-
 const options1 = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
 ];
-
 
 // should be based on user
 let userOptions = [];
@@ -50,16 +47,17 @@ const customStyles = {
 
 export default function LoanApplication() {
   const navigate = useNavigate();
+  const { setAuth, auth } = useAuth();
+  console.log(auth.id, "AUTH ID :D");
 
   useEffect(() => {
-
     Swal.fire({
-      title: 'Loading information from database...',
+      title: "Loading information from database...",
       allowOutsideClick: false,
       didOpen: () => {
-        Swal.showLoading()
+        Swal.showLoading();
       },
-    })
+    });
 
     // get options from backend axios call
     axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
@@ -67,7 +65,10 @@ export default function LoanApplication() {
 
       console.log(res.data);
       res.data.forEach((attraction) => {
-        options.push({ value: attraction.attractionID, label: attraction.name });
+        options.push({
+          value: attraction.attractionID,
+          label: attraction.name,
+        });
       });
 
       console.log(options);
@@ -106,8 +107,6 @@ export default function LoanApplication() {
   const onPassesChange = (e) => {
     setPasses(e);
   };
-
-
 
   const SelectUserComponent = () => (
     <Select
@@ -163,7 +162,9 @@ export default function LoanApplication() {
 
     // get successloan by userid, month and year
     axios
-      .get(`${backendDomain}/api/v1/successloan/staff/${userId}/month/${month}/year/${year}`)
+      .get(
+        `${backendDomain}/api/v1/successloan/staff/${userId}/month/${month}/year/${year}`
+      )
       .then((res) => {
         console.log(res.data);
         if (res.data.length > 2) {
@@ -181,28 +182,28 @@ export default function LoanApplication() {
 
           alert(
             "User " +
-            userId +
-            " sent request to: " +
-            `${backendDomain}/api/v1/loanpass/\n` +
-            "Attraction: " +
-            attraction.value +
-            " Passes: " +
-            passes.value +
-            " Date: " +
-            day +
-            "/" +
-            month +
-            "/" +
-            year
+              userId +
+              " sent request to: " +
+              `${backendDomain}/api/v1/loanpass/\n` +
+              "Attraction: " +
+              attraction.value +
+              " Passes: " +
+              passes.value +
+              " Date: " +
+              day +
+              "/" +
+              month +
+              "/" +
+              year
           );
 
           Swal.fire({
-            title: 'Loading information from database...',
+            title: "Loading information from database...",
             allowOutsideClick: false,
             didOpen: () => {
-              Swal.showLoading()
+              Swal.showLoading();
             },
-          })
+          });
 
           axios
             .post(`${backendDomain}/api/v1/bookingdate/save`, {
@@ -210,33 +211,31 @@ export default function LoanApplication() {
               waitingList: newwaitingList,
             })
             .then(() => {
-
-
-              axios.post(`${backendDomain}/api/v1/successloan`, {
-                "staffId": userId,
-                "attractionId": attraction.value,
-                "month": month,
-                "year": year,
-                "day": day
-              }).then((res) => {
-                Swal.close();
-                alert("Successfully created loan application!");
-                navigate("/react/viewbooking");
-                
-
-              });
+              axios
+                .post(`${backendDomain}/api/v1/successloan`, {
+                  staffId: userId,
+                  attractionId: attraction.value,
+                  month: month,
+                  year: year,
+                  day: day,
+                })
+                .then((res) => {
+                  Swal.close();
+                  alert("Successfully created loan application!");
+                  navigate("/react/viewbooking");
+                });
             })
             .catch((err) => {
               Swal.close();
               console.log(err);
               if (err.response.status === 500) {
                 Swal.fire({
-                  title: 'Loading information from database...',
+                  title: "Loading information from database...",
                   allowOutsideClick: false,
                   didOpen: () => {
-                    Swal.showLoading()
+                    Swal.showLoading();
                   },
-                })
+                });
                 axios
                   .get(`${backendDomain}/api/v1/bookingdate/${date}`)
                   .then((res) => {
@@ -252,12 +251,12 @@ export default function LoanApplication() {
                     }
 
                     Swal.fire({
-                      title: 'Loading information from database...',
+                      title: "Loading information from database...",
                       allowOutsideClick: false,
                       didOpen: () => {
-                        Swal.showLoading()
+                        Swal.showLoading();
                       },
-                    })
+                    });
 
                     // get all loanpasses
                     axios
@@ -289,57 +288,70 @@ export default function LoanApplication() {
 
                           const yesWaiting = window.confirm(confirmMessage);
                           if (yesWaiting) {
-
                             Swal.fire({
-                              title: 'Loading information from database...',
+                              title: "Loading information from database...",
                               allowOutsideClick: false,
                               didOpen: () => {
-                                Swal.showLoading()
+                                Swal.showLoading();
                               },
-                            })
+                            });
 
                             axios
                               .put(
-                                `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + newwaitingList
+                                `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
+                                  waitingList + "," + newwaitingList
                                 }`,
                                 null
                               )
                               .then(() => {
                                 Swal.close();
-                                if (confirmMessage.includes("There is only 1 loan pass to be booked")) {
-                                  axios.post(`${backendDomain}/api/v1/successloan`, {
-                                    "staffId": userId,
-                                    "attractionId": attraction.value,
-                                    "month": month,
-                                    "year": year,
-                                    "day": day
-                                  }).then((res) => {
-                                    Swal.close();
-                                    alert("Successfully created loan application!");
-                                    navigate("/react/viewbooking");
-
-                                  });
+                                if (
+                                  confirmMessage.includes(
+                                    "There is only 1 loan pass to be booked"
+                                  )
+                                ) {
+                                  axios
+                                    .post(
+                                      `${backendDomain}/api/v1/successloan`,
+                                      {
+                                        staffId: userId,
+                                        attractionId: attraction.value,
+                                        month: month,
+                                        year: year,
+                                        day: day,
+                                      }
+                                    )
+                                    .then((res) => {
+                                      Swal.close();
+                                      alert(
+                                        "Successfully created loan application!"
+                                      );
+                                      navigate("/react/viewbooking");
+                                    });
                                 }
                                 alert(waitingList + "," + newwaitingList);
                               })
                               .catch((err) => {
                                 Swal.close();
-                                alert("error in update! staying on this page." + err);
+                                alert(
+                                  "error in update! staying on this page." + err
+                                );
                                 console.log(err);
                               });
                           }
                         } else {
                           Swal.fire({
-                            title: 'Loading information from database...',
+                            title: "Loading information from database...",
                             allowOutsideClick: false,
                             didOpen: () => {
-                              Swal.showLoading()
+                              Swal.showLoading();
                             },
-                          })
+                          });
 
                           axios
                             .put(
-                              `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${waitingList + "," + newwaitingList
+                              `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
+                                waitingList + "," + newwaitingList
                               }`,
                               null
                             )
@@ -351,7 +363,9 @@ export default function LoanApplication() {
                             })
                             .catch((err) => {
                               Swal.close();
-                              alert("error in update! staying on this page." + err);
+                              alert(
+                                "error in update! staying on this page." + err
+                              );
                               console.log(err);
                             });
                         }
@@ -366,18 +380,22 @@ export default function LoanApplication() {
             });
         }
       });
-
-
-
-
-
   };
 
-
-
   return (
-    <div class="container rounded content" style={{"height": "100%", "width":"80%"}}>
-      <div class="card" style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
+    <div
+      class="container rounded content"
+      style={{ height: "100%", width: "80%" }}
+    >
+      <div
+        class="card"
+        style={{
+          width: "85%",
+          height: "70vh",
+          maxWidth: "500px",
+          minWidth: "200px",
+        }}
+      >
         <h2 className="main-header">Loan Application</h2>
 
         <h4 className="sub-header">UserId:</h4>

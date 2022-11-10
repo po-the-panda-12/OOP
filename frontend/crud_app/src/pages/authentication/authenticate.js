@@ -64,11 +64,7 @@ export default function Authenticate() {
         );
       })
       .catch((err) => {
-        if (password.length < 8) {
-          alert("Password too short \n" + err);
-        } else {
-          alert("Email is not valid \n" + err);
-        }
+        alert(err.response.data.message);
       });
   };
   //   const login = () => {
@@ -104,7 +100,13 @@ export default function Authenticate() {
       console.log(accessToken, "accessToken accessToken accessToken");
       const roles = decodedHeader?.roles;
       console.log(auth);
-      setAuth({ username, phone, accessToken, roles });
+
+      const response2 = await axios.get(
+        `${backendDomain}/api/v1/login/${username}`
+      );
+      console.log(response2.data.id, "response 2");
+      const id = response2.data.id;
+      setAuth({ username, phone, accessToken, roles, id });
       // localStorage.setItem("accessToken", auth);
 
       setEmail("");

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Checkbox, Form } from "semantic-ui-react";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 export default function CreateLoanPass() {
   const backendDomain = process.env.REACT_APP_backendDomain;
@@ -11,6 +12,9 @@ export default function CreateLoanPass() {
   const [description, setDescription] = useState("");
 
   const [checkbox, setCheckbox] = useState(false);
+
+  const { setAuth, auth } = useAuth();
+  console.log(auth.id, "AUTH ID :D");
   const postData = () => {
     const postRequest =
       "{attractioId: " +
@@ -41,7 +45,15 @@ export default function CreateLoanPass() {
       });
   };
   return (
-    <div class="content" style={{ width: "85%", height: "70vh", maxWidth:"500px", minWidth:"200px"}}>
+    <div
+      class="content"
+      style={{
+        width: "85%",
+        height: "70vh",
+        maxWidth: "500px",
+        minWidth: "200px",
+      }}
+    >
       <Form className="create-form">
         <Form.Field>
           <label>attractionId</label>
