@@ -1,5 +1,8 @@
 package com.example.demo.users;
 
+import com.example.demo.attractions.Attractions;
+import com.example.demo.emailtemplate.EmailTemplate;
+import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.users.RoleRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +29,8 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
-
     private final EmailValidator emailValidator;
+    private final EmailSenderService emailSenderService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -76,6 +81,26 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 
         if (user.getPassword().length() >= 8) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            // send email
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Registration Confirmation");
+                                                                                //<a href=\"" + "#regLink#" + "\">here</a>
+            defaultTemplate.setEmailTemplateBody("<p>Dear #newUserName#,</p><p>Please click <a href=\"" + "#regLink#" + "\">here</a>  to verify your account.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+
+            String recipient = user.getUsername();
+            String recipientEmail = user.getEmail();
+            // regex patterns
+            templateBody = templateBody.replace("#newUserName#",recipient);
+            templateBody = templateBody.replace("#regLink#","https://www.youtube.com/");
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+
+
+
             return userRepo.save(user);
         } else {
             log.error("Your password is too short " + user.getPassword().length());
@@ -102,6 +127,11 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     public AppUser getUser(String username) {
         log.info("Fetching user {}", username);
         return userRepo.findByUsername(username);
+    }
+
+    public Optional<AppUser> getById(Long id){
+        return userRepo.findById(id);
+
     }
 
     @Override
