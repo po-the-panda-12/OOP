@@ -72,8 +72,7 @@ public class SuccessloanService {
         // formatting
         DateTimeFormatter dateFormatObject = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
         Attractions selectedAttraction = attractionsService.getAttractions().get(successloan.getAttractionId());
-//        User recipient = userService.getUsers()
-//                successloan.getStaffId()
+
         String templateTitle = defaultTemplate.getEmailTemplateName();
         String templateBody = defaultTemplate.getEmailTemplateBody();
 

@@ -1,9 +1,16 @@
 package com.example.demo.loanpass;
 
+import com.example.demo.attractions.Attractions;
+import com.example.demo.users.AppUser;
+import com.example.demo.users.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.demo.emailsender.EmailSenderService;
+import com.example.demo.emailtemplate.EmailTemplate;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -11,10 +18,14 @@ import java.util.Optional;
 @Service
 public class LoanpassService {
     private final LoanpassRepository loanPassRepository;
+    private final UserRepo userRepo;
+    private final EmailSenderService emailSenderService;
 
     @Autowired
-    public LoanpassService(LoanpassRepository loanPassRepository){
+    public LoanpassService(LoanpassRepository loanPassRepository,UserRepo userRepo,EmailSenderService emailSenderService){
         this.loanPassRepository = loanPassRepository;
+        this.userRepo = userRepo;
+        this.emailSenderService = emailSenderService;
     }
 
     public List<Loanpass> getLoanPass(){
@@ -60,6 +71,35 @@ public class LoanpassService {
         if (description != null && description.length() > 0 && !Objects.equals(loanPass.getDescription(), description)){
             loanPass.setDescription(description);
         }
+        // split
+        String[] splittedString = loanPass.getDescription().split(",./");
+        AppUser loanedBy = userRepo.getById((long)previousLoanBy);
+        System.out.println((loanedBy));
+        String status = splittedString[0];
+        System.out.println("status "+splittedString[0]);
+        String replacementFee = splittedString[2];
+        System.out.println("replacementFee "+splittedString[2]);
+        // check if expired
+        System.out.println("isLost"+status == "Lost");
+        if(status.equals("Lost")){
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Loan Pass Lost");
+            defaultTemplate.setEmailTemplateBody("<p>Dear #borrowerName# ,</p><p>It seems that your Loan Pass with the ID #loanPassId# has been lost. " +
+                    "Please pay the replacement fee $#replacementFee# .</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+            String recipient = loanedBy.getUsername();
+            String recipientEmail = loanedBy.getEmail();
+
+            // regex patterns
+            templateBody = templateBody.replace("#borrowerName#",recipient);
+            templateBody = templateBody.replace("#loanPassId#",String.valueOf(passId));
+            templateBody = templateBody.replace("#replacementFee#",replacementFee);
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        }
+        // check if collected
     }
 
 
