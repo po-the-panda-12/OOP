@@ -38,6 +38,9 @@ import CreateEmailTemplate from "./pages/emailtemplates/createEmailTemplate";
 // ================= Users =======================
 import UsersList from "./pages/users/UsersList";
 
+// ================= Attractions =======================
+import AttractionList from "./pages/attractions/attractionList";
+import CreateAttractions from "./pages/attractions/createAttractions";
 // =============== Singapore Statistics ==============
 import EmployeeStatistics from "./components/successloan/employeestatistic";
 import MonthlyStatistics from "./components/successloan/monthlystatistic";
@@ -79,6 +82,9 @@ class App extends React.Component {
                     <Link to="/react/users">Users</Link>
                   </Nav.Link>
                   <Nav.Link href="">
+                    <Link to="/react/attractions">Attractions</Link>
+                  </Nav.Link>
+                  <Nav.Link title="Loan Pass" id="basic-nav-dropdown">
                     <Link to="/react/read">Loanpass</Link>
                   </Nav.Link>
                   <NavDropdown title="Statistics" id="basic-nav-dropdown">
@@ -143,6 +149,9 @@ class App extends React.Component {
                 element={<EditEmailTemplate />}
               ></Route>
               <Route exact path="/react/users" element={<UsersList />}></Route>
+              {/* attractions */}
+              <Route exact path="/react/attractions" element={<AttractionList/>}></Route>
+              <Route exact path="/react/attractions/create" element={<CreateAttractions/>}></Route>
               <Route exact path="/react/employeestatistic" element={<EmployeeStatistics />}></Route>
               <Route exact path="/react/monthlystatistic" element={<MonthlyStatistics />}></Route>
             </Routes>
