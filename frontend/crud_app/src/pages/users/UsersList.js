@@ -27,6 +27,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { Form } from "semantic-ui-react";
 
 const UsersList = () => {
+  const backendDomain = process.env.REACT_APP_backendDomain;
   const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { setAuth, auth } = useAuth();
@@ -36,7 +37,7 @@ const UsersList = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
 
-  console.log(auth, "AUTHHH");
+  console.log(auth, "AUTHHH userpage");
 
   useEffect(() => {
     let isMounted = true;
@@ -65,7 +66,7 @@ const UsersList = () => {
 
   const register = () => {
     axios
-      .post(`http://localhost:8080/api/v1/user/save`, {
+      .post(`${backendDomain}/api/v1/user/save`, {
         username,
         email,
         password,
@@ -101,15 +102,11 @@ const UsersList = () => {
         alert(
           "sent a post request:\n" +
             postRequest +
-            "\nto http://localhost:8080/api/v1/user/save"
+            `\nto ${backendDomain}/api/v1/user/save`
         );
       })
       .catch((err) => {
-        if (password.length < 8) {
-          alert("Password too short \n" + err);
-        } else {
-          alert("Email is not valid \n" + err);
-        }
+        alert(err.response.data.message);
       });
   };
 
@@ -129,7 +126,7 @@ const UsersList = () => {
 
   const deleteUser = (id) => {
     axios
-      .delete(`http://localhost:8080/api/v1/users/delete/${id}`)
+      .delete(`${backendDomain}/api/v1/users/delete/${id}`)
       .then((response) => {
         alert(`User ${id} deleted`);
       });
@@ -146,10 +143,61 @@ const UsersList = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  var state = {
+    file: null,
+  };
+  const handleFile = (e) => {
+    let file = e.target.files[0];
+    //console.log(e.target.files, "$$$")
+    state = {
+      file: file,
+    };
+  };
+  const helpUpload = (e) => {
+    console.log(state, "The state ****");
+    let file = state.file;
+    var formdata = new FormData();
+    formdata.append("file", file);
+    axios({
+      method: "post",
+      url: "http://localhost:8080/api/v1/upload",
+      data: formdata,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then(function (response) {
+        //handle success
+        console.log(response);
+        alert("Users added successfully!");
+      })
+      .catch(function (response) {
+        //handle error
+        console.log(response);
+      });
+  };
 
   return (
     <div class="container rounded content">
       <div class="card" style={{ width: "60rem", height: "70vh" }}>
+        {auth?.roles?.includes("ROLE_ADMIN") && (
+          <form>
+            <div>
+              <h2>Import Employees From CSV</h2>
+              <input
+                type="file"
+                name="file"
+                onChange={(e) => handleFile(e)}
+              ></input>
+              <Button
+                variant="contained"
+                type="button"
+                onClick={(e) => helpUpload(e)}
+              >
+                Upload
+              </Button>
+              <hr></hr>
+            </div>
+          </form>
+        )}
         <div>
           {auth?.roles?.includes("ROLE_ADMIN") && (
             <Button variant="outlined" onClick={handleClickOpen}>

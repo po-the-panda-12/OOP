@@ -41,6 +41,9 @@ import UsersList from "./pages/users/UsersList";
 // ================= Attractions =======================
 import AttractionList from "./pages/attractions/attractionList";
 import CreateAttractions from "./pages/attractions/createAttractions";
+// =============== Singapore Statistics ==============
+import EmployeeStatistics from "./components/successloan/employeestatistic";
+import MonthlyStatistics from "./components/successloan/monthlystatistic";
 
 class App extends React.Component {
   render() {
@@ -81,12 +84,15 @@ class App extends React.Component {
                   <Nav.Link href="">
                     <Link to="/react/attractions">Attractions</Link>
                   </Nav.Link>
-                  <NavDropdown title="Loan Pass" id="basic-nav-dropdown">
+                  <Nav.Link title="Loan Pass" id="basic-nav-dropdown">
+                    <Link to="/react/read">Loanpass</Link>
+                  </Nav.Link>
+                  <NavDropdown title="Statistics" id="basic-nav-dropdown">
                     <NavDropdown.Item href="">
-                      <Link to="/react/createloanpass">Create Loan Pass</Link>
+                      <Link to="/react/employeestatistic">Employee Statistics</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item href="">
-                      <Link to="/react/read">Read Loanpasses</Link>
+                      <Link to="/react/monthlystatistic">Monthly Statistics</Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item href="">Something</NavDropdown.Item>
                     <NavDropdown.Divider />
@@ -98,11 +104,11 @@ class App extends React.Component {
           </Navbar>
 
           {/* END OF NAVBAR */}
-          <div>
+          {/* <div>
               <video autoPlay loop muted>
               <source src={vid_background} type = "video/mp4"></source>
               </video>
-            </div>
+            </div> */}
           <div className="main">
             {/* authentication */}
 
@@ -146,6 +152,8 @@ class App extends React.Component {
               {/* attractions */}
               <Route exact path="/react/attractions" element={<AttractionList/>}></Route>
               <Route exact path="/react/attractions/create" element={<CreateAttractions/>}></Route>
+              <Route exact path="/react/employeestatistic" element={<EmployeeStatistics />}></Route>
+              <Route exact path="/react/monthlystatistic" element={<MonthlyStatistics />}></Route>
             </Routes>
           </div>
         </div>

@@ -45,6 +45,11 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @GetMapping("/login/{username}")
+    public ResponseEntity<AppUser> getUser(@PathVariable("username") String username) {
+        return ResponseEntity.ok().body(userService.getUser(username));
+    }
+
     @DeleteMapping(path = "/users/delete/{id}")
     public void deleteUser(@PathVariable("id") Long id) {
         userService.deleteUser(id);

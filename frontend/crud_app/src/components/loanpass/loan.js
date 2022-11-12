@@ -5,6 +5,9 @@ import { addDays } from "date-fns";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
+import useAuth from "../../hooks/useAuth";
 
 const backendDomain = process.env.REACT_APP_backendDomain;
 
@@ -19,13 +22,10 @@ const Button = styled.button`
 `;
 let options = [];
 
-
-
 const options1 = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
 ];
-
 
 // should be based on user
 let userOptions = [];
@@ -46,8 +46,18 @@ const customStyles = {
 };
 
 export default function LoanApplication() {
+  const navigate = useNavigate();
+  const { setAuth, auth } = useAuth();
+  console.log(auth.id, "AUTH ID :D");
 
   useEffect(() => {
+    Swal.fire({
+      title: "Loading information from database...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
     // get options from backend axios call
     axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
@@ -55,23 +65,28 @@ export default function LoanApplication() {
 
       console.log(res.data);
       res.data.forEach((attraction) => {
-        options.push({ value: attraction.attractionID, label: attraction.name });
+        options.push({
+          value: attraction.attractionID,
+          label: attraction.name,
+        });
       });
 
       console.log(options);
       setPasses(1);
+      Swal.close();
     });
 
     // Update the document title using the browser API
     console.log("useEffect only once!");
     console.log(localStorage.getItem("auth"));
 
-    let user = JSON.parse(localStorage.getItem("auth"))["username"];
-    userOptions = [{ value: user, label: user }];
-    
+    let userlogin = "2"; // JSON.parse(localStorage.getItem("auth"))["username"]
+    userOptions = [{ value: userlogin, label: userlogin }];
+
     console.log(userOptions);
-    setPasses(1);
     onPassesChange();
+    setPasses(1);
+    setUser({ value: userlogin, label: userlogin });
   }, [""]);
   // state for user
   const [user, setUser] = useState();
@@ -92,8 +107,6 @@ export default function LoanApplication() {
   const onPassesChange = (e) => {
     setPasses(e);
   };
-
-  
 
   const SelectUserComponent = () => (
     <Select
@@ -121,7 +134,7 @@ export default function LoanApplication() {
       styles={customStyles}
       options={options1}
       defaultValue={options1[0]}
-      value={options1[0]}
+      value={passes}
       onChange={(d) => onPassesChange(d)}
     />
   );
@@ -147,130 +160,242 @@ export default function LoanApplication() {
 
     const date = `${attractionId},${day},${month},${year}`;
 
-    let newwaitingList = `${userId}`;
-
-    if (passes.value == 2) {
-      newwaitingList += `,${userId}`;
-    }
-
-    alert(
-      "User " +
-        userId +
-        " sent request to: " +
-        `${backendDomain}/api/v1/loanpass/\n` +
-        "Attraction: " +
-        attraction.value +
-        " Passes: " +
-        passes.value +
-        " Date: " +
-        day +
-        "/" +
-        month +
-        "/" +
-        year
-    );
+    // get successloan by userid, month and year
     axios
-      .post(`${backendDomain}/api/v1/bookingdate/save`, {
-        date: date,
-        waitingList: newwaitingList,
-      })
-      .then(() => {
-        alert("Successfully created loan application!");
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.response.status === 500) {
+      .get(
+        `${backendDomain}/api/v1/successloan/staff/${userId}/month/${month}/year/${year}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.length > 2) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You have already applied for 2 loans this month!",
+          });
+        } else {
+          let newwaitingList = `${userId}`;
+
+          if (passes.value == 2) {
+            newwaitingList += `,${userId}`;
+          }
+
+          alert(
+            "User " +
+              userId +
+              " sent request to: " +
+              `${backendDomain}/api/v1/loanpass/\n` +
+              "Attraction: " +
+              attraction.value +
+              " Passes: " +
+              passes.value +
+              " Date: " +
+              day +
+              "/" +
+              month +
+              "/" +
+              year
+          );
+
+          Swal.fire({
+            title: "Loading information from database...",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
           axios
-            .get(`${backendDomain}/api/v1/bookingdate/${date}`)
-            .then((res) => {
-              const waitingList = res.data.waitingList;
-              // alert(`already booked! waiting list: ${waitingList}`);
-
-              const waitingListsplitted = waitingList.split(",");
-
-              if (waitingListsplitted.includes(userId)) {
-                alert("You are already in the waiting list!");
-                return;
-              }
-
-              // get all loanpasses
+            .post(`${backendDomain}/api/v1/bookingdate/save`, {
+              date: date,
+              waitingList: newwaitingList,
+            })
+            .then(() => {
               axios
-                .get(
-                  `${backendDomain}/api/v1/loanpass/getbyattraction/${attractionId}`
-                )
+                .post(`${backendDomain}/api/v1/successloan`, {
+                  staffId: userId,
+                  attractionId: attraction.value,
+                  month: month,
+                  year: year,
+                  day: day,
+                })
                 .then((res) => {
-                  var loanPasses = 0;
-                  res.data.forEach((loanPass) => {
-                    loanPasses++;
-                  });
-                  console.log(loanPasses);
-
-                  if (
-                    waitingListsplitted.length + parseInt(passes.value) >
-                    loanPasses
-                  ) {
-                    let confirmMessage =
-                      "You are not in the waiting list, but there are not enough loan passes available. Do you want to be added to the waiting list?";
-                    console.log("too little passes!");
-                    if (
-                      passes.value == 2 &&
-                      waitingListsplitted.length == loanPasses - 1
-                    ) {
-                      confirmMessage =
-                        "There is only 1 loan pass to be booked, do you want to book it and be put on the waiting list for the next one?";
-                    }
-
-                    const yesWaiting = window.confirm(confirmMessage);
-                    if (yesWaiting) {
-                      axios
-                        .put(
-                          `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
-                            waitingList + "," + newwaitingList
-                          }`,
-                          null
-                        )
-                        .then(() => {
-                          alert("Successfully added to waiting list!");
-                          alert(waitingList + "," + newwaitingList);
-                        })
-                        .catch((err) => {
-                          alert("error in update! staying on this page." + err);
-                          console.log(err);
-                        });
-                    }
-                  } else {
-                    axios
-                      .put(
-                        `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
-                          waitingList + "," + newwaitingList
-                        }`,
-                        null
-                      )
-                      .then(() => {
-                        alert("Successfully added to waiting list!");
-                        alert(waitingList + "," + newwaitingList);
-                      })
-                      .catch((err) => {
-                        alert("error in update! staying on this page." + err);
-                        console.log(err);
-                      });
-                  }
+                  Swal.close();
+                  alert("Successfully created loan application!");
+                  navigate("/react/viewbooking");
                 });
             })
             .catch((err) => {
+              Swal.close();
               console.log(err);
+              if (err.response.status === 500) {
+                Swal.fire({
+                  title: "Loading information from database...",
+                  allowOutsideClick: false,
+                  didOpen: () => {
+                    Swal.showLoading();
+                  },
+                });
+                axios
+                  .get(`${backendDomain}/api/v1/bookingdate/${date}`)
+                  .then((res) => {
+                    Swal.close();
+                    const waitingList = res.data.waitingList;
+                    // alert(`already booked! waiting list: ${waitingList}`);
+
+                    const waitingListsplitted = waitingList.split(",");
+
+                    if (waitingListsplitted.includes(userId)) {
+                      alert("You are already in the waiting list!");
+                      return;
+                    }
+
+                    Swal.fire({
+                      title: "Loading information from database...",
+                      allowOutsideClick: false,
+                      didOpen: () => {
+                        Swal.showLoading();
+                      },
+                    });
+
+                    // get all loanpasses
+                    axios
+                      .get(
+                        `${backendDomain}/api/v1/loanpass/getbyattraction/${attractionId}`
+                      )
+                      .then((res) => {
+                        Swal.close();
+                        var loanPasses = 0;
+                        res.data.forEach((loanPass) => {
+                          loanPasses++;
+                        });
+                        console.log(loanPasses);
+
+                        if (
+                          waitingListsplitted.length + parseInt(passes.value) >
+                          loanPasses
+                        ) {
+                          let confirmMessage =
+                            "You are not in the waiting list, but there are not enough loan passes available. Do you want to be added to the waiting list?";
+                          console.log("too little passes!");
+                          if (
+                            passes.value == 2 &&
+                            waitingListsplitted.length == loanPasses - 1
+                          ) {
+                            confirmMessage =
+                              "There is only 1 loan pass to be booked, do you want to book it and be put on the waiting list for the next one?";
+                          }
+
+                          const yesWaiting = window.confirm(confirmMessage);
+                          if (yesWaiting) {
+                            Swal.fire({
+                              title: "Loading information from database...",
+                              allowOutsideClick: false,
+                              didOpen: () => {
+                                Swal.showLoading();
+                              },
+                            });
+
+                            axios
+                              .put(
+                                `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
+                                  waitingList + "," + newwaitingList
+                                }`,
+                                null
+                              )
+                              .then(() => {
+                                Swal.close();
+                                if (
+                                  confirmMessage.includes(
+                                    "There is only 1 loan pass to be booked"
+                                  )
+                                ) {
+                                  axios
+                                    .post(
+                                      `${backendDomain}/api/v1/successloan`,
+                                      {
+                                        staffId: userId,
+                                        attractionId: attraction.value,
+                                        month: month,
+                                        year: year,
+                                        day: day,
+                                      }
+                                    )
+                                    .then((res) => {
+                                      Swal.close();
+                                      alert(
+                                        "Successfully created loan application!"
+                                      );
+                                      navigate("/react/viewbooking");
+                                    });
+                                }
+                                alert(waitingList + "," + newwaitingList);
+                              })
+                              .catch((err) => {
+                                Swal.close();
+                                alert(
+                                  "error in update! staying on this page." + err
+                                );
+                                console.log(err);
+                              });
+                          }
+                        } else {
+                          Swal.fire({
+                            title: "Loading information from database...",
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                              Swal.showLoading();
+                            },
+                          });
+
+                          axios
+                            .put(
+                              `${backendDomain}/api/v1/bookingdate/${date}?waitingList=${
+                                waitingList + "," + newwaitingList
+                              }`,
+                              null
+                            )
+                            .then(() => {
+                              Swal.close();
+                              alert("Successfully added to waiting list!");
+                              alert(waitingList + "," + newwaitingList);
+                              navigate("/react/viewbooking");
+                            })
+                            .catch((err) => {
+                              Swal.close();
+                              alert(
+                                "error in update! staying on this page." + err
+                              );
+                              console.log(err);
+                            });
+                        }
+                      });
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+              } else {
+                alert("error:" + err);
+              }
             });
-        } else {
-          alert("error:" + err);
         }
       });
   };
 
-
-
   return (
-    <div class="container rounded content">
-      <div class="card" style={{ width: "30rem", height: "70vh" }}>
+    <div
+      class="container rounded content"
+      style={{ height: "100%", width: "80%" }}
+    >
+      <div
+        class="card"
+        style={{
+          width: "85%",
+          height: "70vh",
+          maxWidth: "500px",
+          minWidth: "200px",
+        }}
+      >
         <h2 className="main-header">Loan Application</h2>
 
         <h4 className="sub-header">UserId:</h4>

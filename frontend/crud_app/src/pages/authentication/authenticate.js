@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import jwt_decode from "jwt-decode";
 
 export default function Authenticate() {
+  const backendDomain = process.env.REACT_APP_backendDomain;
   const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,7 @@ export default function Authenticate() {
   const [checkbox, setCheckbox] = useState(false);
   const register = () => {
     axios
-      .post(`http://localhost:8080/api/v1/user/save`, {
+      .post(`${backendDomain}/api/v1/user/save`, {
         username,
         email,
         password,
@@ -59,15 +60,11 @@ export default function Authenticate() {
         alert(
           "sent a post request:\n" +
             postRequest +
-            "\nto http://localhost:8080/api/v1/user/save"
+            `\nto ${backendDomain}/api/v1/user/save`
         );
       })
       .catch((err) => {
-        if (password.length < 8) {
-          alert("Password too short \n" + err);
-        } else {
-          alert("Email is not valid \n" + err);
-        }
+        alert(err.response.data.message);
       });
   };
   //   const login = () => {
@@ -90,7 +87,7 @@ export default function Authenticate() {
       params.append("password", password);
       console.log(params);
       const response = await axios.post(
-        "http://localhost:8080/api/v1/login",
+        `${backendDomain}/api/v1/login`,
         params
       );
       console.log(JSON.stringify(response?.data));
@@ -103,7 +100,13 @@ export default function Authenticate() {
       console.log(accessToken, "accessToken accessToken accessToken");
       const roles = decodedHeader?.roles;
       console.log(auth);
-      setAuth({ username, phone, accessToken, roles });
+
+      const response2 = await axios.get(
+        `${backendDomain}/api/v1/login/${username}`
+      );
+      console.log(response2.data.id, "response 2");
+      const id = response2.data.id;
+      setAuth({ username, phone, accessToken, roles, id });
       // localStorage.setItem("accessToken", auth);
 
       setEmail("");

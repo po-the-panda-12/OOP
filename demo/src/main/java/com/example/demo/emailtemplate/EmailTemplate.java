@@ -3,7 +3,6 @@ import javax.persistence.*;
 
 @Entity
 @Table
-
 public class EmailTemplate  {
     @Id
     @SequenceGenerator(
@@ -17,6 +16,7 @@ public class EmailTemplate  {
     )
     private Integer emailTemplateId;
     private String emailTemplateName;
+    @Column(columnDefinition="TEXT")
     private String emailTemplateBody;
 
     public EmailTemplate(){
