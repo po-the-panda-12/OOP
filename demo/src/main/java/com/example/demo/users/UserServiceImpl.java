@@ -1,5 +1,8 @@
 package com.example.demo.users;
 
+import com.example.demo.attractions.Attractions;
+import com.example.demo.emailtemplate.EmailTemplate;
+import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.users.RoleRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +29,8 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
-
     private final EmailValidator emailValidator;
+    private final EmailSenderService emailSenderService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -102,6 +107,11 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     public AppUser getUser(String username) {
         log.info("Fetching user {}", username);
         return userRepo.findByUsername(username);
+    }
+
+    public Optional<AppUser> getById(Long id){
+        return userRepo.findById(id);
+
     }
 
     @Override

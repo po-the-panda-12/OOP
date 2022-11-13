@@ -1,5 +1,6 @@
 package com.example.demo.api;
-
+import com.example.demo.emailtemplate.EmailTemplate;
+import com.example.demo.emailsender.EmailSenderService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -39,6 +40,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class UserResource {
     private final UserService userService;
+    private final EmailSenderService emailSenderService;
 
     @GetMapping("/users")
     public ResponseEntity<List<AppUser>> getUsers() {
@@ -58,7 +60,24 @@ public class UserResource {
     @PostMapping("/user/save")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        ResponseEntity<AppUser> createdUser = ResponseEntity.created(uri).body(userService.saveUser(user));
+        // send email
+        EmailTemplate defaultTemplate = new EmailTemplate();
+        defaultTemplate.setEmailTemplateName("Registration Confirmation");
+        //<a href=\"" + "#regLink#" + "\">here</a>
+        defaultTemplate.setEmailTemplateBody("<p>Dear #newUserName#,</p><p>Please click <a href=\"" + "#regLink#" + "\">here</a>  to verify your account.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+
+        // formatting
+        String templateTitle = defaultTemplate.getEmailTemplateName();
+        String templateBody = defaultTemplate.getEmailTemplateBody();
+
+        String recipient = user.getUsername();
+        String recipientEmail = user.getEmail();
+        // regex patterns
+        templateBody = templateBody.replace("#newUserName#",recipient);
+        templateBody = templateBody.replace("#regLink#",uri.toString());
+        emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        return createdUser;
     }
 
     @PostMapping("/role/save")
