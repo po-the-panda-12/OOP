@@ -99,7 +99,43 @@ public class LoanpassService {
             templateBody = templateBody.replace("#replacementFee#",replacementFee);
             emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         }
+
         // check if collected
+        if(status.equals("Loaned Out")){
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Loan Pass Collected");
+            defaultTemplate.setEmailTemplateBody("WIP");
+
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+            String recipient = loanedBy.getUsername();
+            String recipientEmail = loanedBy.getEmail();
+
+            // regex patterns
+            templateBody = templateBody.replace("#borrowerName#",recipient);
+            templateBody = templateBody.replace("#loanPassId#",String.valueOf(passId));
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        }
+
+        // check if returned
+        if(status.equals("Uncollected")){
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Loan Pass Returned");
+            defaultTemplate.setEmailTemplateBody("WIP");
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+            String recipient = loanedBy.getUsername();
+            String recipientEmail = loanedBy.getEmail();
+
+            // regex patterns
+            templateBody = templateBody.replace("#borrowerName#",recipient);
+            templateBody = templateBody.replace("#loanPassId#",String.valueOf(passId));
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        }
     }
 
 
