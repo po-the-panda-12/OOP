@@ -103,103 +103,98 @@ export default function Update() {
     };
 
     return (
-        <div
-            style={{
-                width: "85%",
-                height: "70vh",
-                maxWidth: "500px",
-                minWidth: "200px",
-            }}
-        >
-            <Form className="create-form">
-                <Form.Field>
-                    <label>Attraction:</label>
-                    <select
-                        value={attractionId}
-                        onChange={(e) => setAttractionId(e.target.value)}
-                    >
-                        {attractions.map((attraction) => {
-                            return (
-                                <option value={attraction.attractionID}>
-                                    {attraction.name}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </Form.Field>
+        <div class="container rounded content" style={{width: "85%", maxWidth: "500px", minWidth: "200px"}}>
+            <div class="card" style={{width: "85%", maxWidth: "500px", minWidth: "200px",}}>
+                <Form className="create-form">
+                    <Form.Field>
+                        <label>Attraction:</label>
+                        <select
+                            value={attractionId}
+                            onChange={(e) => setAttractionId(e.target.value)}
+                        >
+                            {attractions.map((attraction) => {
+                                return (
+                                    <option value={attraction.attractionID}>
+                                        {attraction.name}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Pass No:</label>
-                    <input
-                        placeholder="passNumber"
-                        value={passNumber}
-                        onChange={(e) => setPassNumber(e.target.value)}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <label>Last Loaned by:</label>
-                    <input
-                        placeholder="previousLoanBy"
-                        value={previousLoanBy}
-                        onChange={(e) => setPreviousLoanBy(e.target.value)}
-                    />
-                </Form.Field>
-                <Form.Field>
-                    <label>Status:</label>
-                    <select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                    >
-                        <option value="Uncollected">Uncollected</option>
-                        <option value="Loaned out">Loaned out</option>
-                        <option value="Lost">Lost</option>
-                    </select>
-                </Form.Field>
-                <Form.Field>
-                    <label>Type:</label>
-                    <select
-                        value={type}
-                        onChange={(e) => setType(e.target.value)}
-                    >
-                        <option value="Physical">Physical</option>
-                        <option value="Digital">Digital</option>
-                    </select>
-                </Form.Field>
-                <Form.Field>
-                    <label>Replacement Fee:</label>
-                    <input
-                        placeholder="replacementFee"
-                        value={replacementFee}
-                        onChange={(e) => setReplacementFee(e.target.value)}
-                    />
-                </Form.Field>
+                    <Form.Field>
+                        <label>Pass No:</label>
+                        <input
+                            placeholder="passNumber"
+                            value={passNumber}
+                            onChange={(e) => setPassNumber(e.target.value)}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Last Loaned by:</label>
+                        <input
+                            placeholder="previousLoanBy"
+                            value={previousLoanBy}
+                            onChange={(e) => setPreviousLoanBy(e.target.value)}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Status:</label>
+                        <select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                        >
+                            <option value="Uncollected">Uncollected</option>
+                            <option value="Loaned out">Loaned out</option>
+                            <option value="Lost">Lost</option>
+                        </select>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Type:</label>
+                        <select
+                            value={type}
+                            onChange={(e) => setType(e.target.value)}
+                        >
+                            <option value="Physical">Physical</option>
+                            <option value="Digital">Digital</option>
+                        </select>
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Replacement Fee:</label>
+                        <input
+                            placeholder="replacementFee"
+                            value={replacementFee}
+                            onChange={(e) => setReplacementFee(e.target.value)}
+                        />
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Email Template:</label>
-                    <select
-                        value={emailTemplate}
-                        onChange={(e) => setEmailTemplateID(e.target.value)}
-                    >
-                        {emailTemplates.map((emailTemplate) => {
-                          console.log(emailTemplate)
-                            return <option value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}</option>;
-                        })}
-  
-                    </select>
-                </Form.Field>
+                    <Form.Field>
+                        <label>Email Template:</label>
+                        <select
+                            value={emailTemplate}
+                            onChange={(e) => setEmailTemplateID(e.target.value)}
+                        >
+                            {emailTemplates.map((emailTemplate) => {
+                            console.log(emailTemplate)
+                                return <option value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}</option>;
+                            })}
+    
+                        </select>
+                    </Form.Field>
 
-                <Form.Field>
-                    <label>Attachment Link:</label>
-                    <input
-                        placeholder="attachmentLink"
-                        value={attachmentLink}
-                        onChange={(e) => setAttachmentLink(e.target.value)}
-                    />
-                </Form.Field>
-                <Button type="submit" onClick={updateAPIData}>
-                    Update
-                </Button>
-            </Form>
+                    <Form.Field>
+                        <label>Attachment Link:</label>
+                        <input
+                            placeholder="attachmentLink"
+                            value={attachmentLink}
+                            onChange={(e) => setAttachmentLink(e.target.value)}
+                        />
+                    </Form.Field>
+                    <Button type="submit" onClick={updateAPIData}>
+                        Update
+                    </Button>
+                </Form>
+            </div>
         </div>
     );
 }

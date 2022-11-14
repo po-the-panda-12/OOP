@@ -214,11 +214,17 @@ export default function Authenticate() {
           <hr></hr>
           {haveAccount ? (
             <p>
-              Don't have an account? Sign up <a onClick={toggle}>here</a>
+              Don't have an account? Sign up{" "}
+              <a onClick={toggle}>
+                <u>here</u>
+              </a>
             </p>
           ) : (
             <p>
-              Already have an account? Login <a onClick={toggle}>here</a>
+              Already have an account? Login{" "}
+              <a onClick={toggle}>
+                <u>here</u>
+              </a>
             </p>
           )}
         </Form>

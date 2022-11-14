@@ -83,7 +83,7 @@ export default function Read() {
     }
 
     return (
-        <div style={{"height": "50%"}}>
+        <div class="container rounded content" style={{ height: "100%", width: "80%" }}>
             {/* button to create loanpass */}
             <Link to="/react/createloanpass">
                 <Button primary>Create Loan Pass</Button>
@@ -92,8 +92,8 @@ export default function Read() {
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell width={1}>pass<br/>Id</Table.HeaderCell>
-                        <Table.HeaderCell width={1}>att<br/>rac<br/>tion<br/>Id</Table.HeaderCell>
-                        <Table.HeaderCell width={1}>pass<br/>Num<br/>ber</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>attraction<br/>Id</Table.HeaderCell>
+                        <Table.HeaderCell width={1}>pass<br/>Number</Table.HeaderCell>
                         <Table.HeaderCell width={1}>previous<br/>Loan<br/>By</Table.HeaderCell>
                         <Table.HeaderCell width={1}>Status</Table.HeaderCell>
                         <Table.HeaderCell width={1}>Type</Table.HeaderCell>

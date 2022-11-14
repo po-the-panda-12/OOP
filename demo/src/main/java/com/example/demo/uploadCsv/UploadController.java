@@ -53,7 +53,6 @@ public class UploadController {
         for(AppUser u : userList){
             if(service.addUser(u)){
                 addedUser += "Added User " + u.getUsername() + "\n";
-                userService.addRoleToUser(u.getUsername(), "ROLE_USER");
             }else{
                 skippedUser += "Skipped User " + u.getUsername() + "\n";
             }
