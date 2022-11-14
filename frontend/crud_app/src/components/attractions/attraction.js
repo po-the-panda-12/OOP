@@ -45,7 +45,7 @@ const customStyles = {
   }),
 };
 
-export default function LoanApplication() {
+export default function Attraction() {
   const navigate = useNavigate();
   const { setAuth, auth } = useAuth();
   console.log(auth.id, "AUTH ID :D");

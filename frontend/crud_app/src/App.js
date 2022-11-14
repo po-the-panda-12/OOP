@@ -40,7 +40,8 @@ import UsersList from "./pages/users/UsersList";
 
 // ================= Attractions =======================
 import AttractionList from "./pages/attractions/attractionList";
-import CreateAttractions from "./pages/attractions/createAttractions";
+import CreateAttractions from "./components/attractions/create attraction";
+// import CreateAttractions from "./pages/attractions/createAttractions";
 // =============== Singapore Statistics ==============
 import EmployeeStatistics from "./components/successloan/employeestatistic";
 import MonthlyStatistics from "./components/successloan/monthlystatistic";

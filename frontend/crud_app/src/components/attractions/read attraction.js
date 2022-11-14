@@ -131,15 +131,15 @@ export default function Read() {
 
                         return (
                             <Table.Row>
-                                <Table.Cell>{data.passId}</Table.Cell>
+
                                 <Table.Cell>{data.attractionId}</Table.Cell>
-                                <Table.Cell>{data.passNumber}</Table.Cell>
-                                <Table.Cell>{data.previousLoanBy}</Table.Cell>
-                                <Table.Cell>{status}</Table.Cell>
-                                <Table.Cell>{type}</Table.Cell>
+                                <Table.Cell>{name}</Table.Cell>
+                                <Table.Cell>{data.description}</Table.Cell>
+                                <Table.Cell>{type}</Table.Cell>             {/*to check */}
                                 <Table.Cell>{replacementFee}</Table.Cell>
                                 <Table.Cell>{emailTemplate}</Table.Cell>
                                 <Table.Cell>{attachmentLink}</Table.Cell>
+                                <Table.Cell>{status}</Table.Cell>
 
                                 <Link to='/react/update'>
                                     <Table.Cell> 
@@ -147,7 +147,7 @@ export default function Read() {
                                     </Table.Cell>
                                 </Link>
                                 <Table.Cell>
-                                    <Button onClick={() => onDelete(data.passId)}>Delete</Button>
+                                    <Button onClick={() => onDelete(data.attractionId)}>Delete</Button>
                                 </Table.Cell>
                             </Table.Row>
                         )

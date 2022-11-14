@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
+
 function CreateAttractions(props) {
     return (
         <div class="container rounded content">
