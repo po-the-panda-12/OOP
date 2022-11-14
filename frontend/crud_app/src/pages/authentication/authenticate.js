@@ -5,6 +5,7 @@ import useAuth from "../../hooks/useAuth";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import jwt_decode from "jwt-decode";
+import Swal from "sweetalert2";
 
 export default function Authenticate() {
   const backendDomain = process.env.REACT_APP_backendDomain;
@@ -86,10 +87,27 @@ export default function Authenticate() {
       params.append("username", username);
       params.append("password", password);
       console.log(params);
+      // login loading sweet alert
+      Swal.fire({
+        title: "Logging in...",
+        allowOutsideClick: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       const response = await axios.post(
         `${backendDomain}/api/v1/login`,
         params
-      );
+      ).catch((err) => {
+        console.log(err.response.data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.response.data.message,
+        });
+      });
+      
       console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
       setResult(response.data);
@@ -120,6 +138,8 @@ export default function Authenticate() {
       // setPwd('');
       // navigate(from, { replace: true });
       alert("logged in as " + decodedHeader.sub + " with role of " + roles);
+      // close sweet alert
+      Swal.close();
     } catch (err) {}
   };
 

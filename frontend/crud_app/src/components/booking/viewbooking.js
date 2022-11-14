@@ -6,7 +6,9 @@ import axios from "axios";
 import Calendar from "moedim";
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const backendDomain = process.env.REACT_APP_backendDomain;
+
 
 var options = [];
 
@@ -46,6 +48,7 @@ const customStyles = {
 };
 
 export default function ViewBooking() {
+  const axiosPrivate = useAxiosPrivate();
   const { setAuth, auth } = useAuth();
   console.log(auth.id, "AUTH ID :D");
 
@@ -201,6 +204,13 @@ export default function ViewBooking() {
 
                     if (diffTime <= 0) {
                       alert("Cannot cancel booking for today or past days");
+                      return;
+                    }
+
+                    let userlogin = JSON.parse(localStorage.getItem("auth"))["id"]
+
+                    if (userlogin != item) {
+                      alert("Please login as the user to cancel the booking");
                       return;
                     }
 
