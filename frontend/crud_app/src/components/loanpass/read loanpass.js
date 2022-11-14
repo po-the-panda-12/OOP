@@ -48,6 +48,13 @@ export default function Read() {
             })
     }
     
+    const remindReturn = () =>{
+        axios.get(`${backendDomain}/api/v1/loanpass/remind/return`)
+            .then((response) => {
+                alert("Loanpass return reminders sent")
+                Swal.close();
+            })
+    }
 
     const setData = (data) => {
         let { passId, attractionId, passNumber, previousLoanBy, description } = data;
@@ -95,6 +102,7 @@ export default function Read() {
                 <Button primary>Create Loan Pass</Button>
             </Link>
             <Button onClick = {()=>{remindCollection()}}>Send Collection Reminders</Button>
+            <Button onClick = {()=>{remindReturn()}}>Send Return Reminders</Button>
             <Table>
                 <Table.Header>
                     <Table.Row>

@@ -101,7 +101,7 @@ public class LoanpassService {
                 String[] splittedString = loanPass.getDescription().split(",./");
                 String status = splittedString[0];
                 System.out.println("Status :"+status);
-                if(status.equals("Loaned Out")){
+                if(status.equals("Loaned out")){
                     // send email
                     AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
                     if(!loanedBy.equals(null)){
