@@ -135,7 +135,8 @@ public class LoanpassService {
         if(status.equals("Uncollected")){
             EmailTemplate defaultTemplate = new EmailTemplate();
             defaultTemplate.setEmailTemplateName("Loan Pass Returned");
-            defaultTemplate.setEmailTemplateBody("WIP");
+            defaultTemplate.setEmailTemplateBody("<p>Dear #borrowerName#,</p><p><br></p><p>Thank you for returning your pass. </p>" +
+                    "<p>Hope you have enjoyed your visit. We are looking forward to your future visits.</p><p><br></p><p>Regards,</p><p>HR Department</p>\n");
             // formatting
             String templateTitle = defaultTemplate.getEmailTemplateName();
             String templateBody = defaultTemplate.getEmailTemplateBody();
@@ -145,7 +146,6 @@ public class LoanpassService {
 
             // regex patterns
             templateBody = templateBody.replace("#borrowerName#",recipient);
-            templateBody = templateBody.replace("#loanPassId#",String.valueOf(passId));
             emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         }
     }
