@@ -81,6 +81,9 @@ public class SuccessloanService {
         String attractionName = selectedAttraction.getName();
         String corpPassNo = "N/A";
 
+        // supposed to get attraction
+        // get userID
+
         LocalDateTime visitDate = LocalDateTime.of(Integer.parseInt(successloan.getYear()),Integer.parseInt(successloan.getMonth())
                 ,Integer.parseInt(successloan.getDay()),0,0);
 
@@ -93,6 +96,8 @@ public class SuccessloanService {
         emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         System.out.println("EMAIL SENT");
     }
+
+
 
     public void deleteSuccessloan(Integer successloanId) {
         boolean exists = successloanRepository.existsById(successloanId);

@@ -93,38 +93,6 @@ export default function Update() {
                 null
             )
             .then(() => {
-                // if status = Loaned out, add to successloan
-                if (status === "Loaned out" && oldStatus !== "Loaned out") {
-                    // get successloan by attraction, staff and date
-                    axios
-                        .get(
-                            `${backendDomain}/api/v1/successloan/staff/${previousLoanBy}/attraction/${attractionId}/month/${
-                                new Date().getMonth() + 1
-                            }/year/${new Date().getFullYear()}/day/${new Date().getDay()}`
-                        )
-                        .then((response) => {
-                            if (response.data.length === 0) {
-                                axios
-                                    .post(
-                                        `${backendDomain}/api/v1/successloan`,
-                                        {
-                                            attractionId: attractionId,
-                                            staffId: previousLoanBy,
-                                            month: new Date().getMonth() + 1,
-                                            year: new Date().getFullYear(),
-                                            day: new Date().getDay(),
-                                        }
-                                    )
-                                    .then(() => {
-                                        Swal.close();
-                                        alert("created success loan!");
-                                    });
-                            } else {
-                                Swal.close();
-                            }
-                        });
-                }
-
                 Swal.close();
                 navigate("/react/read");
             })

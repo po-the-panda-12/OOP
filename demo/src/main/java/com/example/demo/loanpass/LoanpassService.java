@@ -9,6 +9,7 @@ import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.emailtemplate.EmailTemplate;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -79,8 +80,8 @@ public class LoanpassService {
         System.out.println("status "+splittedString[0]);
         String replacementFee = splittedString[2];
         System.out.println("replacementFee "+splittedString[2]);
+
         // check if expired
-        System.out.println("isLost"+status == "Lost");
         if(status.equals("Lost")){
             EmailTemplate defaultTemplate = new EmailTemplate();
             defaultTemplate.setEmailTemplateName("Loan Pass Lost");
@@ -99,7 +100,54 @@ public class LoanpassService {
             templateBody = templateBody.replace("#replacementFee#",replacementFee);
             emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         }
+        // everyday 9am --> go through waiting list and send
+
         // check if collected
+        if(status.equals("Loaned out")){
+            System.out.println("loaned?? "+status);
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Loan Pass Collected");
+            defaultTemplate.setEmailTemplateBody("<p>Dear #borrowerName#," +
+                    "</p><p>You have collected your pass (ID: #loanPassID#) " +
+                    "as of #collectedDate# .</p><p>No reply is required. This is an auto-generated email.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+            String recipient = loanedBy.getUsername();
+            String recipientEmail = loanedBy.getEmail();
+
+            // tag replacements
+            templateBody = templateBody.replace("#borrowerName#",recipient);
+            templateBody = templateBody.replace("#loanPassID#",String.valueOf(passId));
+
+            //date
+            LocalDateTime currDate = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm a");
+            String formattedDate = formatter.format(currDate);
+            templateBody = templateBody.replace("#collectedDate#",formattedDate);
+
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        }
+
+        // check if returned
+        if(status.equals("Uncollected")){
+            EmailTemplate defaultTemplate = new EmailTemplate();
+            defaultTemplate.setEmailTemplateName("Loan Pass Returned");
+            defaultTemplate.setEmailTemplateBody("<p>Dear #borrowerName#,</p><p><br></p><p>Thank you for returning your pass. </p>" +
+                    "<p>Hope you have enjoyed your visit. We are looking forward to your future visits.</p><p><br></p><p>Regards,</p><p>HR Department</p>\n");
+            // formatting
+            String templateTitle = defaultTemplate.getEmailTemplateName();
+            String templateBody = defaultTemplate.getEmailTemplateBody();
+
+            String recipient = loanedBy.getUsername();
+            String recipientEmail = loanedBy.getEmail();
+
+            // regex patterns
+            templateBody = templateBody.replace("#borrowerName#",recipient);
+            emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
+        }
     }
 
 
