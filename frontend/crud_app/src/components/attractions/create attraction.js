@@ -48,7 +48,7 @@ useEffect(() => {
       emailTemplate +
       ",\n totalPasses: " +
       totalPasses +
-      ",\n status: " +
+      ",\n status: Active" +
       status +
       "}";
     alert(
@@ -90,38 +90,36 @@ useEffect(() => {
       <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
       
       <Form className="create-form">
-        {/* <Form.Field>
-          <label>attractionId</label>
-          <input
-            placeholder="attractionId"
-            onChange={(e) => setAttractionId(e.target.value)}
-          />
-        </Form.Field> */}
         <Form.Field>
-          <label>Name</label>
+          <label>Name:</label>
           <input
-            placeholder="name"
+            placeholder="Name"
             onChange={(e) => setName(e.target.value)}
           />
         </Form.Field>
         <Form.Field>
-          <label>description</label>
+          <label>Description:</label>
           <input
-            placeholder="description"
+            placeholder="Description"
             onChange={(e) => setDescription(e.target.value)}
           />
         </Form.Field>
         <Form.Field>
-          <label>passType</label>
-          <input
-            placeholder="Pass Type"
-            onChange={(e) => setPassType(e.target.value)}
-          />
+        <label>Pass Type:</label>
+            <select
+                value={passType}
+                onChange={(e) => setPassType(e.target.value)}
+            >
+                <option value="Physical">Physical</option>
+                <option value="E-Pass">E-Pass</option>
+                <option value="E-Pass">Both</option>
+            </select>
         </Form.Field>
+        
         <Form.Field>
-          <label>replacementFee</label>
+          <label>Replacement Fee:</label>
           <input
-            placeholder="replacementFee"
+            placeholder="Replacement Fee"
             onChange={(e) => setReplacementFee(e.target.value)}
           />
         </Form.Field>
@@ -133,24 +131,27 @@ useEffect(() => {
             >
                 {emailTemplates.map((emailTemplate) => {
                 console.log(emailTemplate)
-                    return <option value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}</option>;
+                    return <option value={emailTemplate.emailTemplateName}>{emailTemplate.emailTemplateName}</option>;
                 })}
 
             </select>
         </Form.Field>
         <Form.Field>
-          <label>totalPasses</label>
+          <label>Total Passes:</label>
           <input
-            placeholder="totalPasses"
+            placeholder="Total Passes"
             onChange={(e) => setTotalPasses(e.target.value)}
           />
         </Form.Field>
         <Form.Field>
-          <label>status</label>
-          <input
-            placeholder="status"
-            onChange={(e) => setStatus(e.target.value)}
-          />
+        <label>Status:</label>
+            <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+            >
+                <option value="Active">Active</option>
+                <option value="Non-active">Non-active</option>
+            </select>
         </Form.Field>
         <Button onClick={postData} type="submit">
           Submit

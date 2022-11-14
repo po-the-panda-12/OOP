@@ -112,7 +112,7 @@ function AttractionList() {
                                                 <IconButton
                                                     aria-label="edit"
                                                     style={{ color: "#5289B5" }}
-                                                    href={`/${attraction.attractionID}`}
+                                                    href={`/react/attractions/${attraction.attractionID}`}
                                                 >
                                                     <EditIcon />
                                                 </IconButton>
