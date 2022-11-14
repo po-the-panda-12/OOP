@@ -3,6 +3,7 @@ package com.example.demo.loanpass;
 import com.example.demo.attractions.Attractions;
 import com.example.demo.attractions.AttractionsRepository;
 import com.example.demo.attractions.AttractionsService;
+import com.example.demo.emailtemplate.EmailTemplateService;
 import com.example.demo.successloan.Successloan;
 import com.example.demo.users.AppUser;
 import com.example.demo.users.UserRepo;
@@ -25,12 +26,14 @@ public class LoanpassService {
     private final LoanpassRepository loanPassRepository;
     private final UserRepo userRepo;
     private final EmailSenderService emailSenderService;
+    private final EmailTemplateService emailTemplateService;
 
     @Autowired
-    public LoanpassService(LoanpassRepository loanPassRepository,UserRepo userRepo,EmailSenderService emailSenderService){
+    public LoanpassService(LoanpassRepository loanPassRepository,UserRepo userRepo,EmailSenderService emailSenderService, EmailTemplateService emailTemplateService){
         this.loanPassRepository = loanPassRepository;
         this.userRepo = userRepo;
         this.emailSenderService = emailSenderService;
+        this.emailTemplateService = emailTemplateService;
     }
 
     public List<Loanpass> getLoanPass(){

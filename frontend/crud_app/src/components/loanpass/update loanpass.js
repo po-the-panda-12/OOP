@@ -27,7 +27,7 @@ export default function Update() {
 
     const [emailTemplates, setEmailTemplates] = useState([]);
     const [attractions, setAttractions] = useState([]);
-    const [emailTemplateID, setEmailTemplateID] = useState(-1);
+    const [emailTemplateID, setEmailTemplateID] = useState(1);
 
     useEffect(() => {
         setPassId(localStorage.getItem("passId"));
@@ -169,14 +169,15 @@ export default function Update() {
                     </Form.Field>
 
                     <Form.Field>
+                        {emailTemplateID}
                         <label>Email Template:</label>
                         <select
-                            value={emailTemplate}
+                            // value={emailTemplate}
                             onChange={(e) => setEmailTemplateID(e.target.value)}
                         >
                             {emailTemplates.map((emailTemplate) => {
                             console.log(emailTemplate)
-                                return <option value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}</option>;
+                                return <option value={emailTemplate.emailTemplateId}>{emailTemplate.emailTemplateName}, {emailTemplate.emailTemplateId}</option>;
                             })}
     
                         </select>

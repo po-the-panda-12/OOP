@@ -109,9 +109,6 @@ function EmailTemplateForm(props) {
 
     return (
         <div style={{ margin: "10px", padding: "10px" }}>
-            {
-                emailTemplateBody
-            }
             <br></br>
             <label>Email Template Name:</label>
             <input
