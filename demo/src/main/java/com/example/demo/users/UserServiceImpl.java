@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService{
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
@@ -51,32 +51,32 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     }
 
     @Override
-    public AppUser saveUser(AppUser user) throws IllegalStateException{
+    public AppUser saveUser(AppUser user) throws IllegalStateException {
         log.info("saving new user {} to the database", user.getUsername());
         boolean isValidEmail = emailValidator.test(user.getEmail());
 
-//        try {
-//            Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
-//            log.info("saving new user {} to the database hahaha", userCheck.isPresent());
-//            if (userCheck.isPresent()){
-//                throw new IllegalStateException("email is already taken");
-//            }
-//        }
-//        catch (IllegalStateException e) {
-//            throw new IllegalStateException("email is already taken");
-//        }
+        // try {
+        // Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
+        // log.info("saving new user {} to the database hahaha", userCheck.isPresent());
+        // if (userCheck.isPresent()){
+        // throw new IllegalStateException("email is already taken");
+        // }
+        // }
+        // catch (IllegalStateException e) {
+        // throw new IllegalStateException("email is already taken");
+        // }
 
-        if (user.getUsername() == ""){
+        if (user.getUsername() == "") {
             throw new IllegalStateException("username cannot be empty");
         }
 
-        if(!isValidEmail){
+        if (!isValidEmail) {
             throw new IllegalStateException("Invalid email");
         }
 
         Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
         log.info("saving new user {} to the database hahaha", userCheck.isPresent());
-        if (userCheck.isPresent()){
+        if (userCheck.isPresent()) {
             throw new IllegalStateException("email is already taken");
         }
 
@@ -110,10 +110,15 @@ public class UserServiceImpl implements UserService, UserDetailsService{
         return userRepo.findByUsername(username);
     }
 
-    public Optional<AppUser> getById(Long id){
-        return userRepo.findById(id);
-
+    @Override
+    public AppUser getReferenceById(Long id) {
+        return userRepo.getReferenceById(id);
     }
+
+//    public AppUser getById(Long id) {
+//        return userRepo.getReferenceById(id);
+//
+//    }
 
     @Override
     public List<AppUser> getUsers() {
@@ -122,12 +127,12 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     }
 
     @Override
-    public void deleteUser(Long id){
-//        boolean exists = userRepo.existsById(id);
-//        if (!exists){
-//            throw new IllegalStateException("User with id " + id + " does not exists");
-//
-//        }
+    public void deleteUser(Long id) {
+        // boolean exists = userRepo.existsById(id);
+        // if (!exists){
+        // throw new IllegalStateException("User with id " + id + " does not exists");
+        //
+        // }
         userRepo.deleteById(id);
     }
 

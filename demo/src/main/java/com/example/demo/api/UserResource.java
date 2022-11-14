@@ -47,6 +47,11 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
+    @GetMapping("/usersById/{id}")
+    public ResponseEntity<AppUser> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(userService.getReferenceById(id));
+    }
+
     @GetMapping("/login/{username}")
     public ResponseEntity<AppUser> getUser(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(userService.getUser(username));
