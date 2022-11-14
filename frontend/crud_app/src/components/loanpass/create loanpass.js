@@ -45,34 +45,32 @@ export default function CreateLoanPass() {
       });
   };
   return (
-    <div
-      class="content"
-      style={{
-        width: "85%",
-        height: "70vh",
-        maxWidth: "500px",
-        minWidth: "200px",
-      }}
-    >
-      <Form className="create-form">
-        <Form.Field>
-          <label>attractionId</label>
-          <input
-            placeholder="attractionId"
-            onChange={(e) => setAttractionId(e.target.value)}
-          />
-        </Form.Field>
-        <Form.Field>
-          <label>PassNumber</label>
-          <input
-            placeholder="PassNumber"
-            onChange={(e) => setPassNumber(e.target.value)}
-          />
-        </Form.Field>
-        <Button onClick={postData} type="submit">
-          Submit
-        </Button>
-      </Form>
+    <div class="container rounded content" style={{width: "85%",height: "70vh",maxWidth: "500px",minWidth: "200px",}}>
+      <h2 class="main-header">
+        Create Loanpass
+      </h2>
+      <div class="card" style={{ width: "85%",maxWidth: "250px", minWidth: "100px",}}>
+        <Form className="create-form">
+          <Form.Field>
+            <label>Attraction Id</label>
+            <input
+              placeholder="attractionId"
+              onChange={(e) => setAttractionId(e.target.value)}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Pass Number</label>
+            <input
+              placeholder="PassNumber"
+              onChange={(e) => setPassNumber(e.target.value)}
+            />
+          </Form.Field>
+          <Button onClick={postData} type="submit">
+            Submit
+          </Button>
+        </Form>
+      </div>
+      
     </div>
   );
 }

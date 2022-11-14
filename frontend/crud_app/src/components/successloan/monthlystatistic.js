@@ -109,17 +109,19 @@ export default function MonthlyStatistics() {
   
   if (loading)
   return (
-    <div style={{"height": "500px", "width":"80%"}}>
-      {/* Select Year: <input name="yearinput" value = {year} onChange={handleSubmit}/> */}
-      Select Year:
-      <select value={year} onChange={handleSubmit}>
-        {loanlistconst.map(res => (
-          <option value={res}>
-            {res}
-          </option>
-        ))}
-      </select>
-      <Bar data={chartData} options = {options}/>
+    <div class="container rounded content">
+      <div class="card" style={{"height": "600px", "width":"1000px"}}>
+        {/* Select Year: <input name="yearinput" value = {year} onChange={handleSubmit}/> */}
+        <h4 class="sub-header">Select Year:
+        <select value={year} onChange={handleSubmit}>
+          {loanlistconst.map(res => (
+            <option value={res}>
+              {res}
+            </option>
+          ))}
+        </select></h4>
+        <div style={{"height": "600px", "width":"1000px"}}><Bar data={chartData} options = {options}/></div>
+      </div>
     </div>
     
     
