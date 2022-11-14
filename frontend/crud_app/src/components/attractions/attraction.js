@@ -184,7 +184,7 @@ export default function Attraction() {
             "User " +
               userId +
               " sent request to: " +
-              `${backendDomain}/api/v1/loanpass/\n` +
+              `${backendDomain}/api/v1/attractions/\n` +
               "Attraction: " +
               attraction.value +
               " Passes: " +
