@@ -80,7 +80,7 @@ export default function LoanApplication() {
     console.log("useEffect only once!");
     console.log(localStorage.getItem("auth"));
 
-    let userlogin = "2"; // JSON.parse(localStorage.getItem("auth"))["username"]
+    let userlogin = JSON.parse(localStorage.getItem("auth"))["id"] // "2";
     userOptions = [{ value: userlogin, label: userlogin }];
 
     console.log(userOptions);
@@ -115,6 +115,7 @@ export default function LoanApplication() {
       defaultValue={[userOptions[0]]}
       value={user}
       onChange={(d) => setUser(d)}
+      isDisabled={true}
     />
   );
 
