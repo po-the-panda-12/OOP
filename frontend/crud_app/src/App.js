@@ -105,11 +105,11 @@ class App extends React.Component {
           </Navbar>
 
           {/* END OF NAVBAR */}
-          {/* <div>
+          <div>
               <video autoPlay loop muted>
               <source src={vid_background} type = "video/mp4"></source>
               </video>
-            </div> */}
+            </div>
           <div className="main">
             {/* authentication */}
 

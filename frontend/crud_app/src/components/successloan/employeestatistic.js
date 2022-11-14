@@ -160,20 +160,21 @@ useEffect (() => {
 
     if (loading)
     return (
-    <div style={{"height": "500px", "width":"80%"}}>
-        Employee ID: <input name="EmployeeID" value = {employeeId} onChange={handleEmpSubmit}/>
-        <br /><br />
-        <button value = "Monthly" onClick={handleCMSubmit}>Monthly</button>{' :'}
-        <select onChange={handleYearSubmit}>
-        {yearlist.map(res => (
-          <option value={res}>
-            {res}
-          </option>
-        ))}
-        </select>{' '}
-        <button value = "Bi-Annually" onClick={handleCMSubmit}>Bi-Annually</button>{' '}
-        <button value = "Annually" onClick={handleCMSubmit}>Annually</button>
-        <Bar data={chartData} options = {options}/>
+    <div class="container rounded content">
+        <div class="card" style={{"height": "600px", "width":"1000px"}}>
+            <h4 class="sub-header">Employee ID: <input name="EmployeeID" value = {employeeId} onChange={handleEmpSubmit}/></h4>
+            <h4 class="sub-header"><button value = "Monthly" onClick={handleCMSubmit}>Monthly</button>{' :'}
+            <select onChange={handleYearSubmit}>
+            {yearlist.map(res => (
+            <option value={res}>
+                {res}
+            </option>
+            ))}
+            </select>{' '}
+            <button value = "Bi-Annually" onClick={handleCMSubmit}>Bi-Annually</button>{' '}
+            <button value = "Annually" onClick={handleCMSubmit}>Annually</button></h4>
+            <div style={{"height": "600px", "width":"1000px"}}><Bar data={chartData} options = {options}/></div>
+        </div>
     </div>
     )
 

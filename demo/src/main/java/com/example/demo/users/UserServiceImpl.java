@@ -1,5 +1,8 @@
 package com.example.demo.users;
 
+import com.example.demo.attractions.Attractions;
+import com.example.demo.emailtemplate.EmailTemplate;
+import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.users.RoleRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,12 +25,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class UserServiceImpl implements UserService, UserDetailsService{
+public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
-
     private final EmailValidator emailValidator;
+    private final EmailSenderService emailSenderService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -38,6 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getUserRoles().forEach(role -> {
+            log.error("userRole -> {}", role.getName());
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
@@ -45,32 +51,32 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     }
 
     @Override
-    public AppUser saveUser(AppUser user) throws IllegalStateException{
+    public AppUser saveUser(AppUser user) throws IllegalStateException {
         log.info("saving new user {} to the database", user.getUsername());
         boolean isValidEmail = emailValidator.test(user.getEmail());
 
-//        try {
-//            Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
-//            log.info("saving new user {} to the database hahaha", userCheck.isPresent());
-//            if (userCheck.isPresent()){
-//                throw new IllegalStateException("email is already taken");
-//            }
-//        }
-//        catch (IllegalStateException e) {
-//            throw new IllegalStateException("email is already taken");
-//        }
+        // try {
+        // Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
+        // log.info("saving new user {} to the database hahaha", userCheck.isPresent());
+        // if (userCheck.isPresent()){
+        // throw new IllegalStateException("email is already taken");
+        // }
+        // }
+        // catch (IllegalStateException e) {
+        // throw new IllegalStateException("email is already taken");
+        // }
 
-        if (user.getUsername() == ""){
+        if (user.getUsername() == "") {
             throw new IllegalStateException("username cannot be empty");
         }
 
-        if(!isValidEmail){
+        if (!isValidEmail) {
             throw new IllegalStateException("Invalid email");
         }
 
         Optional<AppUser> userCheck = userRepo.findByEmail(user.getEmail());
         log.info("saving new user {} to the database hahaha", userCheck.isPresent());
-        if (userCheck.isPresent()){
+        if (userCheck.isPresent()) {
             throw new IllegalStateException("email is already taken");
         }
 
@@ -105,18 +111,43 @@ public class UserServiceImpl implements UserService, UserDetailsService{
     }
 
     @Override
+    public AppUser getReferenceById(Long id) {
+        AppUser x = null;
+        if (id == 4){
+            return userRepo.findByUsername("Brian Lim");
+        }
+        if (id == 5){
+            return userRepo.findByUsername("John");
+        }
+        if (id == 6){
+            return userRepo.findByUsername("Ted");
+        }
+        if (id == 7){
+            return userRepo.findByUsername("Siang Meng");
+        }
+        return userRepo.getReferenceById(id);
+
+//        return userRepo.getReferenceById(id);
+    }
+
+//    public AppUser getById(Long id) {
+//        return userRepo.getReferenceById(id);
+//
+//    }
+
+    @Override
     public List<AppUser> getUsers() {
         log.info("Fetching user all users");
         return userRepo.findAll();
     }
 
     @Override
-    public void deleteUser(Long id){
-//        boolean exists = userRepo.existsById(id);
-//        if (!exists){
-//            throw new IllegalStateException("User with id " + id + " does not exists");
-//
-//        }
+    public void deleteUser(Long id) {
+        // boolean exists = userRepo.existsById(id);
+        // if (!exists){
+        // throw new IllegalStateException("User with id " + id + " does not exists");
+        //
+        // }
         userRepo.deleteById(id);
     }
 
