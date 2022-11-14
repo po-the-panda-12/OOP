@@ -60,30 +60,38 @@ public class LoanpassService {
     public void collectCardReminder(){
         // get all the successloans
         ArrayList<Loanpass> allLoans = (ArrayList<Loanpass>)loanPassRepository.findAll();
+
         for(Loanpass loanPass: allLoans){
-            // filter their status --> check if unloaned --> if Uncollected then add to arraylist
-            String[] splittedString = loanPass.getDescription().split(",./");
-            String status = splittedString[0];
-            if(status.equals("Unloaned")){
-                // send email
-                AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
-                if(!loanedBy.equals(null)){
-                //  name of last loaned by, name of attraction, card ID
-                    String borrowerName = loanedBy.getUsername();
-                    EmailTemplate sendTemplate = new EmailTemplate();
-                    sendTemplate.setEmailTemplateName("Reminder to Collect Pass");
-                    sendTemplate.setEmailTemplateBody("<p>Dear #borrowerName#</p><p><br></p>" +
-                            "<p>Please remember to collect your pass (Card ID: ##cardID#). " +
-                            "Please enjoy your trip.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+            try{
+                // filter their status --> check if unloaned --> if Uncollected then add to arraylist
+                String[] splittedString = loanPass.getDescription().split(",./");
+                String status = splittedString[0];
+                System.out.println("Status :"+status);
+                if(status.equals("Uncollected")){
+                    // send email
+                    AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
+                    if(!loanedBy.equals(null)){
+                        //  name of last loaned by, name of attraction, card ID
+                        String borrowerName = loanedBy.getUsername();
+                        EmailTemplate sendTemplate = new EmailTemplate();
+                        sendTemplate.setEmailTemplateName("Reminder to Collect Pass");
+                        sendTemplate.setEmailTemplateBody("<p>Dear #borrowerName#,</p><p><br></p>" +
+                                "<p>Please remember to collect your pass (Card ID: ##cardID#). " +
+                                "Please enjoy your trip.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
 
-                    String templateTitle = sendTemplate.getEmailTemplateName();
-                    String templateBody = sendTemplate.getEmailTemplateBody();
+                        String templateTitle = sendTemplate.getEmailTemplateName();
+                        String templateBody = sendTemplate.getEmailTemplateBody();
 
-                    templateBody = templateBody.replace("#borrowerName#",borrowerName);
-                    templateBody = templateBody.replace("#cardID#",loanPass.getPassNumber().toString());
-                    emailSenderService.sendEmail(loanedBy.getEmail(),templateTitle,templateBody);
+                        templateBody = templateBody.replace("#borrowerName#",borrowerName);
+                        templateBody = templateBody.replace("#cardID#",loanPass.getPassNumber().toString());
+                        emailSenderService.sendEmail(loanedBy.getEmail(),templateTitle,templateBody);
+                    }
                 }
             }
+            catch (Exception e){
+                continue;
+            }
+
         }
 
 

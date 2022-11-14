@@ -40,7 +40,13 @@ export default function Read() {
         // setAPIData(mockupData);
     }, []);
 
-    
+    const remindCollection = () =>{
+        axios.get(`${backendDomain}/api/v1/loanpass/remind/collection`)
+            .then((response) => {
+                alert("Loanpass collection reminders sent")
+                Swal.close();
+            })
+    }
     
 
     const setData = (data) => {
@@ -88,6 +94,7 @@ export default function Read() {
             <Link to="/react/createloanpass">
                 <Button primary>Create Loan Pass</Button>
             </Link>
+            <Button onClick = {()=>{remindCollection()}}>Send Collection Reminders</Button>
             <Table>
                 <Table.Header>
                     <Table.Row>
