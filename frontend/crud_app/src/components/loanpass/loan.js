@@ -81,6 +81,11 @@ export default function LoanApplication() {
     console.log(localStorage.getItem("auth"));
 
     let userlogin = JSON.parse(localStorage.getItem("auth"))["id"] // "2";
+    console.log(userlogin, "USER LOGIN");
+    if (userlogin === undefined) {
+      alert("Please login first!");
+      navigate("/react/auth");
+    }
     userOptions = [{ value: userlogin, label: userlogin }];
 
     console.log(userOptions);
@@ -246,7 +251,8 @@ export default function LoanApplication() {
 
                     const waitingListsplitted = waitingList.split(",");
 
-                    if (waitingListsplitted.includes(userId)) {
+                    console.log(waitingListsplitted);
+                    if (waitingListsplitted.includes(userId.toString())) {
                       alert("You are already in the waiting list!");
                       return;
                     }
@@ -400,7 +406,7 @@ export default function LoanApplication() {
         <h4 className="sub-header">Date:</h4>
 
         {/* datepicker */}
-        <div class="content">
+        <div>
           {value.getDate()}
           {value.getMonth() + 1}
           {value.getFullYear()}
