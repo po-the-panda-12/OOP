@@ -65,11 +65,12 @@ public class LoanpassService {
                 // filter their status --> check if unloaned --> if Uncollected then add to arraylist
                 String[] splittedString = loanPass.getDescription().split(",./");
                 String status = splittedString[0];
+                String passType = splittedString[1];
                 System.out.println("Status :"+status);
                 if(status.equals("Uncollected")){
                     // send email
                     AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
-                    if(!loanedBy.equals(null)){
+                    if(!loanedBy.equals(null) && passType.equals("Physical")){
                         //  name of last loaned by, name of attraction, card ID
                         String borrowerName = loanedBy.getUsername();
                         EmailTemplate sendTemplate = new EmailTemplate();
@@ -100,8 +101,9 @@ public class LoanpassService {
                 // filter their status --> check if unloaned --> if Uncollected then add to arraylist
                 String[] splittedString = loanPass.getDescription().split(",./");
                 String status = splittedString[0];
+                String passType = splittedString[1];
                 System.out.println("Status :"+status);
-                if(status.equals("Loaned out")){
+                if(status.equals("Loaned out") && passType.equals("Physical")){
                     // send email
                     AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
                     if(!loanedBy.equals(null)){
