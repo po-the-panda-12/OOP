@@ -36,6 +36,11 @@ public class LoanpassController {
         loanPassService.deleteLoanPass(loanPassId);
     }
 
+    @GetMapping(path="/remind/collection")
+    public void massReminder(){
+        loanPassService.collectCardReminder();
+    }
+
     @PutMapping(path = "{loanPassId}")
     public void updateLoanPass(
             @PathVariable("loanPassId") Integer loanPassId,

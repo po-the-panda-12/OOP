@@ -1,6 +1,9 @@
 package com.example.demo.loanpass;
 
 import com.example.demo.attractions.Attractions;
+import com.example.demo.attractions.AttractionsRepository;
+import com.example.demo.attractions.AttractionsService;
+import com.example.demo.successloan.Successloan;
 import com.example.demo.users.AppUser;
 import com.example.demo.users.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -51,6 +55,46 @@ public class LoanpassService {
             throw new IllegalStateException("loanPass with id " + loanPassId + " does not exists");
         }
         loanPassRepository.deleteById(loanPassId);
+    }
+
+    public void collectCardReminder(){
+        // get all the successloans
+        ArrayList<Loanpass> allLoans = (ArrayList<Loanpass>)loanPassRepository.findAll();
+        for(Loanpass loanPass: allLoans){
+            // filter their status --> check if unloaned --> if Uncollected then add to arraylist
+            String[] splittedString = loanPass.getDescription().split(",./");
+            String status = splittedString[0];
+            if(status.equals("Unloaned")){
+                // send email
+                AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
+                if(!loanedBy.equals(null)){
+                //  name of last loaned by, name of attraction, card ID
+                    String borrowerName = loanedBy.getUsername();
+                    EmailTemplate sendTemplate = new EmailTemplate();
+                    sendTemplate.setEmailTemplateName("Reminder to Collect Pass");
+                    sendTemplate.setEmailTemplateBody("<p>Dear #borrowerName#</p><p><br></p>" +
+                            "<p>Please remember to collect your pass (Card ID: ##cardID#). " +
+                            "Please enjoy your trip.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+
+                    String templateTitle = sendTemplate.getEmailTemplateName();
+                    String templateBody = sendTemplate.getEmailTemplateBody();
+
+                    templateBody = templateBody.replace("#borrowerName#",borrowerName);
+                    templateBody = templateBody.replace("#cardID#",loanPass.getPassNumber().toString());
+                    emailSenderService.sendEmail(loanedBy.getEmail(),templateTitle,templateBody);
+                }
+            }
+        }
+
+
+
+    }
+
+    public void returnCardReminder(){
+        // get all the successloans
+        // filter their status --> check if loaned out --> if Loaned out then add to arraylist
+        // loop through arraylist
+
     }
 
     @Transactional

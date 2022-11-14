@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -56,6 +57,7 @@ public class SuccessloanService {
     public List<Successloan> getSuccessloanByStaffIdAndMonthAndYear(Integer id, String month, String year) {
         return successloanRepository.findSuccessloanByStaffIdAndMonthAndYear(id, month, year);
     }
+
 
 
     public void addNewSuccessloan(Successloan successloan) {
