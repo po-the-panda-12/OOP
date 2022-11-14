@@ -9,6 +9,7 @@ import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.emailtemplate.EmailTemplate;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -79,8 +80,8 @@ public class LoanpassService {
         System.out.println("status "+splittedString[0]);
         String replacementFee = splittedString[2];
         System.out.println("replacementFee "+splittedString[2]);
+
         // check if expired
-        System.out.println("isLost"+status == "Lost");
         if(status.equals("Lost")){
             EmailTemplate defaultTemplate = new EmailTemplate();
             defaultTemplate.setEmailTemplateName("Loan Pass Lost");
@@ -99,12 +100,16 @@ public class LoanpassService {
             templateBody = templateBody.replace("#replacementFee#",replacementFee);
             emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         }
+        // everyday 9am --> go through waiting list and send
 
         // check if collected
-        if(status.equals("Loaned Out")){
+        if(status.equals("Loaned out")){
+            System.out.println("loaned?? "+status);
             EmailTemplate defaultTemplate = new EmailTemplate();
             defaultTemplate.setEmailTemplateName("Loan Pass Collected");
-            defaultTemplate.setEmailTemplateBody("WIP");
+            defaultTemplate.setEmailTemplateBody("<p>Dear #borrowerName#," +
+                    "</p><p>You have collected your pass (ID: #loanPassID#) " +
+                    "as of #collectedDate# .</p><p>No reply is required. This is an auto-generated email.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
 
             // formatting
             String templateTitle = defaultTemplate.getEmailTemplateName();
@@ -113,9 +118,16 @@ public class LoanpassService {
             String recipient = loanedBy.getUsername();
             String recipientEmail = loanedBy.getEmail();
 
-            // regex patterns
+            // tag replacements
             templateBody = templateBody.replace("#borrowerName#",recipient);
-            templateBody = templateBody.replace("#loanPassId#",String.valueOf(passId));
+            templateBody = templateBody.replace("#loanPassID#",String.valueOf(passId));
+
+            //date
+            LocalDateTime currDate = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy 'at' hh:mm a");
+            String formattedDate = formatter.format(currDate);
+            templateBody = templateBody.replace("#collectedDate#",formattedDate);
+
             emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         }
 
