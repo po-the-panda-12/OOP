@@ -110,19 +110,17 @@ const UsersList = () => {
       });
   };
 
-  // const x = (id) => {
-  //   const controller = new AbortController();
-  //   axiosPrivate
-  //     .delete(`/api/v1/users/delete${id}`, {
-  //       signal: controller.signal,
-  //     })
-  //     .then((response) => {
-  //       alert("deletion successful");
-  //     })
-  //     .catch((err) => {
-  //       alert("error with deleting");
-  //     });
-  // };
+  const upgradeToAdmin = async (username) => {
+    try {
+      const response = await axiosPrivate.post("/api/v1/role/addtouser", {
+        username,
+        roleName: "ROLE_ADMIN",
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const deleteUser = (id) => {
     axios
@@ -177,7 +175,7 @@ const UsersList = () => {
 
   return (
     <div class="container rounded content">
-      <div class="card" style={{ width: "60rem", height: "70vh" }}>
+      <div class="card" style={{ width: "60rem", height: "80vh" }}>
         {auth?.roles?.includes("ROLE_ADMIN") && (
           <form>
             <div>
@@ -274,8 +272,8 @@ const UsersList = () => {
                   <TableCell align="left">User Email</TableCell>
                   <TableCell align="left">Phone Number</TableCell>
                   <TableCell align="left">Role/s</TableCell>
-                  <TableCell align="center"></TableCell>
-                  <TableCell align="center"></TableCell>
+                  <TableCell align="center">Delete</TableCell>
+                  <TableCell align="center">Upgrade to Admin</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -304,13 +302,16 @@ const UsersList = () => {
                       </IconButton>
                     </TableCell>
                     <TableCell align="center">
-                      <IconButton
-                        aria-label="edit"
-                        style={{ color: "#5289B5" }}
-                        href={`/${user.id}`}
-                      >
-                        <EditIcon />
-                      </IconButton>
+                      {user.userRoles[0]?.name !== "ROLE_ADMIN" &&
+                        user.userRoles[1]?.name !== "ROLE_ADMIN" &&
+                        user.userRoles[2]?.name !== "ROLE_ADMIN" && (
+                          <Button
+                            variant="contained"
+                            onClick={() => upgradeToAdmin(user.username)}
+                          >
+                            Grant Rights
+                          </Button>
+                        )}
                     </TableCell>
                   </TableRow>
                 ))}
