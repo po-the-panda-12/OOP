@@ -60,7 +60,6 @@ public class LoanpassService {
     public void collectCardReminder(){
         // get all the successloans
         ArrayList<Loanpass> allLoans = (ArrayList<Loanpass>)loanPassRepository.findAll();
-
         for(Loanpass loanPass: allLoans){
             try{
                 // filter their status --> check if unloaned --> if Uncollected then add to arraylist
@@ -91,17 +90,42 @@ public class LoanpassService {
             catch (Exception e){
                 continue;
             }
-
         }
-
-
-
     }
 
     public void returnCardReminder(){
-        // get all the successloans
-        // filter their status --> check if loaned out --> if Loaned out then add to arraylist
-        // loop through arraylist
+        ArrayList<Loanpass> allLoans = (ArrayList<Loanpass>)loanPassRepository.findAll();
+        for(Loanpass loanPass: allLoans){
+            try{
+                // filter their status --> check if unloaned --> if Uncollected then add to arraylist
+                String[] splittedString = loanPass.getDescription().split(",./");
+                String status = splittedString[0];
+                System.out.println("Status :"+status);
+                if(status.equals("Loaned Out")){
+                    // send email
+                    AppUser loanedBy = userRepo.getById((long)loanPass.getPreviousLoanBy());
+                    if(!loanedBy.equals(null)){
+                        //  name of last loaned by, name of attraction, card ID
+                        String borrowerName = loanedBy.getUsername();
+                        EmailTemplate sendTemplate = new EmailTemplate();
+                        sendTemplate.setEmailTemplateName("Reminder to Return Pass");
+                        sendTemplate.setEmailTemplateBody("<p>Dear #borrowerName#,</p><p><br></p>" +
+                                "<p>Please remember to return your pass (Card ID: ##cardID#). " +
+                                "Please enjoy your trip.</p><p><br></p><p>Regards,</p><p>HR Department</p>");
+
+                        String templateTitle = sendTemplate.getEmailTemplateName();
+                        String templateBody = sendTemplate.getEmailTemplateBody();
+
+                        templateBody = templateBody.replace("#borrowerName#",borrowerName);
+                        templateBody = templateBody.replace("#cardID#",loanPass.getPassNumber().toString());
+                        emailSenderService.sendEmail(loanedBy.getEmail(),templateTitle,templateBody);
+                    }
+                }
+            }
+            catch (Exception e){
+                continue;
+            }
+        }
 
     }
 

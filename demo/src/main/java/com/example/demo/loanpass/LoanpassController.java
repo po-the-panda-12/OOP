@@ -37,8 +37,12 @@ public class LoanpassController {
     }
 
     @GetMapping(path="/remind/collection")
-    public void massReminder(){
+    public void massCollectionReminder(){
         loanPassService.collectCardReminder();
+    }
+    @GetMapping(path="/remind/return")
+    public void massReturnReminder(){
+        loanPassService.returnCardReminder();
     }
 
     @PutMapping(path = "{loanPassId}")
