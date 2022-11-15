@@ -169,7 +169,7 @@ export default function ViewBooking() {
                     });
 
                     axios
-                      .get(`${backendDomain}/api/v1/users/${item}`)
+                      .get(`${backendDomain}/api/v1/usersById/${item}`)
                       .then((response) => {
                         Swal.close();
                         console.log(response.data);

@@ -112,20 +112,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public AppUser getReferenceById(Long id) {
-        AppUser x = null;
-        if (id == 4){
-            return userRepo.findByUsername("Brian Lim");
-        }
-        if (id == 5){
-            return userRepo.findByUsername("John");
-        }
-        if (id == 6){
-            return userRepo.findByUsername("Ted");
-        }
-        if (id == 7){
-            return userRepo.findByUsername("Siang Meng");
-        }
-        return userRepo.getReferenceById(id);
+//        AppUser x = null;
+//        if (id == 4){
+//            return userRepo.findByUsername("Brian Lim");
+//        }
+//        if (id == 5){
+//            return userRepo.findByUsername("John");
+//        }
+//        if (id == 6){
+//            return userRepo.findByUsername("Ted");
+//        }
+//        if (id == 7){
+//            return userRepo.findByUsername("Siang Meng");
+//        }
+        return userRepo.findById(id).orElseThrow(() -> new IllegalStateException("User with id " + id + " does not exist"));
 
 //        return userRepo.getReferenceById(id);
     }
