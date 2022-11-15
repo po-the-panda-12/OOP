@@ -41,6 +41,8 @@ import UsersList from "./pages/users/UsersList";
 // ================= Attractions =======================
 import AttractionList from "./pages/attractions/attractionList";
 import CreateAttractions from "./pages/attractions/createAttractions";
+import UpdateAttraction from "./pages/attractions/updateAttraction";
+// import CreateAttractions from "./pages/attractions/createAttractions";
 // =============== Singapore Statistics ==============
 import EmployeeStatistics from "./components/successloan/employeestatistic";
 import MonthlyStatistics from "./components/successloan/monthlystatistic";
@@ -152,6 +154,7 @@ class App extends React.Component {
               {/* attractions */}
               <Route exact path="/react/attractions" element={<AttractionList/>}></Route>
               <Route exact path="/react/attractions/create" element={<CreateAttractions/>}></Route>
+              <Route exact path="/react/attractions/:attractionId" element={<UpdateAttraction/>}></Route>
               <Route exact path="/react/employeestatistic" element={<EmployeeStatistics />}></Route>
               <Route exact path="/react/monthlystatistic" element={<MonthlyStatistics />}></Route>
             </Routes>
