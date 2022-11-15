@@ -22,9 +22,8 @@ const Button = styled.button`
 `;
 let options = [];
 
-const options1 = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
+let options1 = [
+  { value: "1", label: "1" }
 ];
 
 // should be based on user
@@ -73,7 +72,7 @@ export default function LoanApplication() {
 
       console.log(options);
       setPasses(1);
-      Swal.close();
+      
     });
 
     // Update the document title using the browser API
@@ -88,7 +87,23 @@ export default function LoanApplication() {
     }
     userOptions = [{ value: userlogin, label: userlogin }];
 
-    console.log(userOptions);
+    // get options1 from backend axios call
+    axios.get(`${backendDomain}/api/v1/settings`).then((res) => {
+      console.log(res.data);
+      const limit = res.data[0]["maxPassPerLoan"];
+
+      console.log(limit);
+      options1 = [];
+      for (let i = 1; i <= limit; i++) {
+        options1.push({ value: i, label: i });
+      }
+      
+      onPassesChange(options1[0]);
+      Swal.close();
+    });
+
+    // console.log(options1);
+    // console.log(userOptions);
     onPassesChange();
     setPasses(1);
     setUser({ value: userlogin, label: userlogin });
