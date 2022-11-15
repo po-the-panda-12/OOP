@@ -117,6 +117,7 @@ const UsersList = () => {
         roleName: "ROLE_ADMIN",
       });
       console.log(response.data);
+      alert(username + " is now an Admin");
     } catch (err) {
       console.error(err);
     }
@@ -309,7 +310,7 @@ const UsersList = () => {
                             variant="contained"
                             onClick={() => upgradeToAdmin(user.username)}
                           >
-                            Grant Rights
+                            Become Admin
                           </Button>
                         )}
                     </TableCell>
