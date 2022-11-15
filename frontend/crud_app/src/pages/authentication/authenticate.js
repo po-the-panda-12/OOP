@@ -89,6 +89,7 @@ export default function Authenticate() {
             Swal.showLoading();
           },
         });
+        Swal.close();
       });
   };
   //   const login = () => {
