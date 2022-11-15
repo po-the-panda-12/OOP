@@ -159,7 +159,7 @@ const UsersList = () => {
     formdata.append("file", file);
     axios({
       method: "post",
-      url: "http://localhost:8080/api/v1/upload",
+      url: `${backendDomain}/api/v1/upload`,
       data: formdata,
       headers: { "Content-Type": "multipart/form-data" },
     })
