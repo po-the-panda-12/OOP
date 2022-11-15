@@ -98,7 +98,8 @@ function AttractionList() {
                                                 ${attraction.replacementFee}
                                             </TableCell>
                                             <TableCell>
-                                                {
+                                                {attraction.emailTemplateID}
+                                                {/* {
                                                     emailTemplates.length > 0
                                                         ? 
                                                         emailTemplates.filter(
@@ -107,7 +108,7 @@ function AttractionList() {
                                                                   attraction.emailTemplateID
                                                           )[0].emailTemplateName
                                                         : "No templates"
-                                                }
+                                                } */}
                                             </TableCell>
                                             <TableCell>
                                                 {attraction.totalPasses}

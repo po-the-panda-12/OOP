@@ -21,7 +21,7 @@ public class AttractionsController {
         return attractionsService.getAttractions();
     }
 
-    @PutMapping("/save")
+    @PostMapping()
     public void addAttractions(@RequestBody Attractions attractions){
         attractionsService.addNewAttraction(attractions);
     }
