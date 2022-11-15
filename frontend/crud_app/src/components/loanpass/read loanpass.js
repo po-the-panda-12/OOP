@@ -2,13 +2,16 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router";
 import Swal from 'sweetalert2'
 
 export default function Read() {
 // popup loading please wait
 
     const backendDomain = process.env.REACT_APP_backendDomain;
+    const navigate = useNavigate();
     const [APIData, setAPIData] = useState([]);
+    const [passLimit, setPassLimit] = useState(1);
     useEffect(() => {
         console.log("hello");
 
@@ -24,8 +27,15 @@ export default function Read() {
             .then((response) => {
                 console.log(response.data);
                 setAPIData(response.data);
+            });
+
+        axios.get(`${backendDomain}/api/v1/settings`)
+            .then((response) => {
+                const limit = response.data[0]["maxPassPerLoan"];
+                console.log(limit);
+                setPassLimit(limit);
                 Swal.close();
-            })
+            });
 
 
         // // giving in example data
@@ -39,6 +49,42 @@ export default function Read() {
         // console.log(mockupData);
         // setAPIData(mockupData);
     }, []);
+
+    const incrementPassLimit = () => {
+        // popup loading please wait
+        Swal.fire({
+            title: 'Updating information to database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+        // send put request
+        axios.put(`${backendDomain}/api/v1/settings?settingID=1&maxPassPerLoan=${passLimit+1}`)
+            .then((response) => {
+                setPassLimit(passLimit+1);
+                Swal.close();
+                
+            });
+    }
+
+    const decrementPassLimit = () => {
+        // popup loading please wait
+        Swal.fire({
+            title: 'Updating information to database...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+        })
+        // send put request
+        axios.put(`${backendDomain}/api/v1/settings?settingID=1&maxPassPerLoan=${passLimit-1}`)
+            .then((response) => {
+                setPassLimit(passLimit-1);
+                Swal.close();
+
+            });
+    }
 
     const remindCollection = () =>{
         axios.get(`${backendDomain}/api/v1/loanpass/remind/collection`)
@@ -97,6 +143,15 @@ export default function Read() {
 
     return (
         <div class="container rounded content" style={{ height: "100%", width: "80%" }}>
+            
+            {/* show passLimit */}
+            <h1>
+            {/* decrement button */}
+            <Button onClick={decrementPassLimit} disabled={passLimit <= 1}>-</Button>
+            Loanpass limit: {passLimit}
+            {/* increment button */}
+            <Button onClick={incrementPassLimit}>+</Button>
+            </h1>
             {/* button to create loanpass */}
             <Link to="/react/createloanpass">
                 <Button primary>Create Loan Pass</Button>
