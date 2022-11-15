@@ -26,50 +26,76 @@ const AttractionForm = (props) => {
 
     const postData = () => {
         const postRequest =
-          "{name: " +
-          name +
-          ",\n description: " +
-          description +
-          ",\n passType: " +
-          passType +
-          ",\n replacementFee: " +
-          replacementFee +
-          ",\n emailTemplate: " +
-          emailTemplateID +
-          ",\n totalPasses: " +
-          totalPasses +
-          ",\n status: Active" +
-          status +
-          "}";
+            "{name: " +
+            name +
+            ",\n description: " +
+            description +
+            ",\n passType: " +
+            passType +
+            ",\n replacementFee: " +
+            replacementFee +
+            ",\n emailTemplate: " +
+            emailTemplateID +
+            ",\n totalPasses: " +
+            totalPasses +
+            ",\n status: Active" +
+            status +
+            "}";
         alert(
-          "sent a post request:\n" +
-            postRequest +
-            `\nto ${backendDomain}/api/v1/attractions`
+            "sent a post request:\n" +
+                postRequest +
+                `\nto ${backendDomain}/api/v1/attractions`
         );
-    
+
         axios
-          .post(`${backendDomain}/api/v1/attractions`, {
-            // attractionId,
-            name,
-            description,
-            passType,
-            replacementFee,
-            emailTemplateID,
-            totalPasses,
-            status
-          })
-          .then(() => {
-            alert("success! going to read page");
-            navigate("/react/attractions");
-          })
-          .catch((err) => {
-            alert("error in creation! staying on this page." + err);
-          });
-      };
+            .post(`${backendDomain}/api/v1/attractions`, {
+                // attractionId,
+                name,
+                description,
+                passType,
+                replacementFee,
+                emailTemplateID,
+                totalPasses,
+                status,
+            })
+            .then(() => {
+                alert("success! going to read page");
+                navigate("/react/attractions");
+            })
+            .catch((err) => {
+                alert("error in creation! staying on this page." + err);
+            });
+    };
+
+    const updateData = () => {
+        axios
+            .put(
+                `${backendDomain}/api/v1/attractions/${props.attraction.attractionID}`,
+                {
+                    name,
+                    description,
+                    passType,
+                    replacementFee,
+                    emailTemplateID,
+                    totalPasses,
+                    status,
+                }
+            )
+            .then(() => {
+                alert("Attraction edited!");
+                navigate("/react/attractions");
+            })
+            .catch((err) => {
+                alert("error in updating! staying on this page." + err);
+            });
+    };
 
     useEffect(() => {
+        console.log(props.attraction)
         retrieveEmailTemplates();
-        console.log(emailTemplates);
+        if(props.attraction){
+            setName(props.attraction.name)
+        }
     }, []);
     return (
         <div style={{ margin: "10px", padding: "10px" }}>
@@ -90,8 +116,7 @@ const AttractionForm = (props) => {
                 </Form.Field>
                 <Form.Field>
                     <label>Pass Type:</label>
-                    <select
-                        onChange={(e) => setPassType(e.target.value)}                    >
+                    <select onChange={(e) => setPassType(e.target.value)}>
                         <option value="Physical">Physical</option>
                         <option value="E-Pass">E-Pass</option>
                         <option value="E-Pass">Both</option>
@@ -102,16 +127,16 @@ const AttractionForm = (props) => {
                     <label>Replacement Fee:</label>
                     <input
                         placeholder="Replacement Fee"
-                        type = "number"
+                        type="number"
                         onChange={(e) => setReplacementFee(e.target.value)}
                     />
                 </Form.Field>
                 <Form.Field>
                     <label>Email Template:</label>
                     <select
-                        onChange={(e) => setEmailTemplateID(e.target.value)}                    >
+                        onChange={(e) => setEmailTemplateID(e.target.value)}
+                    >
                         {emailTemplates.map((emailTemplate) => {
-                            console.log(emailTemplate);
                             return (
                                 <option value={emailTemplate.emailTemplateId}>
                                     {emailTemplate.emailTemplateName}
@@ -124,8 +149,8 @@ const AttractionForm = (props) => {
                     <label>Total Passes:</label>
                     <input
                         placeholder="Total Passes"
-                        type = "number"
-                        min="0" 
+                        type="number"
+                        min="0"
                         step="1"
                         onChange={(e) => setTotalPasses(e.target.value)}
                     />
@@ -140,9 +165,23 @@ const AttractionForm = (props) => {
                         <option value="Non-active">Non-active</option>
                     </select>
                 </Form.Field>
-                <Button onClick={postData} type="submit">
-                    Submit
-                </Button>
+
+                {props.attraction ? (
+                    <>
+                        <button
+                            className="btn btn-primary"
+                            onClick={updateData}
+                        >
+                            Update Attraction
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <button className="btn btn-primary" onClick={postData}>
+                            Submit Attraction
+                        </button>
+                    </>
+                )}
             </Form>
         </div>
     );

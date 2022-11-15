@@ -12,7 +12,7 @@ public class AttractionsConfig {
     CommandLineRunner commandLineRunnerAttraction(AttractionsRepository repository){
     return args -> {
             Attractions zoo = new Attractions(
-                   1L,
+                   1,
                     "Zoo",
                     "Zoo is a really fun place. You get to see the white tiger",
                     "Physical",
@@ -24,7 +24,7 @@ public class AttractionsConfig {
             );
 
             Attractions universalStudios = new Attractions(
-                    2L,
+                    2,
                     "Universal Studios",
                     "Universal Studios is an excellent place. You can find theme-parks here, and good food.",
                     "E-pass",
@@ -36,7 +36,7 @@ public class AttractionsConfig {
             );
 
             Attractions fortCanning = new Attractions(
-                    3L,
+                    3,
                     "Fort Canning Park",
                     "Ever wondered what the Bristish and the Japanese did to Singapore? Yes? Alright come here!",
                     "Both",

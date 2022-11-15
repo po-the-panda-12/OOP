@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -26,8 +27,13 @@ public class AttractionsController {
         attractionsService.addNewAttraction(attractions);
     }
 
+    @GetMapping(path = "{attractionID}")
+    public Optional<Attractions> getAttractionByID(@PathVariable("attractionID") Integer attractionID){
+        return attractionsService.getAttractionById(attractionID);
+    }
+
     @DeleteMapping(path = "{attractionID}")
-    public void deleteAttractions(@PathVariable("attractionID") Long attractionID){
+    public void deleteAttractions(@PathVariable("attractionID") Integer attractionID){
         attractionsService.deleteAttractions(attractionID);
     }
 

@@ -26,7 +26,12 @@ public class AttractionsService {
         System.out.println(attractions);
     }
 
-    public void deleteAttractions(Long attractionID){
+    public Optional<Attractions>  getAttractionById(int attractionID){
+        return attractionsRepository.findAttractionsByID(attractionID);
+
+    }
+
+    public void deleteAttractions(int attractionID){
         boolean exists = attractionsRepository.existsById(attractionID);
         if (!exists){
             throw new IllegalStateException("Attraction with id " + attractionID + " does not exists");

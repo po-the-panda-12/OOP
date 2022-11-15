@@ -17,7 +17,7 @@ public class Attractions {
             strategy = GenerationType.SEQUENCE,
             generator = "attractions_sequence"
     )
-    private Long attractionID;
+    private Integer attractionID;
     private String name;
     private String description;
     private String passType;
@@ -30,7 +30,7 @@ public class Attractions {
 
     }
 
-    public Attractions(Long attractionID, String name, String description, String passType, Integer replacementFee, Integer emailTemplateID, Integer totalPasses, String status) {
+    public Attractions(Integer attractionID, String name, String description, String passType, Integer replacementFee, Integer emailTemplateID, Integer totalPasses, String status) {
         this.attractionID = attractionID;
         this.name = name;
         this.description = description;
@@ -41,11 +41,11 @@ public class Attractions {
         this.status = status;
     }
 
-    public Long getAttractionID() {
+    public Integer getAttractionID() {
         return attractionID;
     }
 
-    public void setAttractionID(Long attractionID) {
+    public void setAttractionID(Integer attractionID) {
         this.attractionID = attractionID;
     }
 
