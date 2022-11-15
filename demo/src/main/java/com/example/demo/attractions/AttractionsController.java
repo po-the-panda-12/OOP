@@ -32,6 +32,14 @@ public class AttractionsController {
         return attractionsService.getAttractionById(attractionID);
     }
 
+    @PutMapping(path="{attractionID}")
+    public void updateAttraction(
+            @PathVariable("attractionID") Integer attractionID,
+            @RequestBody Attractions attraction
+    ){
+        attractionsService.updateAttraction(attractionID,attraction);
+    }
+
     @DeleteMapping(path = "{attractionID}")
     public void deleteAttractions(@PathVariable("attractionID") Integer attractionID){
         attractionsService.deleteAttractions(attractionID);

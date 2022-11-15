@@ -91,10 +91,25 @@ const AttractionForm = (props) => {
     };
 
     useEffect(() => {
-        console.log(props.attraction)
+        console.log("props.attraction", props.attraction);
         retrieveEmailTemplates();
-        if(props.attraction){
-            setName(props.attraction.name)
+        if (props.attraction) {
+            // attractionID: 1;
+            // description: "Zoo is a really fun place. You get to see the white tiger";
+            // emailTemplateID: 1;
+            // name: "Zoo";
+            // passType: "Physical";
+            // replacementFee: 50;
+            // status: "Active";
+            // totalPasses: 100;
+
+            setName(props.attraction.name);
+            setDescription(props.attraction.description);
+            setEmailTemplateID(props.attraction.emailTemplateID);
+            setPassType(props.attraction.passType);
+            setReplacementFee(props.attraction.replacementFee);
+            setStatus(props.attraction.status);
+            setTotalPasses(props.attraction.totalPasses);
         }
     }, []);
     return (
@@ -103,6 +118,7 @@ const AttractionForm = (props) => {
                 <Form.Field>
                     <label>Name:</label>
                     <input
+                        value={name}
                         placeholder="Name"
                         onChange={(e) => setName(e.target.value)}
                     />
@@ -111,6 +127,7 @@ const AttractionForm = (props) => {
                     <label>Description:</label>
                     <input
                         placeholder="Description"
+                        value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
                 </Form.Field>
@@ -127,6 +144,7 @@ const AttractionForm = (props) => {
                     <label>Replacement Fee:</label>
                     <input
                         placeholder="Replacement Fee"
+                        value={replacementFee}
                         type="number"
                         onChange={(e) => setReplacementFee(e.target.value)}
                     />
@@ -135,6 +153,7 @@ const AttractionForm = (props) => {
                     <label>Email Template:</label>
                     <select
                         onChange={(e) => setEmailTemplateID(e.target.value)}
+                        value = {emailTemplateID}
                     >
                         {emailTemplates.map((emailTemplate) => {
                             return (
@@ -148,6 +167,7 @@ const AttractionForm = (props) => {
                 <Form.Field>
                     <label>Total Passes:</label>
                     <input
+                        value={totalPasses}
                         placeholder="Total Passes"
                         type="number"
                         min="0"
