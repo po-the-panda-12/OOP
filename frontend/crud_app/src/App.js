@@ -46,123 +46,152 @@ import UpdateAttraction from "./pages/attractions/updateAttraction";
 // =============== Singapore Statistics ==============
 import EmployeeStatistics from "./components/successloan/employeestatistic";
 import MonthlyStatistics from "./components/successloan/monthlystatistic";
+import useAuth from "./hooks/useAuth";
 
-class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <div className="App">
-          {/* NAV BAR */}
+export default function App() {
+  const { setAuth, auth } = useAuth();
+  const logout = async () => {
+    setAuth({});
+    localStorage.setItem("auth", {});
+    alert("You have been logged out");
+  };
+  return (
+    <BrowserRouter>
+      <div className="App">
+        {/* NAV BAR */}
 
-          <Navbar bg="light" expand="lg" fixed="top">
-            <Container>
-              <Navbar.Brand href="#home">
-                Corporate Pass Application
-              </Navbar.Brand>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="me-auto" defaultActiveKey="/react" as="ul">
-                  <Nav.Item as="li">
-                    <Nav.Link href="">
-                      <Link to="/react">Home</Link>
-                    </Nav.Link>
-                  </Nav.Item>
+        <Navbar bg="light" expand="lg" fixed="top">
+          <Container>
+            <Navbar.Brand href="#home">Corporate Pass Application</Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto" defaultActiveKey="/react" as="ul">
+                <Nav.Item as="li">
+                  <Nav.Link href="">
+                    <Link to="/react/auth" onClick={() => logout()}>
+                      Logout
+                    </Link>
+                  </Nav.Link>
+                </Nav.Item>
 
-                  <Nav.Link href="">
-                    <Link to="/react/auth">Authenticate</Link>
-                  </Nav.Link>
-                  <Nav.Link href="">
-                    <Link to="/react/loan">Loan Application</Link>
-                  </Nav.Link>
-                  <Nav.Link href="">
-                    <Link to="/react/viewbooking">View Booking</Link>
-                  </Nav.Link>
+                <Nav.Link href="">
+                  <Link to="/react/auth">Authenticate</Link>
+                </Nav.Link>
+                <Nav.Link href="">
+                  <Link to="/react/loan">Loan Application</Link>
+                </Nav.Link>
+                <Nav.Link href="">
+                  <Link to="/react/viewbooking">View Booking</Link>
+                </Nav.Link>
+                {auth.roles?.includes("ROLE_ADMIN") && (
                   <Nav.Link href="">
                     <Link to="/react/emailtemplates">Email Templates</Link>
                   </Nav.Link>
-                  <Nav.Link href="">
-                    <Link to="/react/users">Users</Link>
-                  </Nav.Link>
-                  <Nav.Link href="">
-                    <Link to="/react/attractions">Attractions</Link>
-                  </Nav.Link>
+                )}
+                <Nav.Link href="">
+                  <Link to="/react/users">Users</Link>
+                </Nav.Link>
+                <Nav.Link href="">
+                  <Link to="/react/attractions">Attractions</Link>
+                </Nav.Link>
+                {auth.roles?.includes("ROLE_ADMIN") && (
                   <Nav.Link title="Loan Pass" id="basic-nav-dropdown">
                     <Link to="/react/read">Loanpass</Link>
                   </Nav.Link>
-                  <NavDropdown title="Statistics" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="">
-                      <Link to="/react/employeestatistic">Employee Statistics</Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="">
-                      <Link to="/react/monthlystatistic">Monthly Statistics</Link>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="">Something</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="">Separated link</NavDropdown.Item>
-                  </NavDropdown>
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
+                )}
+                <NavDropdown title="Statistics" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="">
+                    <Link to="/react/employeestatistic">
+                      Employee Statistics
+                    </Link>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="">
+                    <Link to="/react/monthlystatistic">Monthly Statistics</Link>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="">Something</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="">Separated link</NavDropdown.Item>
+                </NavDropdown>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
 
-          {/* END OF NAVBAR */}
-          <div>
-              <video autoPlay loop muted>
-              <source src={vid_background} type = "video/mp4"></source>
-              </video>
-            </div>
-          <div className="main">
-            {/* authentication */}
-
-            <Routes>
-              <Route exact path="/react" element={<Home />} />
-              <Route exact path="/react/auth" element={<Authenticate />} />
-              {/* loanpass */}
-              <Route
-                exact
-                path="/react/createloanpass"
-                element={<CreateLoanPass />}
-              />
-              <Route exact path="/react/read" element={<Read />} />
-              <Route exact path="/react/update" element={<Update />} />
-              <Route exact path="/react/loan" element={<LoanApplication />} />
-
-              {/* booking */}
-              <Route
-                exact
-                path="/react/viewbooking"
-                element={<ViewBooking />}
-              />
-
-              {/* email templates */}
-              <Route
-                exact
-                path="/react/emailtemplates"
-                element={<EmailTemplatePage />}
-              />
-              <Route
-                exact
-                path="/react/emailtemplates/create"
-                element={<CreateEmailTemplate />}
-              ></Route>
-              <Route
-                exact
-                path="/react/emailtemplates/edit/:emailTemplateId"
-                element={<EditEmailTemplate />}
-              ></Route>
-              <Route exact path="/react/users" element={<UsersList />}></Route>
-              {/* attractions */}
-              <Route exact path="/react/attractions" element={<AttractionList/>}></Route>
-              <Route exact path="/react/attractions/create" element={<CreateAttractions/>}></Route>
-              <Route exact path="/react/attractions/:attractionId" element={<UpdateAttraction/>}></Route>
-              <Route exact path="/react/employeestatistic" element={<EmployeeStatistics />}></Route>
-              <Route exact path="/react/monthlystatistic" element={<MonthlyStatistics />}></Route>
-            </Routes>
-          </div>
+        {/* END OF NAVBAR */}
+        <div>
+          <video autoPlay loop muted>
+            <source src={vid_background} type="video/mp4"></source>
+          </video>
         </div>
-      </BrowserRouter>
-    );
-  }
-}
+        <div className="main">
+          {/* authentication */}
 
-export default App;
+          <Routes>
+            <Route exact path="/react" element={<Home />} />
+            <Route exact path="/react/auth" element={<Authenticate />} />
+            {/* loanpass */}
+            <Route
+              exact
+              path="/react/createloanpass"
+              element={<CreateLoanPass />}
+            />
+            <Route exact path="/react/read" element={<Read />} />
+            <Route exact path="/react/update" element={<Update />} />
+            <Route exact path="/react/loan" element={<LoanApplication />} />
+
+            {/* booking */}
+            <Route exact path="/react/viewbooking" element={<ViewBooking />} />
+
+            {/* email templates */}
+
+            <Route
+              exact
+              path="/react/emailtemplates"
+              element={<EmailTemplatePage />}
+            />
+
+            <Route
+              exact
+              path="/react/emailtemplates/create"
+              element={<CreateEmailTemplate />}
+            ></Route>
+
+            <Route
+              exact
+              path="/react/emailtemplates/edit/:emailTemplateId"
+              element={<EditEmailTemplate />}
+            ></Route>
+
+            <Route exact path="/react/users" element={<UsersList />}></Route>
+            {/* attractions */}
+            <Route
+              exact
+              path="/react/attractions"
+              element={<AttractionList />}
+            ></Route>
+            <Route
+              exact
+              path="/react/attractions/create"
+              element={<CreateAttractions />}
+            ></Route>
+            <Route
+              exact
+              path="/react/attractions/:attractionId"
+              element={<UpdateAttraction />}
+            ></Route>
+            <Route
+              exact
+              path="/react/employeestatistic"
+              element={<EmployeeStatistics />}
+            ></Route>
+            <Route
+              exact
+              path="/react/monthlystatistic"
+              element={<MonthlyStatistics />}
+            ></Route>
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
+  );
+}
