@@ -138,9 +138,7 @@ function EmailTemplateForm(props) {
                 theme="snow"
                 value={emailTemplateBody}
                 onChange={setEmailTemplateBody}
-                // modules={modules}
             />
-            {/* <CustTeplateForm/> */}
             {props.template ? (
                 <>
                     <button className="btn btn-primary" onClick={updateData}>
