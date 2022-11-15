@@ -99,15 +99,6 @@ function AttractionList() {
                                             </TableCell>
                                             <TableCell>
                                                 {
-                                                    // attraction.emailTemplateID
-                                                    // emailTemplates.filter(
-                                                    //     function (template) {
-                                                    //         return (
-                                                    //             template.emailTemplateId ==
-                                                    //             attraction.emailTemplateID
-                                                    //         );
-                                                    //     }
-                                                    // )
                                                     emailTemplates.length > 0
                                                         ? 
                                                         emailTemplates.filter(
