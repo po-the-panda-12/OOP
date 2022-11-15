@@ -1,5 +1,13 @@
+A stable frontend react app has been deployed using github pages at: https://piplupowo.github.io/react <br>
+interacting with spring backend and postgresql database deployed on heroku.
+You may test the app out at https://piplupowo.github.io/react if you want a demo without installing anything to your local machine. (app hosted on free cloud premises may be slower in responses compared to testing on local machine)
+
 FRONTEND
-https://github.com/IS442-202223T1/group-project-g1t7/tree/main/frontend/crud_app
+# TO RUN REACT APP, ENSURE YOU HAVE NODE.JS INSTALLED AND go to this project directory in cmd,<br>
+type "npm install"<br>
+type "npm start"<br>
+go to [http://localhost:3000](http://localhost:3000)<br><br>
+
 
 HOW TO RUN BACKEND (which is in demo folder) (using intelliJ, student have free premium version) 
 
