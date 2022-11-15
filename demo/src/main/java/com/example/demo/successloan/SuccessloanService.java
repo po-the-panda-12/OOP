@@ -2,19 +2,18 @@ package com.example.demo.successloan;
 import java.time.LocalDateTime;  // Import the LocalDateTime class
 import java.time.format.DateTimeFormatter;  // Import the DateTimeFormatter class
 import com.example.demo.attractions.Attractions;
+import com.example.demo.attractions.AttractionsRepository;
 import com.example.demo.attractions.AttractionsService;
 import com.example.demo.emailsender.EmailSenderService;
 import com.example.demo.emailtemplate.EmailTemplate;
 import com.example.demo.emailtemplate.EmailTemplateService;
+import com.example.demo.loanpass.Loanpass;
+import com.example.demo.loanpass.LoanpassRepository;
 import com.example.demo.users.UserRepo;
 import com.example.demo.users.*;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,15 +23,21 @@ public class SuccessloanService {
     private final EmailTemplateService emailTemplateService;
     private final EmailSenderService emailSenderService;
     private final AttractionsService attractionsService;
+    private final UserRepo userRepo;
+    private final LoanpassRepository loanpassRepository;
+    private final AttractionsRepository attractionsRepository;
 
     public SuccessloanService(SuccessloanRepository successloanRepository,
-                              UserService userService,EmailSenderService emailSenderService,
-                              AttractionsService attractionsService, EmailTemplateService emailTemplateService) {
+                              UserService userService, EmailTemplateService emailTemplateService, EmailSenderService emailSenderService,
+                              AttractionsService attractionsService, UserRepo userRepo, LoanpassRepository loanpassRepository, AttractionsRepository attractionsRepository) {
         this.successloanRepository = successloanRepository;
         this.userService = userService;
+        this.emailTemplateService = emailTemplateService;
         this.emailSenderService = emailSenderService;
         this.attractionsService = attractionsService;
-        this.emailTemplateService = emailTemplateService;
+        this.userRepo = userRepo;
+        this.loanpassRepository = loanpassRepository;
+        this.attractionsRepository = attractionsRepository;
     }
 
     public List<Successloan> getSuccessloan() {
@@ -71,15 +76,10 @@ public class SuccessloanService {
         successloanRepository.save(successloan);
         System.out.println("CREATED");
 
-        AppUser borrower = userService.getReferenceById((long)successloan.getStaffId());
-
-        String recipient = borrower.getUsername();
-        String recipientEmail = borrower.getEmail();
-        String corpPassNo = "N/A";
 
 
-        Attractions selectedAttraction = attractionsService.getAttractionById((int) successloan.getAttractionId()).get();
-        String attractionName = selectedAttraction.getName();
+
+        Attractions selectedAttraction = attractionsRepository.getById(successloan.getAttractionId());
 
         Optional<EmailTemplate> currentTemplate = emailTemplateService.getEmailTemplateById(selectedAttraction.getEmailTemplateID());
         EmailTemplate defaultTemplate = new EmailTemplate();
@@ -96,8 +96,29 @@ public class SuccessloanService {
         // formatting
         DateTimeFormatter dateFormatObject = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
 
+
         String templateTitle = defaultTemplate.getEmailTemplateName();
         String templateBody = defaultTemplate.getEmailTemplateBody();
+
+        String recipient;
+        String recipientEmail;
+        String attractionName = selectedAttraction.getName();
+        String corpPassNo;
+
+        Optional<AppUser> user = userRepo.findById(Long.valueOf(successloan.getStaffId()));
+        String userString = user.toString();
+
+        String username = userString.substring(userString.indexOf("username=") + 9, userString.indexOf(", email="));
+        String email = userString.substring(userString.indexOf("email=") + 6, userString.indexOf(", password="));
+
+        // count the number of successloan on the same day
+        List<Successloan> successloanList = getSuccessloanByAttractionIdAndMonthAndYearAndDay(successloan.getAttractionId(), successloan.getMonth(), successloan.getYear(), successloan.getDay());
+        int count = successloanList.size();
+        Loanpass loanpass = loanpassRepository.findLoanPassByAttractionId(successloan.getAttractionId()).get(count-1);
+
+        recipient = username;
+        recipientEmail = email;
+        corpPassNo = String.valueOf(loanpass.getPassNumber());
 
 
         // supposed to get attraction
