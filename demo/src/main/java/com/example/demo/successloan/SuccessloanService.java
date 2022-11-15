@@ -136,6 +136,16 @@ public class SuccessloanService {
         templateBody = templateBody.replace("#visitDate#",visitDateInString);
         emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         System.out.println("EMAIL SENT");
+
+        String attachmentLink = loanpass.getDescription().split(",./")[4];
+        System.out.println(attachmentLink);
+        if (attachmentLink == null || attachmentLink.equals("")){
+            System.out.println("NO ATTACHMENT");
+        }
+        else{
+            emailSenderService.sendEmailWithAttachment(recipientEmail,templateTitle + "'s ATTACHMENT","Attachment",attachmentLink);
+            System.out.println("EMAIL SENT WITH ATTACHMENT");
+        }
     }
 
 
