@@ -47,6 +47,7 @@ const customStyles = {
 export default function LoanApplication() {
   const navigate = useNavigate();
   const { setAuth, auth } = useAuth();
+  let limit = 1;
   console.log(auth.id, "AUTH ID :D");
 
   useEffect(() => {
@@ -90,7 +91,7 @@ export default function LoanApplication() {
     // get options1 from backend axios call
     axios.get(`${backendDomain}/api/v1/settings`).then((res) => {
       console.log(res.data);
-      const limit = res.data[0]["maxPassPerLoan"];
+      limit = res.data[0]["maxPassPerLoan"];
 
       console.log(limit);
       options1 = [];
@@ -188,11 +189,12 @@ export default function LoanApplication() {
       )
       .then((res) => {
         console.log(res.data);
-        if (res.data.length > 2) {
+        limit = options1[options1.length - 1]["value"];
+        if (res.data.length >= limit) {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "You have already applied for 2 loans this month!",
+            text: `You have already hit the limit: ${limit} loans this month!`,
           });
         } else {
           let newwaitingList = `${userId}`;
