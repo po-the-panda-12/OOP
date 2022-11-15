@@ -68,7 +68,7 @@ export default function Authenticate() {
           ]) +
           "}";
 
-          Swal.close();
+        Swal.close();
         alert(
           "sent a post request:\n" +
             postRequest +
@@ -87,7 +87,7 @@ export default function Authenticate() {
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading();
-          }
+          },
         });
       });
   };
@@ -116,22 +116,20 @@ export default function Authenticate() {
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
-        }
-        
+        },
       });
 
-      const response = await axios.post(
-        `${backendDomain}/api/v1/login`,
-        params
-      ).catch((err) => {
-        console.log(err.response.data.message);
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: err.response.data.message,
+      const response = await axios
+        .post(`${backendDomain}/api/v1/login`, params)
+        .catch((err) => {
+          console.log(err.response.data.message);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: err.response.data.message,
+          });
         });
-      });
-      
+
       console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
       setResult(response.data);
@@ -147,23 +145,32 @@ export default function Authenticate() {
         `${backendDomain}/api/v1/login/${username}`
       );
       console.log(response2.data.id, "response 2");
+      console.log(response2.data.enabled, "response 2 haha");
       const id = response2.data.id;
-      setAuth({ username, phone, accessToken, roles, id });
-      // localStorage.setItem("accessToken", auth);
+      if (response2.data.enabled) {
+        setAuth({ username, phone, accessToken, roles, id });
+        // localStorage.setItem("accessToken", auth);
 
-      setEmail("");
-      setPassword("");
-      //   navigate(from, { replace: true });
+        setEmail("");
+        setPassword("");
+        //   navigate(from, { replace: true });
 
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ username, password, roles, accessToken });
-      // setUser('');
-      // setPwd('');
-      // navigate(from, { replace: true });
-      alert("logged in as " + decodedHeader.sub + " with role of " + roles);
-      // close sweet alert
-      Swal.close();
+        // const accessToken = response?.data?.accessToken;
+        // const roles = response?.data?.roles;
+        // setAuth({ username, password, roles, accessToken });
+        // setUser('');
+        // setPwd('');
+        // navigate(from, { replace: true });
+        alert("logged in as " + decodedHeader.sub + " with role of " + roles);
+        window.location.replace("http://localhost:3000/react/attractions");
+        // close sweet alert
+        Swal.close();
+      } else {
+        Swal.close();
+        alert(
+          "You have not verified your email. Please click on the confirmation link in the email."
+        );
+      }
     } catch (err) {}
   };
 
