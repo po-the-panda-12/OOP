@@ -17,7 +17,7 @@ public class AttractionsConfig {
                     "Zoo is a really fun place. You get to see the white tiger",
                     "Physical",
                     50,
-                    "This is a great eamil template. You are warned",
+                    1,
                     100,
                     "Active"
 
@@ -29,7 +29,7 @@ public class AttractionsConfig {
                     "Universal Studios is an excellent place. You can find theme-parks here, and good food.",
                     "E-pass",
                     50,
-                    "This is a great eamil template. You are warned",
+                    1,
                     100,
                     "Active"
 
@@ -41,7 +41,7 @@ public class AttractionsConfig {
                     "Ever wondered what the Bristish and the Japanese did to Singapore? Yes? Alright come here!",
                     "Both",
                     50,
-                    "This is a great eamil template. You are warned",
+                    1,
                     100,
                     "Non-active"
 

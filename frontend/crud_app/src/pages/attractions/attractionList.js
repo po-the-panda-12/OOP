@@ -16,10 +16,19 @@ const backendDomain = process.env.REACT_APP_backendDomain;
 function AttractionList() {
     useEffect(() => {
         getAttractions();
+        getEmailTemplates();
     }, []);
     const [attractions, setAttractions] = useState([]);
-    const getAttractions = () => {
-        axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
+    const [emailTemplates, setEmailTemplates] = useState([]);
+
+    const getEmailTemplates = async () => {
+        await axios.get(`${backendDomain}/api/v1/emailtemplates`).then((res) => {
+            setEmailTemplates(res.data);
+        });
+    };
+
+    const getAttractions = async () => {
+        await axios.get(`${backendDomain}/api/v1/attractions`).then((res) => {
             setAttractions(res.data);
         });
     };
@@ -64,7 +73,7 @@ function AttractionList() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {attractions.map((attraction) => {
+                                { attractions.length > 0?attractions.map((attraction) => {
                                     return (
                                         <TableRow
                                             key={attraction.attractionID}
@@ -89,7 +98,25 @@ function AttractionList() {
                                                 ${attraction.replacementFee}
                                             </TableCell>
                                             <TableCell>
-                                                {attraction.emailTemplate}
+                                                {
+                                                    // attraction.emailTemplateID
+                                                    // emailTemplates.filter(
+                                                    //     function (template) {
+                                                    //         return (
+                                                    //             template.emailTemplateId ==
+                                                    //             attraction.emailTemplateID
+                                                    //         );
+                                                    //     }
+                                                    // )
+                                                    emailTemplates.length > 0
+                                                        ? 
+                                                        emailTemplates.filter(
+                                                              (template) =>
+                                                                  template.emailTemplateId ==
+                                                                  attraction.emailTemplateID
+                                                          )[0].emailTemplateName
+                                                        : "No templates"
+                                                }
                                             </TableCell>
                                             <TableCell>
                                                 {attraction.totalPasses}
@@ -102,7 +129,9 @@ function AttractionList() {
                                                     aria-label="delete"
                                                     style={{ color: "#5289B5" }}
                                                     onClick={() =>
-                                                        deleteAttraction(attraction.attractionID)
+                                                        deleteAttraction(
+                                                            attraction.attractionID
+                                                        )
                                                     }
                                                 >
                                                     <DeleteOutlinedIcon />
@@ -119,7 +148,8 @@ function AttractionList() {
                                             </TableCell>
                                         </TableRow>
                                     );
-                                })}
+                                }): <>None</>
+                                }
                             </TableBody>
                         </Table>
                     </TableContainer>
