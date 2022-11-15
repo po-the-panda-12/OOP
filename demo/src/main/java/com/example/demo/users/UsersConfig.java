@@ -15,10 +15,10 @@ public class UsersConfig {
             userService.saveRole(new UserRole(null, "ROLE_ADMIN"));
             userService.saveRole(new UserRole(null, "ROLE_OFFICER"));
 
-            userService.saveUser(new AppUser(null, "Brian Lim", "brianlimjj@gmail.com", "12345678", "12345678", new ArrayList<>() ));
-            userService.saveUser(new AppUser(null, "John", "johm@gmail.com", "12345678", "12345678", new ArrayList<>() ));
-            userService.saveUser(new AppUser(null, "Ted", "ted@gmail.com", "12345678", "12345678", new ArrayList<>() ));
-            userService.saveUser(new AppUser(null, "Siang Meng", "sm.lee.2020@smu.edu.sg", "12345678", "12345678", new ArrayList<>() ));
+            userService.saveUser(new AppUser(null, "Brian Lim", "brianlimjj@gmail.com", "12345678", "12345678",true, new ArrayList<>(),null ));
+            userService.saveUser(new AppUser(null, "John", "johm@gmail.com", "12345678", "12345678",true, new ArrayList<>(),null ));
+            userService.saveUser(new AppUser(null, "Ted", "ted@gmail.com", "12345678", "12345678",true, new ArrayList<>(),null ));
+            userService.saveUser(new AppUser(null, "Siang Meng", "sm.lee.2020@smu.edu.sg", "12345678", "12345678",true, new ArrayList<>(),null ));
 
             userService.addRoleToUser("Brian Lim", "ROLE_USER");
             userService.addRoleToUser("Siang Meng", "ROLE_USER");

@@ -151,4 +151,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepo.deleteById(id);
     }
 
+    @Override
+    public boolean verify(String confirmationToken){
+        AppUser user = userRepo.findByConfirmationToken(confirmationToken);
+
+        if(user == null || user.getEnabled()){
+            return false;
+        }else{
+            user.setConfirmationToken(null);
+            user.setEnabled(true);
+            userRepo.save(user);
+            return true;
+        }
+    }
+
 }

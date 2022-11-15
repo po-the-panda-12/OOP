@@ -18,4 +18,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     List<AppUser> getUsers();
+
+    boolean verify(String confirmationToken);
 }

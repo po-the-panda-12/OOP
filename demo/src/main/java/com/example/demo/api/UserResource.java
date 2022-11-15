@@ -64,7 +64,7 @@ public class UserResource {
 
     @PostMapping("/user/save")
     public ResponseEntity<AppUser> saveUser(@RequestBody AppUser user) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/verify").query("token=" + user.getConfirmationToken()).toUriString());
         ResponseEntity<AppUser> createdUser = ResponseEntity.created(uri).body(userService.saveUser(user));
         // send email
         EmailTemplate defaultTemplate = new EmailTemplate();
@@ -83,6 +83,18 @@ public class UserResource {
         templateBody = templateBody.replace("#regLink#",uri.toString());
         emailSenderService.sendEmail(recipientEmail,templateTitle,templateBody);
         return createdUser;
+    }
+
+    @RequestMapping(value="/verify", method= {RequestMethod.GET, RequestMethod.POST}, produces= MediaType.TEXT_HTML_VALUE)
+    public String authUsers(@RequestParam("token")String confirmationToken){
+        if(userService.verify(confirmationToken)){
+            return "<html>\n" +
+                    "<body>\n" + "Congratulations!\n" + "Your account has been activated and email is verified\n" +
+                    "You may process to login now\n" + "</body>\n" + "</html>";
+        }else{
+            return "verify_fail";
+        }
+
     }
 
     @PostMapping("/role/save")
