@@ -22,6 +22,16 @@ export default function Authenticate() {
 
   const [checkbox, setCheckbox] = useState(false);
   const register = () => {
+    // fire sweet alert registering account
+    Swal.fire({
+      title: "Registering Account",
+      text: "Please wait...",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     axios
       .post(`${backendDomain}/api/v1/user/save`, {
         username,
@@ -58,6 +68,7 @@ export default function Authenticate() {
           ]) +
           "}";
 
+          Swal.close();
         alert(
           "sent a post request:\n" +
             postRequest +
@@ -66,6 +77,18 @@ export default function Authenticate() {
       })
       .catch((err) => {
         alert(err.response.data.message);
+        // fire sweet alert failed to register account
+        Swal.fire({
+          title: "Failed to Register Account",
+          text: err.response.data.message,
+          icon: "error",
+          confirmButtonText: "OK",
+
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
       });
   };
   //   const login = () => {
@@ -91,9 +114,10 @@ export default function Authenticate() {
       Swal.fire({
         title: "Logging in...",
         allowOutsideClick: false,
-        onBeforeOpen: () => {
+        didOpen: () => {
           Swal.showLoading();
-        },
+        }
+        
       });
 
       const response = await axios.post(
