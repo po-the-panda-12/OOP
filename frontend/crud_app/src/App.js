@@ -117,14 +117,14 @@ export default function App() {
           </Container>
         </Navbar>
 
-        {/* END OF NAVBAR */}
-        <div>
-          <video autoPlay loop muted>
-            <source src={vid_background} type="video/mp4"></source>
-          </video>
-        </div>
-        <div className="main">
-          {/* authentication */}
+          {/* END OF NAVBAR */}
+          <div>
+              <video autoPlay loop muted>
+              <source src={vid_background} type = "video/mp4"></source>
+              </video>
+            </div>
+          <div className="main">
+            {/* authentication */}
 
           <Routes>
             <Route exact path="/react" element={<Home />} />
